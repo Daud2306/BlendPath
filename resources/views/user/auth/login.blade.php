@@ -59,13 +59,9 @@
     </header>
 
     <main class="main">
-
-        <!-- Hero Section -->
         <section id="hero" class="hero section dark-background">
             <div class="container">
                 <div class="row gy-4 align-items-center">
-
-                    <!-- Kolom kiri: form -->
                     <div class="col-lg-6 order-2 order-lg-1 text-center text-lg-start">
                         <h2 data-aos="fade-up">Login ke akunmu</h2>
                         <p data-aos="fade-up" data-aos-delay="100">
@@ -85,8 +81,6 @@
                             <span>Belum punya akun? <a href="/register">Daftar Sekarang!</a></span>
                         </form>
                     </div>
-
-                    <!-- Kolom kanan: gambar -->
                     <div class="col-lg-6 order-1 order-lg-2 text-center">
                         <img src="frontend/img/details-5.png" class="img-fluid" alt="" data-aos="zoom-out"
                             data-aos-delay="300">
@@ -97,15 +91,10 @@
         </section>
 
     </main>
-
-    <!-- Scroll Top -->
     <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
             class="bi bi-arrow-up-short"></i></a>
-
-    <!-- Preloader -->
     <div id="preloader"></div>
 
-    <!-- Vendor JS Files -->
     <script src="frontend/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="frontend/vendor/php-email-form/validate.js"></script>
     <script src="frontend/vendor/aos/aos.js"></script>
@@ -113,7 +102,6 @@
     <script src="frontend/vendor/purecounter/purecounter_vanilla.js"></script>
     <script src="frontend/vendor/swiper/swiper-bundle.min.js"></script>
 
-    <!-- Main JS File -->
     <script src="frontend/js/main.js"></script>
 
 </body>

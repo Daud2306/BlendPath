@@ -10,7 +10,6 @@
         </div>
 
         <div class="row g-3">
-            <!-- 1) Image -->
             <div class="col-12 col-sm-6 col-md-4">
                 <div class="card h-100">
                     <a href="#" data-bs-toggle="modal" data-bs-target="#previewImageModal" class="d-block">
@@ -30,7 +29,6 @@
                 </div>
             </div>
 
-            <!-- 2) Video -->
             <div class="col-12 col-sm-6 col-md-4">
                 <div class="card h-100">
                     <a href="#" data-bs-toggle="modal" data-bs-target="#previewVideoModal" class="d-block">
@@ -53,7 +51,6 @@
                 </div>
             </div>
 
-            <!-- 3) Document -->
             <div class="col-12 col-sm-6 col-md-4">
                 <div class="card h-100">
                     <a href="#" data-bs-toggle="modal" data-bs-target="#previewDocModal" class="d-block">
@@ -77,8 +74,6 @@
             </div>
         </div>
 
-        {{-- Modals (detail preview per item) --}}
-        <!-- Image modal -->
         <div class="modal fade" id="previewImageModal" tabindex="-1" aria-labelledby="previewImageLabel"
             aria-hidden="true">
             <div class="modal-dialog modal-xl modal-dialog-centered">
@@ -120,7 +115,6 @@
             </div>
         </div>
 
-        <!-- Video modal -->
         <div class="modal fade" id="previewVideoModal" tabindex="-1" aria-labelledby="previewVideoLabel"
             aria-hidden="true">
             <div class="modal-dialog modal-xl modal-dialog-centered">
@@ -168,7 +162,6 @@
             </div>
         </div>
 
-        <!-- Document modal -->
         <div class="modal fade" id="previewDocModal" tabindex="-1" aria-labelledby="previewDocLabel"
             aria-hidden="true">
             <div class="modal-dialog modal-md modal-dialog-centered">

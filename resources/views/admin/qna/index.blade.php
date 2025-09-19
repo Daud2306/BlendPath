@@ -31,11 +31,8 @@
             </div>
         </div>
 
-        <!-- Tabel daftar pertanyaan (dummy data) -->
         <div class="card">
             <div class="card-body">
-
-                <!-- responsive wrapper: kalau layar sempit, tabel bisa scroll -->
                 <div class="table-responsive">
                     <table class="table table-hover align-middle mb-0">
                         <thead class="table-light">
@@ -50,12 +47,10 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- dummy row 1 -->
                             <tr>
                                 <th scope="row">1</th>
                                 <td>Gilang</td>
 
-                                <!-- gunakan div.text-truncate agar tidak memecah layout -->
                                 <td style="max-width:420px;">
                                     <div class="text-truncate" style="max-width:420px;">
                                         Bagaimana cara bikin donat di Blender? (preview panjang sedikit...)
