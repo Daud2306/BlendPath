@@ -22,9 +22,17 @@
                 <li><a href="#">Dropdown 4</a></li>
             </ul>
         </li> --}}
-        <li><a href="/login">Login</a>
-        </li>
-        <li><a href="/register" class="btn btn-primary">Register</a></li>
+        @guest
+            <li><a href="/login">Login</a>
+            </li>
+            <li><a href="/register" class="btn btn-primary">Register</a></li>
+        @endguest
+        @auth
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button type="submit">Logout</button>
+            </form>
+        @endauth
     </ul>
     <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
 </nav>

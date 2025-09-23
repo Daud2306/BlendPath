@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoadmapUserController;
 use App\Http\Controllers\RoadmapController;
@@ -9,19 +10,32 @@ Route::get('/', function () {
     return view('user.index');
 });
 
+// Route::resource('users', UserController::class);
+
 Route::get('admin/dashboard', function () {
     return view('admin.dashboard');
 });
 
 // Route::resource('users', UserController::class);
+Route::get('/register', [AuthController::class, 'showRegisterForm'])
+    ->name('register')
+    ->middleware('guest');
+Route::post('/register', [AuthController::class, 'register'])
+    ->name('register.process')
+    ->middleware('guest');
 
-Route::get('/login', function () {
-    return view('user.auth.login');
-});
+Route::post('/login', [AuthController::class, 'showLoginForm'])
+    ->name('login')
+    ->middleware('guest');
 
-Route::get('/register', function () {
-    return view('user.auth.register');
-});
+Route::post('/login', [AuthController::class, 'login'])
+    ->name('login.process')
+    ->middleware('guest');
+
+Route::post('/logout', [AuthController::class, 'logout'])
+    ->name('logout')
+    ->middleware('auth');
+
 
 // Route::get('/roadmap', function () {
 //     return view('admin.roadmap');

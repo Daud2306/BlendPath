@@ -6,6 +6,8 @@
     <main>
         <section class="py-5 text-white" style="background: linear-gradient(90deg,#0d47a1, #1976d2);">
             <div class="container">
+
+                <h1>Halo </h1>
                 <div class="row align-items-center">
                     <div class="col-lg-6">
                         <h1 class="display-5 fw-bold">Belajar 3D bersama prabu </h1>

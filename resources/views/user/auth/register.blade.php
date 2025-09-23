@@ -70,8 +70,9 @@
                         </p>
 
                         <div style="max-width: 500px; margin: 0 auto;">
-                            <form action="#" method="post" data-aos="fade-up"
+                            <form action="{{ route('register.process') }}" method="POST" data-aos="fade-up"
                                 data-aos-delay="200">
+                                @csrf
                                 <div class="mb-3">
                                     <input type="text" name="name" class="form-control" placeholder="Nama Lengkap"
                                         required>
