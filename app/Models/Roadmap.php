@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Roadmap extends Model
 {
     use HasFactory;
-    protected $table = 'roadmap';
+    protected $table = 'roadmaps';
     protected $fillable = ['judul', 'deskripsi', 'gambar', 'sort_order'];
 
     public function tutorial()

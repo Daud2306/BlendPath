@@ -3,75 +3,82 @@
 @section('title', 'Admin - Tambah Roadmap')
 
 @section('content')
-    <div class="main-panel">
-        <div class="content-wrapper">
-            <div class="container-fluid">
-                <div class="row mb-3">
-                    <div class="col-12 d-flex justify-content-between align-items-center">
-                        <h2 class="mb-0">Tambah Roadmap</h2>
-                        <a href="{{ url('/admin/roadmaps') }}" class="btn btn-secondary">Kembali ke daftar Roadmap</a>
+    <div class="container py-4">
+        <h1 class="mb-4">Buat Roadmap Baru</h1>
+
+        {{-- Pesan sukses --}}
+        @if (session('success'))
+            <div class="alert alert-success" role="alert">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        {{-- Error validasi --}}
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <strong>Ada kesalahan:</strong>
+                <ul class="mb-0 mt-2">
+                    @foreach ($errors->all() as $err)
+                        <li>{{ $err }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                {{-- Form kirim ke route admin.roadmaps.store --}}
+                <form action="{{ route('admin.roadmaps.store') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+
+                    {{-- Judul --}}
+                    <div class="mb-3">
+                        <label for="judul" class="form-label">Judul <span class="text-danger">*</span></label>
+                        <input type="text" id="judul" name="judul"
+                            class="form-control @error('judul') is-invalid @enderror" value="{{ old('judul') }}" required
+                            maxlength="255">
+                        @error('judul')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
-                </div>
-                @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <h6 class="mb-1">Terjadi kesalahan:</h6>
-                        <ul class="mb-0">
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
+
+                    {{-- Deskripsi --}}
+                    <div class="mb-3">
+                        <label for="deskripsi" class="form-label">Deskripsi</label>
+                        <textarea id="deskripsi" name="deskripsi" class="form-control @error('deskripsi') is-invalid @enderror" rows="6">{{ old('deskripsi') }}</textarea>
+                        @error('deskripsi')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
-                @endif
 
-                <div class="card shadow-sm">
-                    <div class="card-body">
-
-                        <form action="{{ url('/admin/roadmaps') }}" method="POST" enctype="multipart/form-data">
-                            @csrf
-
-                            <div class="row">
-                                <div class="col-lg-8">
-                                    <div class="mb-3">
-                                        <label for="title" class="form-label">Judul Roadmap</label>
-                                        <input type="text" id="title" name="title" class="form-control"
-                                            value="{{ old('title') }}" placeholder="Contoh: Roadmap A - Belajar Dasar 3D"
-                                            required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="short_description" class="form-label">Deskripsi singkat</label>
-                                        <input type="text" id="short_description" name="short_description"
-                                            class="form-control" value="{{ old('short_description') }}"
-                                            placeholder="Ringkasan singkat roadmap (1 baris)">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="description" class="form-label">Deskripsi lengkap</label>
-                                        <textarea id="description" name="description" class="form-control" rows="6"
-                                            placeholder="Deskripsi, tujuan pembelajaran, prasyarat, dsb.">{{ old('description') }}</textarea>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="sort_order" class="form-label">Urutan tampil (sort order)</label>
-                                        <input type="number" id="sort_order" name="sort_order" class="form-control"
-                                            value="{{ old('sort_order', 1) }}" min="1">
-                                        <small class="text-muted">Angka kecil tampil dulu (mis. 1 = paling atas).</small>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="mb-3">
-                                        <label for="cover" class="form-label">Cover Roadmap</label>
-                                        <input class="form-control" type="file" id="cover" name="cover"
-                                            accept="image/*">
-                                        <small class="text-muted d-block mt-1">media foto dan video</small>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="d-flex gap-2">
-                                <a href="{{ url('/admin/roadmaps') }}" class="btn btn-secondary">Batal</a>
-                                <button type="submit" class="btn btn-primary">Simpan Roadmap</button>
-                            </div>
-                        </form>
+                    {{-- Gambar --}}
+                    <div class="mb-3">
+                        <label for="gambar" class="form-label">Gambar (opsional)</label>
+                        <input class="form-control @error('gambar') is-invalid @enderror" type="file" id="gambar"
+                            name="gambar" accept="image/*">
+                        @error('gambar')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                        <div class="form-text">Unggah gambar untuk thumbnail roadmap (opsional).</div>
                     </div>
-                </div>
 
+                    {{-- Sort order --}}
+                    <div class="mb-3">
+                        <label for="sort_order" class="form-label">Urutan (sort_order)</label>
+                        <input type="number" id="sort_order" name="sort_order"
+                            class="form-control @error('sort_order') is-invalid @enderror"
+                            value="{{ old('sort_order', 1) }}" min="1">
+                        @error('sort_order')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                        <div class="form-text">Angka kecil ditampilkan lebih dulu.</div>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">Simpan Roadmap</button>
+                        <a href="{{ route('admin.roadmaps.index') }}" class="btn btn-secondary">Batal</a>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

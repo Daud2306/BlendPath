@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('respon_quizzes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('pertanyaan_id')->constrained()->onDelete('cascade');
+            $table->foreignId('pertanyaan_id')->constrained('pertanyaan_quizzes')->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->text('jawaban')->nullable();
             $table->boolean('is_correct')->default(false);

@@ -9,8 +9,16 @@ class Resource extends Model
 {
     use HasFactory;
 
+    // Pastikan memakai nama tabel yang benar
     protected $table = 'resources';
-    protected $fillable = ['resource_link', 'tutorial_id', 'tanya_id', 'jawab_id'];
+
+    // Gunakan nama kolom yang sesuai migration: resource_link
+    protected $fillable = [
+        'tutorial_id',
+        'tanya_id',
+        'jawab_id',
+        'resource_link',
+    ];
 
     public function tutorial()
     {

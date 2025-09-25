@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('resources', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->string('resource_link')->unique();
             $table->foreignId('tutorial_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('tanya_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('jawab_id')->nullable()->constrained()->onDelete('cascade');
+            $table->string('resource_link', 255);
         });
     }
 

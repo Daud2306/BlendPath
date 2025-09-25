@@ -9,12 +9,19 @@ class Tutorial extends Model
 {
     use HasFactory;
 
-    protected $table = 'tutorial';
-    protected $fillable = ['roadmap_id', 'resource_id', 'judul', 'deskripsi', 'sort_order', 'konten'];
+    protected $table = 'tutorials';
+
+    protected $fillable = [
+        'roadmap_id',
+        'judul',
+        'deskripsi',
+        'sort_order',
+        'konten',
+    ];
 
     public function roadmap()
     {
-        return $this->hasOne(Roadmap::class);
+        return $this->belongsTo(Roadmap::class);
     }
 
     public function progress()
@@ -22,9 +29,9 @@ class Tutorial extends Model
         return $this->hasMany(Progress::class);
     }
 
-    public function resource()
+    public function resources()
     {
-        return $this->hasMany(Resource::class);
+        return $this->hasMany(Resource::class, 'tutorial_id');
     }
 
     public function tanya()

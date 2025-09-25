@@ -67,8 +67,9 @@
                         <p data-aos="fade-up" data-aos-delay="100">
                             Masuk dan bentuk dunia 3D-mu hari ini!
                         </p>
-                        <form action="#" method="post" class="php-email-form" data-aos="fade-up"
+                        <form action="{{ route('login.process') }}" method="POST" data-aos="fade-up"
                             data-aos-delay="200">
+                            @csrf
                             <div class="mb-3">
                                 <input type="email" name="email" class="form-control" placeholder="Email" required>
                             </div>
