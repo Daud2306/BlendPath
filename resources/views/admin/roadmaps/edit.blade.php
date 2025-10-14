@@ -1,77 +1,81 @@
 @extends('layout.admin.app')
 
-@section('title', 'Admin - Tambah Roadmap')
+@section('title', 'Admin - Edit Roadmap')
 
 @section('content')
-    <div class="main-panel">
-        <div class="content-wrapper">
-            <div class="container-fluid">
-                <div class="row mb-3">
-                    <div class="col-12 d-flex justify-content-between align-items-center">
-                        <h2 class="mb-0">Edit Roadmap</h2>
-                        <a href="{{ url('/admin/roadmaps') }}" class="btn btn-secondary">Kembali ke daftar Roadmap</a>
-                    </div>
-                </div>
-                @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <h6 class="mb-1">Terjadi kesalahan:</h6>
-                        <ul class="mb-0">
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>Edit Roadmap</h1>
+            <a href="{{ route('admin.roadmaps.index') }}" class="btn btn-secondary">Back</a>
+        </div>
 
-                <div class="card shadow-sm">
-                    <div class="card-body">
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                @foreach ($errors->all() as $error)
+                    <div>{{ $error }}</div>
+                @endforeach
+            </div>
+        @endif
 
-                        <form action="{{ url('/admin/roadmaps') }}" method="POST" enctype="multipart/form-data">
-                            @csrf
+        <div class="card">
+            <div class="card-body">
+                <form action="{{ route('admin.roadmaps.update', $roadmap) }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT')
 
-                            <div class="row">
-                                <div class="col-lg-8">
-                                    <div class="mb-3">
-                                        <label for="title" class="form-label">Judul Roadmap</label>
-                                        <input type="text" id="title" name="title" class="form-control"
-                                            value="{{ old('title') }}" placeholder="Contoh: Roadmap A - Belajar Dasar 3D"
-                                            required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="short_description" class="form-label">Deskripsi singkat</label>
-                                        <input type="text" id="short_description" name="short_description"
-                                            class="form-control" value="{{ old('short_description') }}"
-                                            placeholder="Ringkasan singkat roadmap (1 baris)">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="description" class="form-label">Deskripsi lengkap</label>
-                                        <textarea id="description" name="description" class="form-control" rows="6"
-                                            placeholder="Deskripsi, tujuan pembelajaran, prasyarat, dsb.">{{ old('description') }}</textarea>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="sort_order" class="form-label">Urutan tampil (sort order)</label>
-                                        <input type="number" id="sort_order" name="sort_order" class="form-control"
-                                            value="{{ old('sort_order', 1) }}" min="1">
-                                        <small class="text-muted">Angka kecil tampil dulu (mis. 1 = paling atas).</small>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="mb-3">
-                                        <label for="cover" class="form-label">Cover Roadmap</label>
-                                        <input class="form-control" type="file" id="cover" name="cover"
-                                            accept="image/*">
-                                        <small class="text-muted d-block mt-1">media foto dan video</small>
-                                    </div>
-                                </div>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="mb-3">
+                                <label class="form-label">Title *</label>
+                                <input type="text" class="form-control" name="judul"
+                                    value="{{ old('judul', $roadmap->judul) }}" required>
                             </div>
-                            <div class="d-flex gap-2">
-                                <a href="{{ url('/admin/roadmaps') }}" class="btn btn-secondary">Batal</a>
-                                <button type="submit" class="btn btn-primary">Simpan Roadmap</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
 
+                            <div class="mb-3">
+                                <label class="form-label">Description</label>
+                                <textarea class="form-control" name="deskripsi" rows="4">{{ old('deskripsi', $roadmap->deskripsi) }}</textarea>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Sort Order</label>
+                                <input type="number" class="form-control" name="sort_order"
+                                    value="{{ old('sort_order', $roadmap->sort_order) }}">
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            @if ($roadmap->gambar)
+                                <div class="mb-3">
+                                    <label class="form-label">Current Image</label>
+                                    <img src="{{ asset('storage/' . $roadmap->gambar) }}"
+                                        class="img-fluid rounded border mb-2">
+                                    <a href="{{ asset('storage/' . $roadmap->gambar) }}" target="_blank"
+                                        class="btn btn-sm btn-outline-primary w-100">
+                                        View Image
+                                    </a>
+                                </div>
+                            @endif
+
+                            <div class="mb-3">
+                                <label class="form-label">New Image (Optional)</label>
+                                <input type="file" class="form-control" name="gambar" accept="image/*">
+                                <small class="text-muted">Max: 2MB (JPG, PNG, GIF)</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-2 mt-4">
+                        <button type="submit" class="btn btn-primary">Update Roadmap</button>
+                        <a href="{{ route('admin.roadmaps.index') }}" class="btn btn-secondary">Cancel</a>
+                    </div>
+                </form>
+
+                <form method="POST" action="{{ route('admin.roadmaps.destroy', $roadmap) }}" class="ms-auto mt-2"
+                    onsubmit="return confirm('Apakah anda yakin?')">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-outline-danger">Delete</button>
+                </form>
             </div>
         </div>
     </div>

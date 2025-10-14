@@ -2,19 +2,29 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class PertanyaanQuiz extends Model
 {
-    protected $fillable = ['quiz_id', 'pertanyaan', 'jawaban_benar', 'poin'];
+    use HasFactory;
+
+    protected $fillable = [
+        'quiz_id',
+        'pertanyaan',
+        'pilihan_jawaban',
+        'jawaban_benar',
+        'poin'
+    ];
+
+    protected $casts = [
+        'pilihan_jawaban' => 'array',
+        'jawaban_benar' => 'integer',
+        'poin' => 'integer'
+    ];
 
     public function quiz()
     {
-        return $this->belongsTo(Quiz::class, 'quiz_id');
-    }
-
-    public function responquizzes()
-    {
-        return $this->hasMany(ResponQuiz::class, 'pertanyaan_id');
+        return $this->belongsTo(Quiz::class);
     }
 }

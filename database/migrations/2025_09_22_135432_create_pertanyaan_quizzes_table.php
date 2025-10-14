@@ -15,9 +15,11 @@ return new class extends Migration
             $table->id();
             $table->foreignId('quiz_id')->constrained()->onDelete('cascade');
             $table->text('pertanyaan');
-            $table->text('jawaban_benar')->nullable();
-            $table->integer('poin')->default(5);
+            $table->json('pilihan_jawaban');
+            $table->string('jawaban_benar');
+            $table->integer('poin')->default(1);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

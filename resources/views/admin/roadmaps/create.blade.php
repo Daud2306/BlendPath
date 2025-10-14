@@ -6,14 +6,12 @@
     <div class="container py-4">
         <h1 class="mb-4">Buat Roadmap Baru</h1>
 
-        {{-- Pesan sukses --}}
         @if (session('success'))
             <div class="alert alert-success" role="alert">
                 {{ session('success') }}
             </div>
         @endif
 
-        {{-- Error validasi --}}
         @if ($errors->any())
             <div class="alert alert-danger">
                 <strong>Ada kesalahan:</strong>
@@ -27,11 +25,9 @@
 
         <div class="card border-0 shadow-sm">
             <div class="card-body">
-                {{-- Form kirim ke route admin.roadmaps.store --}}
                 <form action="{{ route('admin.roadmaps.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
 
-                    {{-- Judul --}}
                     <div class="mb-3">
                         <label for="judul" class="form-label">Judul <span class="text-danger">*</span></label>
                         <input type="text" id="judul" name="judul"
@@ -42,7 +38,6 @@
                         @enderror
                     </div>
 
-                    {{-- Deskripsi --}}
                     <div class="mb-3">
                         <label for="deskripsi" class="form-label">Deskripsi</label>
                         <textarea id="deskripsi" name="deskripsi" class="form-control @error('deskripsi') is-invalid @enderror" rows="6">{{ old('deskripsi') }}</textarea>
@@ -51,7 +46,6 @@
                         @enderror
                     </div>
 
-                    {{-- Gambar --}}
                     <div class="mb-3">
                         <label for="gambar" class="form-label">Gambar (opsional)</label>
                         <input class="form-control @error('gambar') is-invalid @enderror" type="file" id="gambar"
@@ -62,7 +56,6 @@
                         <div class="form-text">Unggah gambar untuk thumbnail roadmap (opsional).</div>
                     </div>
 
-                    {{-- Sort order --}}
                     <div class="mb-3">
                         <label for="sort_order" class="form-label">Urutan (sort_order)</label>
                         <input type="number" id="sort_order" name="sort_order"

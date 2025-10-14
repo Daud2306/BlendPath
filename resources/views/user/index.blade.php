@@ -3,192 +3,183 @@
 @section('title', 'Belajar Blender — Home')
 
 @section('content')
-    <main>
-        <section class="py-5 text-white" style="background: linear-gradient(90deg,#0d47a1, #1976d2);">
-            <div class="container">
+@section('title', 'BlendPath - Platform Belajar Blender 3D')
 
-                <h1>Halo </h1>
-                <div class="row align-items-center">
-                    <div class="col-lg-6">
-                        <h1 class="display-5 fw-bold">Belajar 3D bersama prabu </h1>
-                        <p class="lead text-white-50 mb-4">pakai teknik seadanya</p>
-
-                        <div class="d-flex gap-2 mb-3">
-                            <a href="#" class="btn btn-light btn-lg">Browse Roadmaps</a>
-                            <a href="#" class="btn btn-outline-light btn-lg">Mulai
-                                Tutorial</a>
-                        </div>
-
-                        <form class="d-flex" role="search" action="#" method="GET" aria-label="Search">
-                            <input class="form-control form-control-lg me-2" name="q" type="search"
-                                placeholder="Cari roadmap atau tutorial..." aria-label="Cari">
-                            <button class="btn btn-dark btn-lg" type="submit">Cari</button>
-                        </form>
+@section('content')
+    <section class="bg-primary py-5">
+        <div class="container py-5">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h1 class="display-4 fw-bold mb-4">
+                        Kuasai <span class="text-warning">Blender</span> dengan sulit
+                    </h1>
+                    <p class="lead mb-4">
+                        platform untuk.
+                    </p>
+                    <div class="d-flex gap-3 flex-wrap">
+                        <a href="{{ route('roadmaps.index') }}" class="btn btn-warning btn-lg">
+                            <i class="fas fa-play me-2"></i>Mulai Belajar
+                        </a>
+                        <a href="#roadmaps" class="btn btn-outline-light btn-lg">
+                            <i class="fas fa-cube me-2"></i>Lihat Kursus
+                        </a>
                     </div>
-
-                    <div class="col-lg-6 d-none d-lg-block">
-                        <img src="{{ asset('frontend/img/details-5.png') }}" alt="Hero image"
-                            class="img-fluid rounded shadow-lg">
-                    </div>
+                </div>
+                <div class="col-lg-6 d-none d-lg-block">
+                    <img src="{{ asset('frontend/img/details-5.png') }}" alt="Blender 3D Hero image"
+                        class="img-fluid rounded shadow-lg">
                 </div>
             </div>
-        </section>
-        <section class="py-5 bg-light">
-            <div class="container">
-                <div class="row text-center mb-4">
-                    <div class="col">
-                        <h2 class="h4">Kenapa pakai Roadmap ini?</h2>
-                        <p class="text-muted mb-0">soalnya</p>
-                    </div>
-                </div>
+        </div>
+    </section>
 
-                <div class="row g-3">
-                    <div class="col-md-4">
-                        <div class="card h-100 border-0">
-                            <div class="card-body">
-                                <h5 class="card-title">baru mulai</h5>
-                                <p class="card-text text-muted">awal awal</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card h-100 border-0">
-                            <div class="card-body">
-                                <h5 class="card-title">tutorial nya baru dikit</h5>
-                                <p class="card-text text-muted">tutorial pendek</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card h-100 border-0">
-                            <div class="card-body">
-                                <h5 class="card-title">bisa tanya2</h5>
-                                <p class="card-text text-muted">lanjut part 2</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold">Mengapa Belajar di BlendPath?</h2>
+                <p class="text-muted">Karena</p>
             </div>
-        </section>
-        <section class="py-5">
-            <div class="container">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h2 class="h4 mb-0">Roadmaps Populer</h2>
-                    <a href="{{ url('/roadmaps') }}" class="small">Lihat semua roadmaps →</a>
+
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center p-4">
+                            <i class="fas fa-cubes text-primary display-4 mb-3"></i>
+                            <h5 class="fw-bold">Struktur belajar tdk terarah</h5>
+                            <p class="text-muted">btul</p>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="row g-3">
-                    <div class="col-12 col-sm-6 col-md-4">
-                        <div class="card h-100 shadow-sm">
-                            <img src="{{ asset('frontend/img/basic.jpeg') }}" class="card-img-top" alt="Roadmap A"
-                                style="height:180px; object-fit:cover;">
-                            <div class="card-body d-flex flex-column">
-                                <h5 class="card-title mb-1">Roadmap A — dasar</h5>
-                                <p class="card-text text-muted mb-2">belajar shorcut</p>
-                                <div class="mt-auto d-flex justify-content-between align-items-center">
-                                    <small class="text-muted">5 tutorial</small>
-                                    <a href="{{ url('/roadmaps/1/tutorials') }}" class="btn btn-sm btn-primary">Lihat
-                                        Tutorial</a>
-                                </div>
-                            </div>
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center p-4">
+                            <i class="fas fa-video text-success display-4 mb-3"></i>
+                            <h5 class="fw-bold">tutor bang</h5>
+                            <p class="text-muted">ada video</p>
                         </div>
                     </div>
-                    <div class="col-12 col-sm-6 col-md-4">
-                        <div class="card h-100 shadow-sm">
-                            <img src="{{ asset('frontend/img/thumbnail.jpeg') }}" class="card-img-top" alt="Roadmap B"
-                                style="height:180px; object-fit:cover;">
-                            <div class="card-body d-flex flex-column">
-                                <h5 class="card-title mb-1">Roadmap B — lebih lanjut</h5>
-                                <p class="card-text text-muted mb-2">teknik yang benar</p>
-                                <div class="mt-auto d-flex justify-content-between align-items-center">
-                                    <small class="text-muted">8 tutorial</small>
-                                    <a href="{{ url('/roadmaps/2/tutorials') }}" class="btn btn-sm btn-primary">Lihat
-                                        Tutorial</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-sm-6 col-md-4">
-                        <div class="card h-100 shadow-sm">
-                            <img src="{{ asset('frontend/img/animasi.jpeg') }}" class="card-img-top" alt="Roadmap C"
-                                style="height:180px; object-fit:cover;">
-                            <div class="card-body d-flex flex-column">
-                                <h5 class="card-title mb-1">Roadmap C — animasi</h5>
-                                <p class="card-text text-muted mb-2">animasi kartun jumbo</p>
-                                <div class="mt-auto d-flex justify-content-between align-items-center">
-                                    <small class="text-muted">3 tutorial</small>
-                                    <a href="{{ url('/roadmaps/3/tutorials') }}" class="btn btn-sm btn-primary">Lihat
-                                        Tutorial</a>
-                                </div>
-                            </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center p-4">
+                            <i class="fas fa-hands-helping text-info display-4 mb-3"></i>
+                            <h5 class="fw-bold">tanya jawab</h5>
+                            <p class="text-muted">nanyak apa ajah</p>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
-        <section class="py-5 bg-light">
-            <div class="container">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h2 class="h5 mb-0">Tutorial Populer</h2>
-                    <a href="{{ url('/roadmaps/1') }}" class="small">Lihat semua tutorials →</a>
-                </div>
-                <div class="row g-3">
-                    <div class="col-md-6">
-                        <div class="list-group">
-                            <a href="{{ url('/roadmaps/1/tutorials/1') }}" class="list-group-item list-group-item-action">
-                                <div class="d-flex w-100 justify-content-between">
-                                    <h6 class="mb-1">kenalan</h6>
-                                    <small class="text-muted">Step 1</small>
-                                </div>
-                                <p class="mb-1 text-muted">belajar shortcut</p>
-                            </a>
-                            <a href="{{ url('/roadmaps/1/tutorials/2') }}"
-                                class="list-group-item list-group-item-action">
-                                <div class="d-flex w-100 justify-content-between">
-                                    <h6 class="mb-1">membuat objek</h6>
-                                    <small class="text-muted">Step 2</small>
-                                </div>
-                                <p class="mb-1 text-muted">tools tools</p>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+        </div>
+    </section>
 
-        <section class="py-5">
-            <div class="container">
-                <h2 class="h5 mb-3">Apa kata pengguna?</h2>
-                <div class="row g-3">
-                    <div class="col-md-4">
-                        <div class="card h-100">
-                            <div class="card-body">
-                                <p class="mb-2">"gud"</p>
-                                <strong class="d-block">user 1</strong>
-                                <small class="text-muted">Learner</small>
+    <section id="roadmaps" class="py-5">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold">ada roadmap</h2>
+                <p class="text-muted">beberapa</p>
+            </div>
+
+            <div class="row g-4">
+                @php
+                    $roadmaps = \App\Models\Roadmap::withCount('tutorials')->take(6)->get();
+                @endphp
+
+                @if ($roadmaps->count() > 0)
+                    @foreach ($roadmaps as $roadmap)
+                        <div class="col-lg-4 col-md-6">
+                            <div class="card h-100 shadow-sm">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-start mb-3">
+                                        @if ($roadmap->gambar)
+                                            <img src="{{ asset('storage/' . $roadmap->gambar) }}"
+                                                alt="{{ $roadmap->judul }}" class="rounded me-3"
+                                                style="width: 60px; height: 60px; object-fit: cover;">
+                                        @else
+                                            <div class="bg-primary rounded d-flex align-items-center justify-content-center me-3 text-white"
+                                                style="width: 60px; height: 60px;">
+                                                <i class="fas fa-cube fa-lg"></i>
+                                            </div>
+                                        @endif
+                                        <div class="flex-grow-1">
+                                            <h5 class="fw-bold mb-1">{{ $roadmap->judul }}</h5>
+                                            <span class="badge bg-primary">{{ $roadmap->tutorials_count }} Lesson</span>
+                                        </div>
+                                    </div>
+                                    <p class="text-muted mb-3">{{ Str::limit($roadmap->deskripsi, 120) }}</p>
+                                    <a href="{{ route('roadmaps.show', $roadmap) }}" class="btn btn-outline-primary btn-sm">
+                                        Lihat Kursus
+                                    </a>
+                                </div>
                             </div>
                         </div>
+                    @endforeach
+                @else
+                    <div class="col-12 text-center py-4">
+                        <i class="fas fa-cube display-1 text-muted mb-3"></i>
+                        <h5 class="text-muted">Kursus akan segera hadir</h5>
+                        <p class="text-muted">Kami sedang menyiapkan konten terbaik untuk Anda</p>
                     </div>
-                    <div class="col-md-4">
-                        <div class="card h-100">
-                            <div class="card-body">
-                                <p class="mb-2">"aku siap kerja di dunia game developer"</p>
-                                <strong class="d-block">user 2</strong>
-                                <small class="text-muted">Mentor</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card h-100">
-                            <div class="card-body">
-                                <p class="mb-2">"webseite ya bagus"</p>
-                                <strong class="d-block">Gilang</strong>
-                                <small class="text-muted">Student</small>
-                            </div>
-                        </div>
-                    </div>
+                @endif
+            </div>
+
+            @if ($roadmaps->count() > 0)
+                <div class="text-center mt-4">
+                    <a href="{{ route('roadmaps.index') }}" class="btn btn-primary">
+                        <i class="fas fa-th-large me-2"></i>Semua Kursus
+                    </a>
+                </div>
+            @endif
+        </div>
+    </section>
+
+    <section class="py-5">
+        <div class="container">
+            <div class="row text-center">
+                <div class="col-md-3 col-6 mb-4">
+                    <i class="fas fa-graduation-cap fa-2x text-primary mb-3"></i>
+                    <h4 class="fw-bold">{{ \App\Models\User::count() }}+</h4>
+                    <p class="text-muted mb-0">3D Artists</p>
+                </div>
+                <div class="col-md-3 col-6 mb-4">
+                    <i class="fas fa-play-circle fa-2x text-primary mb-3"></i>
+                    <h4 class="fw-bold">{{ \App\Models\Tutorial::count() }}+</h4>
+                    <p class="text-muted mb-0">Video Tutorial</p>
+                </div>
+                <div class="col-md-3 col-6 mb-4">
+                    <i class="fas fa-project-diagram fa-2x text-primary mb-3"></i>
+                    <h4 class="fw-bold">{{ \App\Models\Roadmap::count() }}+</h4>
+                    <p class="text-muted mb-0">Learning Path</p>
+                </div>
+                <div class="col-md-3 col-6 mb-4">
+                    <i class="fas fa-comments fa-2x text-primary mb-3"></i>
+                    <h4 class="fw-bold">{{ \App\Models\Tanya::count() }}+</h4>
+                    <p class="text-muted mb-0">Diskusi</p>
                 </div>
             </div>
-        </section>
-    </main>
+        </div>
+    </section>
+
+    <section class="py-5 bg-primary text-white">
+        <div class="container text-center">
+            <h3 class="fw-bold mb-3">pernah ga ready?</h3>
+            <p class="lead mb-4">mulai perjalanan anda</p>
+
+            @auth
+                <a href="{{ route('roadmaps.index') }}" class="btn btn-warning btn-lg">
+                    <i class="fas fa-play me-2"></i>Lanjutkan Belajar
+                </a>
+            @else
+                <div class="d-flex gap-3 justify-content-center flex-wrap">
+                    <a href="{{ route('register') }}" class="btn btn-warning btn-lg">
+                        <i class="fas fa-user-plus me-2"></i>Daftar Sekarang
+                    </a>
+                    <a href="{{ route('login') }}" class="btn btn-outline-light btn-lg">
+                        <i class="fas fa-sign-in-alt me-2"></i>Masuk
+                    </a>
+                </div>
+            @endauth
+        </div>
+    </section>
 @endsection

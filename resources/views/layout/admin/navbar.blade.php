@@ -1,22 +1,64 @@
-<nav class="navbar p-0 fixed-top d-flex flex-row">
-    <div class="navbar-brand-wrapper d-flex d-lg-none align-items-center justify-content-center">
-        <a class="navbar-brand brand-logo-mini" href="index.html"><img src="../../../admins/images/logo-mini.svg"
-                alt="logo" /></a>
-    </div>
-    <div class="navbar-menu-wrapper flex-grow d-flex align-items-stretch">
-        <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
-            <span class="mdi mdi-menu"></span>
-        </button>
-        <ul class="navbar-nav w-100">
-            <li class="nav-item w-100">
-                <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search">
-                    <input type="text" class="form-control" placeholder="Search products">
+<nav class="navbar navbar-light bg-light border-bottom fixed-top">
+    <div class="container-fluid">
+        <input id="nav-toggle" type="checkbox" class="d-lg-none visually-hidden" />
+        <label for="nav-toggle" class="d-lg-none mb-0 btn btn-outline-secondary">
+            <span class="mdi mdi-menu" aria-hidden="true"></span>
+            <span class="visually-hidden">Toggle menu</span>
+        </label>
+
+
+        <div class="d-none d-lg-flex align-items-center ms-auto gap-3">
+
+            <form class="d-flex" method="GET" action="{{ route('admin.search') }}">
+                <input name="q" class="form-control form-control-sm me-2" type="search" placeholder="Search..."
+                    value="{{ request('q') }}">
+                <button class="btn btn-sm btn-outline-primary" type="submit" aria-label="Search">
+                    <span class="mdi mdi-magnify"></span>
+                </button>
+            </form>
+
+            <div class="d-flex align-items-center border-start ps-3">
+                <div class="me-2 text-end d-none d-md-block">
+                    <div class="fw-semibold">{{ Auth::user()->name ?? 'Admin' }}</div>
+                    <small class="text-muted">Administrator</small>
+                </div>
+
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="btn btn-sm btn-outline-danger" title="Logout">
+                        <span class="mdi mdi-logout-variant"></span>
+                        <span class="d-none d-md-inline ms-1">Logout</span>
+                    </button>
                 </form>
-            </li>
-        </ul>
-        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
-            data-toggle="offcanvas">
-            <span class="mdi mdi-format-line-spacing"></span>
-        </button>
+            </div>
+        </div>
+
+        <div class="mobile-menu d-lg-none">
+            <div class="p-3">
+                <form class="mb-3" method="GET" action="{{ route('admin.search') }}">
+                    <div class="input-group">
+                        <input type="text" class="form-control form-control-sm" name="q"
+                            placeholder="Search..." value="{{ request('q') }}">
+                        <button class="btn btn-sm btn-outline-primary" type="submit">
+                            <span class="mdi mdi-magnify"></span>
+                        </button>
+                    </div>
+                </form>
+
+                <div class="mt-2">
+                    <div class="mb-2">
+                        <strong>{{ Auth::user()->name ?? 'Admin' }}</strong><br>
+                        <small class="text-muted">Administrator</small>
+                    </div>
+
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="btn btn-sm btn-danger w-100">
+                            <span class="mdi mdi-logout-variant me-1"></span> Logout
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 </nav>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -16,8 +17,12 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+        ], [
+            'email.required' => 'Email wajib diisi',
+            'email.email' => 'Format email tidak valid',
+            'password.required' => 'Password wajib diisi',
         ]);
 
         if (Auth::attempt($credentials)) {
@@ -25,8 +30,9 @@ class AuthController extends Controller
 
             return redirect('/');
         }
+
         return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
+            'email' => 'Email atau password yang Anda masukkan salah.',
         ])->onlyInput('email');
     }
 
@@ -52,26 +58,28 @@ class AuthController extends Controller
             [
                 'name' => ['required', 'string', 'max:255'],
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-                'password' => ['required', 'string', 'min:8'],
+                'password' => ['required', 'string'],
             ],
             [
                 'name.required' => 'Nama wajib diisi',
+                'name.string' => 'Nama harus berupa teks',
+                'name.max' => 'Nama maksimal 255 karakter',
                 'email.required' => 'Email wajib diisi',
                 'email.email' => 'Email tidak valid',
                 'email.unique' => 'Email sudah terdaftar',
+                'email.max' => 'Email maksimal 255 karakter',
                 'password.required' => 'Password wajib diisi',
-                'password.min' => 'Password minimal 8 karakter',
             ]
         );
 
         $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
-            'password' => $data['password']
+            'password' => Hash::make($data['password'])
         ]);
 
         Auth::login($user);
 
-        return redirect('/');
+        return redirect('/')->with('success', 'Registrasi berhasil! Selamat datang di BlendPath.');
     }
 }

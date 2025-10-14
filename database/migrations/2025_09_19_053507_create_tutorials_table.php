@@ -16,9 +16,8 @@ return new class extends Migration
             $table->timestamps();
             $table->foreignId('roadmap_id')->constrained()->onDelete('cascade');
             $table->string('judul');
-            $table->text('deskripsi');
-            $table->integer('sort_order')->default(0);
             $table->text('konten');
+            $table->integer('sort_order')->default(0);
         });
     }
 

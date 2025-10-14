@@ -29,13 +29,27 @@
     <!-- Main CSS File -->
     <link href="{{ asset('frontend/css/main.css') }}" rel="stylesheet">
 
-    <!-- =======================================================
-  * Template Name: Bootslander
-  * Template URL: https://bootstrapmade.com/bootslander-free-bootstrap-landing-page-template/
-  * Updated: Aug 07 2024 with Bootstrap v5.3.3
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
+    <style>
+        /* Fix untuk navbar fixed-top */
+        .main-content {
+            padding-top: 80px;
+            /* Sesuaikan dengan tinggi navbar */
+            min-height: calc(100vh - 160px);
+            /* Untuk push footer ke bawah */
+        }
+
+        /* Untuk halaman tertentu yang butuh lebih banyak space */
+        .content-with-actions {
+            padding-top: 100px;
+        }
+
+        /* Pastikan semua konten visible */
+        .container-fluid,
+        .container {
+            position: relative;
+            z-index: 1;
+        }
+    </style>
 </head>
 
 <body class="index-page">
@@ -44,9 +58,7 @@
         <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
 
             <a href="/" class="logo d-flex align-items-center">
-                <!-- Uncomment the line below if you also wish to use an image logo -->
                 <img src="{{ asset('frontend/img/logo.png') }}" alt="">
-                {{-- <h1 class="sitename">Bootslander</h1> --}}
             </a>
 
             @include('layout.frontend.navbar')
@@ -55,10 +67,10 @@
     </header>
 
     <main class="main">
-
         <!-- Hero Section -->
-        @yield('content')
-
+        <div class="main-content">
+            @yield('content')
+        </div>
     </main>
 
     @include('layout.frontend.footer')

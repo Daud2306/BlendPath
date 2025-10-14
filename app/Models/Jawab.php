@@ -9,9 +9,8 @@ class Jawab extends Model
 {
     use HasFactory;
 
-    protected $table = 'jawab';
-    protected $fillable = ['user_id', 'tanya_id', 'konten'];
-    protected $casts = ['is_accepted' => 'boolean'];
+    protected $table = 'jawabs';
+    protected $fillable = ['user_id', 'tanya_id', 'jawaban'];
 
     public function user()
     {
@@ -21,5 +20,17 @@ class Jawab extends Model
     public function tanya()
     {
         return $this->belongsTo(Tanya::class);
+    }
+
+    public function resources()
+    {
+        return $this->hasMany(Resource::class, 'jawab_id');
+    }
+
+    protected static function booted()
+    {
+        static::deleting(function ($jawab) {
+            $jawab->resources()->delete();
+        });
     }
 }

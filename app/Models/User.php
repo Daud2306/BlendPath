@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
     ];
 
     /**
@@ -30,7 +31,6 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'password',
-        'remember_token',
     ];
 
     /**
@@ -61,5 +61,42 @@ class User extends Authenticatable
     public function jawab()
     {
         return $this->hasMany(Jawab::class);
+    }
+
+    public function responQuizzes()
+    {
+        return $this->hasMany(ResponQuiz::class);
+    }
+
+    public function isAdmin()
+    {
+        return $this->role === 'admin';
+    }
+
+    public function getOverallProgress()
+    {
+        $totalTutorials = Tutorial::count();
+        if ($totalTutorials === 0) return 0;
+
+        $completedTutorials = $this->progress()->where('is_completed', true)->count();
+        return round(($completedTutorials / $totalTutorials) * 100, 1);
+    }
+
+    public function getCompletedTutorialsCount()
+    {
+        return $this->progress()->where('is_completed', true)->count();
+    }
+
+    public function getEnrolledRoadmapsCount()
+    {
+        return $this->progress()
+            ->join('tutorials', 'progress.tutorial_id', '=', 'tutorials.id')
+            ->distinct('tutorials.roadmap_id')
+            ->count('tutorials.roadmap_id');
+    }
+
+    public function isActive()
+    {
+        return $this->updated_at && $this->updated_at->gte(now()->subDays(30));
     }
 }

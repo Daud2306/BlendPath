@@ -13,11 +13,12 @@ return new class extends Migration
     {
         Schema::create('respon_quizzes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('pertanyaan_id')->constrained('pertanyaan_quizzes')->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->text('jawaban')->nullable();
-            $table->boolean('is_correct')->default(false);
+            $table->foreignId('quiz_id')->constrained()->onDelete('cascade');
+            $table->integer('total_poin')->default(0);
+            $table->boolean('lulus')->default(false);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

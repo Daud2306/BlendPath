@@ -11,15 +11,14 @@
             </div>
         </div>
 
-        {{-- Flash --}}
         @if (session('success'))
             <div class="alert alert-success" role="alert">{{ session('success') }}</div>
         @endif
-
         @if ($roadmaps->count() === 0)
             <div class="alert alert-info">Belum ada roadmap. Buat roadmap baru untuk memulai.</div>
         @endif
 
+        
         <div class="card border-0 shadow-sm">
             <div class="card-body p-0">
                 <div class="table-responsive">
@@ -59,23 +58,19 @@
                                         <div class="small text-muted">ID: {{ $roadmap->id }}</div>
                                     </td>
                                     <td>
-                                        {{-- Lihat publik --}}
+                                  
                                         <a href="{{ route('roadmaps.show', $roadmap) }}" target="_blank"
                                             class="btn btn-sm btn-outline-primary">Lihat</a>
 
-                                        {{-- Edit --}}
                                         <a href="{{ route('admin.roadmaps.edit', $roadmap) }}"
                                             class="btn btn-sm btn-warning">Edit</a>
 
-                                        {{-- Hapus (form) --}}
                                         <form action="{{ route('admin.roadmaps.destroy', $roadmap) }}" method="POST"
                                             class="d-inline-block" style="vertical-align:middle;">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
                                         </form>
-
-                                        {{-- Link ke daftar tutorial admin (sesuaikan route jika beda) --}}
                                         <a href="{{ url('admin/roadmaps/' . $roadmap->id . '/tutorials') }}"
                                             class="btn btn-sm btn-info">Tutorials</a>
                                     </td>
@@ -84,8 +79,6 @@
                         </tbody>
                     </table>
                 </div>
-
-                {{-- Pagination --}}
                 <div class="p-3 border-top bg-white">
                     {{ $roadmaps->links() }}
                 </div>

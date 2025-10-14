@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('tutorial_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('tanya_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('jawab_id')->nullable()->constrained()->onDelete('cascade');
-            $table->string('resource_link', 255);
+            $table->string('resource', 255);
         });
     }
 

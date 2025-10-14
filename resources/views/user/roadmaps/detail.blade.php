@@ -4,7 +4,6 @@
 
 @section('content')
     <div class="container my-5">
-        {{-- breadcrumb --}}
         <nav aria-label="breadcrumb" class="mb-3">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ url('/') }}" class="text-decoration-none">Beranda</a></li>
@@ -14,7 +13,6 @@
             </ol>
         </nav>
 
-        {{-- header roadmap --}}
         <div class="card mb-4 shadow-sm">
             <div class="row g-0 align-items-center">
                 <div class="col-md-4">
@@ -32,32 +30,18 @@
                         <p class="card-text text-muted mb-2">{!! nl2br(e(Str::limit($roadmap->deskripsi ?? '-', 400))) !!}</p>
                         <div class="d-flex flex-wrap gap-2 align-items-center">
                             <span class="badge bg-primary">Total: {{ $tutorials->total() }}</span>
-                            <span class="text-muted small">Diurutkan: {{ request('sort', 'sort_asc') }}</span>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        {{-- controls: pencarian + sort (GET form, tanpa JS) --}}
-        <form method="GET" action="{{ route('roadmaps.show', $roadmap) }}" class="row g-2 mb-3" role="search"
-            aria-label="Cari tutorial">
-            <div class="col-md-7">
-                <input type="search" name="q" value="{{ request('q') }}" class="form-control"
-                    placeholder="Cari tutorial (judul / deskripsi)..." aria-label="Cari tutorial">
-            </div>
-            <div class="col-md-2 d-grid">
-                <button class="btn btn-outline-primary" type="submit">Terapkan</button>
-            </div>
-        </form>
-
-        {{-- list tutorial --}}
         <div class="row g-3">
             @forelse($tutorials as $tutorial)
                 <div class="col-12">
                     <article class="card h-100 shadow-sm">
                         <div class="row g-0 align-items-center">
-                            <div class="col-md-9">
+                            <div class="col-md">
                                 <div class="card-body d-flex flex-column">
                                     <div class="d-flex justify-content-between align-items-start">
                                         <h5 class="card-title mb-1">{{ $tutorial->judul }}</h5>
@@ -76,23 +60,11 @@
                                             <small class="text-muted">Durasi: {{ $tutorial->durasi }}</small>
                                         @endif
                                         <div class="ms-auto">
-                                            <a href="{{ route('roadmaps.tutorials.show', ['roadmap' => $roadmap->id, 'tutorial' => $tutorial->id]) }}"
+                                            <a href="{{ route('roadmaps.tutorials.show', ['roadmap' => $roadmap->id, 'sort_order' => $tutorial->sort_order]) }}"
                                                 class="btn btn-primary btn-sm">Buka Tutorial</a>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-
-                            <div class="col-md-3 d-none d-md-block">
-                                @if (!empty($tutorial->gambar))
-                                    <img src="{{ asset('storage/' . $tutorial->gambar) }}" alt="thumb"
-                                        class="img-fluid rounded-end h-100" style="object-fit:cover;">
-                                @else
-                                    <div class="h-100 d-flex align-items-center justify-content-center bg-light"
-                                        style="min-height:120px;">
-                                        <small class="text-muted">Tidak ada gambar</small>
-                                    </div>
-                                @endif
                             </div>
                         </div>
                     </article>
@@ -104,12 +76,10 @@
             @endforelse
         </div>
 
-        {{-- pagination --}}
         <div class="mt-4 d-flex justify-content-center">
             {{ $tutorials->withQueryString()->links() }}
         </div>
 
-        {{-- back link --}}
         <div class="mt-4">
             <a href="{{ route('roadmaps.index') }}" class="text-decoration-none">← Kembali ke daftar Roadmaps</a>
         </div>

@@ -1,102 +1,138 @@
 @extends('layout.admin.app')
 
 @section('content')
-    <div class="container my-5 pt-5">
-        <div class="mb-4">
-            <h2>tutorial 1: pengenalan</h2>
-            <p class="text-muted">mencoba paham</p>
-        </div>
-        <a href="#" alt="video tutorial">video tutorial</a>
-        <div class="mb-5">
-            <h5>Langkah-langkah</h5>
-            <ol>
-                <li>buka blender</li>
-                <li>biki donat</li>
-                <li>render</li>
-                <li>save renderan</li>
-                <li>save projek dengan nama terserah.blend</li>
-            </ol>
-        </div>
-
-        <div class="card shadow-sm mb-4">
-            <div class="card-header bg-primary text-white">
-                Sesi Tanya
-            </div>
+    <div class="container my-4">
+        <div class="card shadow-sm mt-5">
             <div class="card-body">
-                <p class="mb-3">Punya pertanyaan tentang materi ini? Silakan tulis di bawah:</p>
-                <form enctype="multipart/form-data">
-                    <div class="mb-3">
-                        <label for="question" class="form-label">Pertanyaan</label>
-                        <textarea class="form-control" id="question" rows="3" placeholder="Tulis pertanyaanmu di sini..."></textarea>
-                    </div>
+                <h1 class="h4 mb-3">{{ $tutorial->judul }}</h1>
 
-                    <div class="mb-3">
-                        <label for="media" class="form-label">Tambahkan Media (opsional)</label>
-                        <input class="form-control" type="file" id="media" multiple>
-                        <small class="text-muted">Boleh unggah gambar, video, atau dokumen. Bisa pilih lebih dari
-                            satu.</small>
-                    </div>
-
-                    <button type="submit" class="btn btn-primary">Kirim Pertanyaan</button>
-                </form>
-            </div>
-        </div>
-
-        <h5 class="mb-3">Diskusi Terbaru</h5>
-        <div class="card mb-3">
-            <div class="card-body">
-                <h5 class="mb-1"><strong>Gilang</strong> bertanya</h5>
-                <small class="text-muted">2 jam lalu · <a href="{{ url('/admin/roadmaps/1/tutorials/2') }}">Membuat Donat —
-                        Roadmap A</a></small>
-
-                <p class="mt-3">Kalo mau bikin donat gimana caranya? Saya butuh langkah singkat.</p>
-                <div class="mb-3">
-                    <strong>Lampiran:</strong>
-                    <div class="mt-2 d-flex gap-2 flex-wrap">
-                        <img src="{{ asset('frontend/img/thumbnail.jpeg') }}" class="img-thumbnail" alt="lampiran"
-                            style="max-height:110px;">
-                        <a href="#" class="align-self-center">resep-donat.png</a>
-                    </div>
-                    <br>
-                    <div class="d-flex gap-2">
-                        <button class="btn btn-sm btn-danger">Hapus</button>
-                    </div>
-                    <hr>
-                </div>
-                <div class="border-start ps-3 mt-3">
-                    <h6 class="card-subtitle mb-2 text-success">Jawaban oleh <strong>Dewi</strong>:</h6>
-                    <p class="card-text">pakai circle tool atau spin tool</p>
-                </div>
-                <br>
-                <div class="d-flex gap-2">
-                    <button class="btn btn-sm btn-success">Jadikan jawaban terbaik</button>
-                    <button class="btn btn-sm btn-danger">Hapus</button>
-                </div>
-            </div>
-        </div>
-        <div class="card mb-3">
-            <div class="card-body">
-                <h6 class="card-subtitle mb-2 text-muted"><strong>Gilang</strong> bertanya:</h6>
-                <p class="card-text">Kalo mau bikin bola gimana caranya?</p>
-
-                <button class="btn btn-outline-primary btn-sm mt-2" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#answerForm2">Jawab</button>
-                <button class="btn btn-sm btn-danger">Hapus</button>
-                <div class="collapse mt-3" id="answerForm2">
-                    <form enctype="multipart/form-data">
-                        <div class="mb-3">
-                            <label for="jawab-1" class="form-label">Jawaban</label>
-                            <textarea class="form-control" id="jawab-1" rows="3" placeholder="Tulis jawabanmu di sini..."></textarea>
+                @foreach ($tutorial->resources ?? [] as $res)
+                    @if (str_contains($res->resource, 'youtube.com/embed'))
+                        <div class="row justify-content-center mb-3">
+                            <div class="col-md-8">
+                                <div class="ratio ratio-16x9">
+                                    <iframe src="{{ $res->resource }}" title="YouTube video" allowfullscreen></iframe>
+                                </div>
+                            </div>
                         </div>
-                        <div class="mb-3">
-                            <label for="media-answer-2" class="form-label">Tambahkan Media (opsional)</label>
-                            <input class="form-control" type="file" id="media-answer-2" multiple>
-                        </div>
+                    @endif
+                @endforeach
 
-                        <button type="submit" class="btn btn-success btn-sm">Kirim Jawaban</button>
-                    </form>
-                </div>
+                @if (!empty($tutorial->konten))
+                    <p class="mb-4 text-muted">{!! nl2br(e($tutorial->konten)) !!}</p>
+                @endif
+
+                <a href="{{ route('admin.roadmaps.tutorials.index', $tutorial->roadmap_id) }}" class="btn btn-secondary">
+                    Kembali
+                </a>
             </div>
         </div>
+
+        <div class="d-flex justify-content-between mt-4">
+            @if ($prevTutorial)
+                <a href="{{ route('admin.roadmaps.tutorials.show', [$roadmap, $prevTutorial]) }}"
+                    class="btn btn-outline-secondary">&lt;- Sebelumnya</a>
+            @else
+                <span class="btn btn-outline-secondary disabled">&lt;- Sebelumnya</span>
+            @endif
+
+            @if ($nextTutorial)
+                <a href="{{ route('admin.roadmaps.tutorials.show', [$roadmap, $nextTutorial]) }}"
+                    class="btn btn-primary">Selanjutnya -&gt;</a>
+            @else
+                <span class="btn btn-primary disabled">Selanjutnya -&gt;</span>
+            @endif
+        </div>
+
+        <div class="card mt-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">
+                    <i class="fas fa-question-circle me-2"></i>Quiz Tutorial
+                </h5>
+
+                @if ($tutorial->quiz)
+                    <div>
+                        <span class="badge bg-success me-2">
+                            <i class="fas fa-check me-1"></i>Quiz Tersedia
+                        </span>
+                        <a href="{{ route('admin.roadmaps.tutorials.quizzes.edit', ['roadmap' => $roadmap, 'tutorial' => $tutorial, 'quiz' => $tutorial->quiz]) }}"
+                            class="btn btn-warning btn-sm me-2">
+                            <i class="fas fa-edit me-1"></i>Edit Quiz
+                        </a>
+                        <form
+                            action="{{ route('admin.roadmaps.tutorials.quizzes.destroy', ['roadmap' => $roadmap, 'tutorial' => $tutorial, 'quiz' => $tutorial->quiz]) }}"
+                            method="POST" class="d-inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger btn-sm"
+                                onclick="return confirm('Apakah Anda yakin ingin menghapus quiz ini?')">
+                                <i class="fas fa-trash me-1"></i>Hapus Quiz
+                            </button>
+                        </form>
+                    </div>
+                {{-- @else
+                    <a href="{{ route('admin.roadmaps.tutorials.quizzes.create', ['roadmap' => $roadmap, 'tutorial' => $tutorial]) }}"
+                        class="btn btn-primary">
+                        <i class="fas fa-plus me-1"></i>Buat Quiz
+                    </a> --}}
+                @endif
+            </div>
+
+            <div class="card-body">
+                @if ($tutorial->quizzes->count() > 0)
+                    <div class="card mt-4">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">Quizzes Tutorial</h5>
+                            <a href="{{ route('admin.roadmaps.tutorials.quizzes.create', ['roadmap' => $roadmap, 'tutorial' => $tutorial]) }}"
+                                class="btn btn-primary btn-sm">
+                                <i class="fas fa-plus me-1"></i>Tambah Quiz
+                            </a>
+                        </div>
+                        <div class="card-body">
+                            @foreach ($tutorial->quizzes as $quiz)
+                                <div class="d-flex justify-content-between align-items-center mb-2 p-2 border rounded">
+                                    <div>
+                                        <h6 class="mb-1">{{ $quiz->judul_quiz }}</h6>
+                                        <small class="text-muted">
+                                            {{ $quiz->pertanyaan->count() }} soal |
+                                            Passing: {{ $quiz->passing_score }}% |
+                                            Urutan: {{ $quiz->urutan }}
+                                        </small>
+                                    </div>
+                                    <div class="btn-group">
+                                        <a href="{{ route('admin.roadmaps.tutorials.quizzes.edit', ['roadmap' => $roadmap, 'tutorial' => $tutorial, 'quiz' => $quiz]) }}"
+                                            class="btn btn-outline-warning btn-sm">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <form
+                                            action="{{ route('admin.roadmaps.tutorials.quizzes.destroy', ['roadmap' => $roadmap, 'tutorial' => $tutorial, 'quiz' => $quiz]) }}"
+                                            method="POST" class="d-inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-outline-danger btn-sm"
+                                                onclick="return confirm('Hapus quiz ini?')">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                @else
+                    <div class="card mt-4">
+                        <div class="card-body text-center">
+                            <p class="text-muted mb-3">Belum ada quiz untuk tutorial ini.</p>
+                            <a href="{{ route('admin.roadmaps.tutorials.quizzes.create', ['roadmap' => $roadmap, 'tutorial' => $tutorial]) }}"
+                                class="btn btn-primary">
+                                <i class="fas fa-plus me-1"></i>Buat Quiz Pertama
+                            </a>
+                        </div>
+                    </div>
+                @endif
+            </div>
+        </div>
+
+        @include('admin.tutorials.partials.qna')
     </div>
 @endsection

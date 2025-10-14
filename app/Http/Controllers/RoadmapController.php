@@ -14,8 +14,7 @@ class RoadmapController extends Controller
      */
     public function index()
     {
-        // Urut berdasarkan sort_order (lebih kecil = lebih atas)
-        $roadmaps = Roadmap::orderBy('sort_order')->paginate(12);
+        $roadmaps = Roadmap::orderBy('sort_order')->paginate(5);
         return view('user.roadmaps.index', compact('roadmaps'));
     }
 
@@ -34,9 +33,9 @@ class RoadmapController extends Controller
     {
         $data = $request->validate([
             'judul' => 'required|string|max:255',
-            'deskripsi' => 'nullable|string',
+            'deskripsi' => 'required|string',
             'gambar' => 'nullable|image',
-            'sort_order' => 'nullable|integer',
+            'sort_order' => 'required|integer',
         ]);
 
         if ($request->hasFile('gambar')) {
@@ -56,37 +55,11 @@ class RoadmapController extends Controller
     {
         $query = Tutorial::where('roadmap_id', $roadmap->id);
 
-        // pencarian sederhana
-        if ($q = $request->query('q')) {
-            $query->where(function ($w) use ($q) {
-                $w->where('judul', 'like', "%{$q}%")
-                    ->orWhere('deskripsi', 'like', "%{$q}%")
-                    ->orWhere('konten', 'like', "%{$q}%");
-            });
-        }
+        $tutorials = $query->paginate(10);
 
-        // sorting
-        $sort = $request->query('sort', 'default');
-        switch ($sort) {
-            case 'new':
-                $query->orderBy('created_at', 'desc');
-                break;
-            case 'old':
-                $query->orderBy('created_at', 'asc');
-                break;
-            case 'sort_desc':
-                $query->orderBy('sort_order', 'desc');
-                break;
-            case 'sort_asc':
-            default:
-                $query->orderBy('sort_order', 'asc')->orderBy('id', 'asc');
-                break;
-        }
+        $progress = $roadmap->getUserProgress();
 
-        // paginate supaya halaman tetap ringan (ubah angka sesuai kebutuhan)
-        $tutorials = $query->paginate(12);
-
-        return view('user.roadmaps.detail', compact('roadmap', 'tutorials'));
+        return view('user.roadmaps.show', compact('roadmap', 'tutorials', 'progress'));
     }
 
     /**
@@ -102,34 +75,33 @@ class RoadmapController extends Controller
      */
     public function update(Request $request, Roadmap $roadmap)
     {
-        $data = $request->validate([
+        $request->validate([
             'judul' => 'required|string|max:255',
-            'deskripsi' => 'nullable|string',
+            'deskripsi' => 'required|string',
+            'sort_order' => 'required|integer',
             'gambar' => 'nullable|image|max:2048',
-            'sort_order' => 'nullable|integer',
         ]);
 
-        // kalau upload gambar baru: hapus file lama (jika ada) lalu simpan file baru
+        $data = $request->only(['judul', 'deskripsi', 'sort_order']);
+
         if ($request->hasFile('gambar')) {
-            // hapus gambar lama jika ada
             if ($roadmap->gambar) {
                 Storage::disk('public')->delete($roadmap->gambar);
             }
-            $path = $request->file('gambar')->store('roadmaps', 'public');
-            $data['gambar'] = $path;
+            $data['gambar'] = $request->file('gambar')->store('roadmaps', 'public');
         }
 
         $roadmap->update($data);
 
-        return redirect()->route('admin.roadmaps.index')->with('success', 'Roadmap berhasil diperbarui.');
+        return redirect()->route('admin.roadmaps.index')
+            ->with('success', 'Roadmap updated successfully!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Roadmap $roadmap)
+    public function destroy(Request $request, Roadmap $roadmap)
     {
-        // hapus gambar jika ada
         if ($roadmap->gambar) {
             Storage::disk('public')->delete($roadmap->gambar);
         }
@@ -141,7 +113,13 @@ class RoadmapController extends Controller
 
     public function adminIndex()
     {
-        $roadmaps = Roadmap::orderBy('sort_order')->paginate(20);
+        $roadmaps = Roadmap::orderBy('sort_order')->paginate(10);
         return view('admin.roadmaps.index', compact('roadmaps'));
+    }
+
+    public function adminShow(Roadmap $roadmap)
+    {
+        $tutorials = $roadmap->tutorials()->orderBy('sort_order')->get();
+        return view('admin.tutorials.index', compact('roadmap', 'tutorials'));
     }
 }

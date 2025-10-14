@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Tutorial;
 use App\Models\Roadmap;
 use App\Models\Resource;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
 class TutorialController extends Controller
@@ -12,14 +14,8 @@ class TutorialController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        //
-    }
-
     public function userIndex(Roadmap $roadmap)
     {
-        // Ambil tutorial yang punya roadmap_id sesuai parameter
         $tutorials = Tutorial::where('roadmap_id', $roadmap->id)
             ->orderBy('sort_order')
             ->paginate(12);
@@ -27,14 +23,39 @@ class TutorialController extends Controller
         return view('user.tutorials.index', compact('roadmap', 'tutorials'));
     }
 
-    public function userShow(Roadmap $roadmap, Tutorial $tutorial)
+    public function userShow(Roadmap $roadmap, $sort_order)
     {
-        // Pastikan tutorial memang milik roadmap ini
-        if ($tutorial->roadmap_id !== $roadmap->id) {
-            abort(404);
-        }
+        $tutorial = Tutorial::where('roadmap_id', $roadmap->id)
+            ->where('sort_order', $sort_order)
+            ->firstOrFail();
 
-        return view('user.tutorials.show', compact('roadmap', 'tutorial'));
+        $tutorial->load([
+            'resources',
+            'tanya.user',
+            'tanya.jawabs.user',
+            'tanya.resources',
+            'tanya.jawabs.resources'
+        ]);
+
+        $roadmapProgress = $roadmap->getUserProgress();
+
+        $prevTutorial = Tutorial::where('roadmap_id', $roadmap->id)
+            ->where('sort_order', '<', $tutorial->sort_order)
+            ->orderBy('sort_order', 'desc')
+            ->first();
+
+        $nextTutorial = Tutorial::where('roadmap_id', $roadmap->id)
+            ->where('sort_order', '>', $tutorial->sort_order)
+            ->orderBy('sort_order', 'asc')
+            ->first();
+
+        return view('user.tutorials.show', compact(
+            'roadmap',
+            'tutorial',
+            'prevTutorial',
+            'nextTutorial',
+            'roadmapProgress'
+        ));
     }
 
     public function adminIndex(Roadmap $roadmap)
@@ -59,70 +80,39 @@ class TutorialController extends Controller
      */
     public function store(Request $request, $roadmapId)
     {
-        // validasi sederhana
         $request->validate([
             'judul'           => 'required|string|max:255',
-            'deskripsi'       => 'nullable|string',
             'konten'          => 'nullable|string',
-            'sort_order'      => 'nullable|integer',
-            'resources.*'     => 'nullable|file|max:20480',   // file uploads
-            'resource'        => 'nullable|string|max:1000',  // single link / iframe
-            'resource_links'  => 'nullable',                  // textarea atau array
-            'resource_links.*' => 'nullable|string|max:1000',
+            'sort_order'      => 'nullable|integer|min:0',
+            'resources.*'     => 'nullable|file|max:20480|mimes:jpg,jpeg,png,gif,mp4,mov,webm,zip,pdf', // aman
+            'resource'        => 'nullable|url|max:1000',
+            'resource_links'  => 'nullable|string',
         ]);
 
-        // 1) Simpan tutorial
-        $tutorial = \App\Models\Tutorial::create([
+        $tutorial = Tutorial::create([
             'roadmap_id' => $roadmapId,
             'judul'      => $request->input('judul'),
-            'deskripsi'  => $request->input('deskripsi', ''),
             'konten'     => $request->input('konten', ''),
             'sort_order' => $request->input('sort_order', 0),
         ]);
 
-        // 2) Simpan file uploads (resources[])
         if ($request->hasFile('resources')) {
             foreach ($request->file('resources') as $file) {
                 if ($file && $file->isValid()) {
-                    // simpan file di storage/app/public/resources
                     $path = $file->store('resources', 'public');
-
-                    \App\Models\Resource::create([
-                        'tutorial_id'   => $tutorial->id,
-                        'resource_link' => $path,
+                    Resource::create([
+                        'tutorial_id' => $tutorial->id,
+                        'resource'    => $path,
                     ]);
                 }
             }
         }
 
-        // 3) Simpan single resource (input name="resource")
         if ($request->filled('resource')) {
-            $link = trim($request->input('resource'));
-            if ($link !== '') {
-                \App\Models\Resource::create([
-                    'tutorial_id'   => $tutorial->id,
-                    'resource_link' => $link,
-                ]);
-            }
-        }
-
-        // 4) Simpan resource_links (textarea multiline atau array)
-        $rawLinks = $request->input('resource_links');
-        if ($rawLinks) {
-            // jika bukan array, pecah per baris (meng-handle textarea multiline)
-            if (!is_array($rawLinks)) {
-                $rawLinks = preg_split("/\r\n|\n|\r/", (string) $rawLinks);
-            }
-
-            foreach ($rawLinks as $link) {
-                $link = trim((string)$link);
-                if ($link === '') continue;
-
-                \App\Models\Resource::create([
-                    'tutorial_id'   => $tutorial->id,
-                    'resource_link' => $link,
-                ]);
-            }
+            Resource::create([
+                'tutorial_id' => $tutorial->id,
+                'resource'    => trim($request->input('resource')),
+            ]);
         }
 
         return redirect()
@@ -136,15 +126,31 @@ class TutorialController extends Controller
             abort(404);
         }
 
-        return view('admin.tutorials.show', compact('roadmap', 'tutorial'));
-    }
+        $tutorial->load([
+            'resources',
+            'tanya.user',
+            'tanya.jawabs.user',
+            'tanya.resources',
+            'tanya.jawabs.resources',
+            'quizzes.pertanyaan'
+        ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Tutorial $tutorial)
-    {
-        //
+        $prevTutorial = Tutorial::where('roadmap_id', $roadmap->id)
+            ->where('sort_order', '<', $tutorial->sort_order)
+            ->orderBy('sort_order', 'desc')
+            ->first();
+
+        $nextTutorial = Tutorial::where('roadmap_id', $roadmap->id)
+            ->where('sort_order', '>', $tutorial->sort_order)
+            ->orderBy('sort_order', 'asc')
+            ->first();
+
+        return view('admin.tutorials.show', compact(
+            'roadmap',
+            'tutorial',
+            'prevTutorial',
+            'nextTutorial'
+        ));
     }
 
     /**
@@ -156,7 +162,7 @@ class TutorialController extends Controller
             abort(404);
         }
 
-        return view('admin.roadmaps.tutorials.edit', compact('roadmap', 'tutorial'));
+        return view('admin.tutorials.edit', compact('roadmap', 'tutorial'));
     }
 
     /**
@@ -169,15 +175,15 @@ class TutorialController extends Controller
         }
 
         $data = $request->validate([
-            'judul' => 'required|string|max:255',
-            'deskripsi' => 'nullable|string',
-            'konten' => 'required|string',
-            'sort_order' => 'nullable|integer',
+            'judul'      => 'required|string|max:255',
+            'konten'     => 'required|string',
+            'sort_order' => 'nullable|integer|min:0',
         ]);
 
-        $tutorial->update($data);
+        $tutorial->update($request->only(['judul', 'deskripsi', 'konten', 'sort_order']));
 
-        return redirect()->route('admin.roadmaps.tutorials.index', $roadmap)
+        return redirect()
+            ->route('admin.roadmaps.tutorials.index', $roadmap)
             ->with('success', 'Tutorial berhasil diperbarui.');
     }
 
@@ -190,9 +196,104 @@ class TutorialController extends Controller
             abort(404);
         }
 
+        foreach ($tutorial->resources as $resource) {
+
+            if (!Str::startsWith($resource->resource, ['http://', 'https://'])) {
+                Storage::disk('public')->delete($resource->resource);
+            }
+        }
+        $tutorial->resources()->delete();
+
         $tutorial->delete();
 
-        return redirect()->route('admin.roadmaps.tutorials.index', $roadmap)
-            ->with('success', 'Tutorial berhasil dihapus.');
+        return redirect()
+            ->route('admin.roadmaps.tutorials.index', $roadmap->id)
+            ->with('success', 'Tutorial dan semua media berhasil dihapus.');
+    }
+
+    public function updateResources(Request $request, Roadmap $roadmap, Tutorial $tutorial)
+    {
+        $request->validate([
+            'resources.*'   => 'nullable|file|max:20480|mimes:jpg,jpeg,png,gif,mp4,mov,webm,zip,pdf',
+            'resource'      => 'nullable|url|max:1000',
+            'resource_id'   => 'nullable|integer|exists:resources,id',
+        ]);
+
+        $messages = [];
+
+        if ($request->hasFile('resources')) {
+            foreach ($request->file('resources') as $file) {
+                if ($file && $file->isValid()) {
+                    $path = $file->store('tutorials/resources', 'public');
+                    Resource::create([
+                        'tutorial_id' => $tutorial->id,
+                        'resource'    => $path,
+                    ]);
+                    $messages[] = 'File uploaded: ' . basename($path);
+                }
+            }
+        }
+
+        if ($request->filled('resource')) {
+            $resourceUrl = trim($request->input('resource'));
+
+            if ($request->filled('resource_id')) {
+                $res = Resource::find($request->input('resource_id'));
+
+                if (! $res || $res->tutorial_id !== $tutorial->id) {
+                    return back()->withErrors('Invalid resource selected for update.');
+                }
+
+                if (! Str::startsWith($res->resource, ['http://', 'https://'])) {
+                    if (Storage::disk('public')->exists($res->resource)) {
+                        Storage::disk('public')->delete($res->resource);
+                    }
+                }
+
+                $res->update(['resource' => $resourceUrl]);
+                $messages[] = 'Resource link updated.';
+            } else {
+                Resource::create([
+                    'tutorial_id' => $tutorial->id,
+                    'resource'    => $resourceUrl,
+                ]);
+                $messages[] = 'Resource link added.';
+            }
+        }
+
+        if (empty($messages)) {
+            $messages[] = 'No resources were changed.';
+        }
+
+        return back()->with('success', implode(' ', $messages));
+    }
+
+    public function destroyResource(Roadmap $roadmap, Tutorial $tutorial, Resource $resource)
+    {
+
+        if ($resource->tutorial_id !== $tutorial->id) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        if (!str_contains($resource->resource, 'http') && Storage::disk('public')->exists($resource->resource)) {
+            Storage::disk('public')->delete($resource->resource);
+        }
+
+        $resource->delete();
+
+        return back()->with('success', 'Resource berhasil dihapus!');
+    }
+
+    private function resetSortOrder($roadmapId)
+    {
+        $tutorials = Tutorial::where('roadmap_id', $roadmapId)
+            ->orderBy('sort_order')
+            ->orderBy('created_at')
+            ->get();
+
+        $order = 1;
+        foreach ($tutorials as $tutorial) {
+            $tutorial->update(['sort_order' => $order++]);
+        }
     }
 }

@@ -16,8 +16,7 @@ return new class extends Migration
             $table->timestamps();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('tanya_id')->constrained()->onDelete('cascade');
-            $table->text('konten');
-            $table->boolean('is_accepted')->default(false);
+            $table->text('jawaban');
         });
     }
 

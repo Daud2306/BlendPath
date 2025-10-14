@@ -70,21 +70,56 @@
                         </p>
 
                         <div style="max-width: 500px; margin: 0 auto;">
+                            <!-- Alert untuk error umum -->
+                            @if ($errors->any())
+                                <div class="alert alert-danger" data-aos="fade-up" data-aos-delay="150">
+                                    <i class="bi bi-exclamation-triangle me-2"></i>
+                                    <strong>Terjadi kesalahan:</strong>
+                                    <ul class="mb-0 mt-2">
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
+
                             <form action="{{ route('register.process') }}" method="POST" data-aos="fade-up"
                                 data-aos-delay="200">
                                 @csrf
+
                                 <div class="mb-3">
-                                    <input type="text" name="name" class="form-control" placeholder="Nama Lengkap"
-                                        required>
+                                    <input type="text" name="name"
+                                        class="form-control @error('name') is-invalid @enderror"
+                                        placeholder="Nama Lengkap" value="{{ old('name') }}" required>
+                                    @error('name')
+                                        <div class="invalid-feedback">
+                                            <i class="bi bi-exclamation-circle me-1"></i>{{ $message }}
+                                        </div>
+                                    @enderror
                                 </div>
+
                                 <div class="mb-3">
-                                    <input type="email" name="email" class="form-control" placeholder="Email"
-                                        required>
+                                    <input type="email" name="email"
+                                        class="form-control @error('email') is-invalid @enderror" placeholder="Email"
+                                        value="{{ old('email') }}" required>
+                                    @error('email')
+                                        <div class="invalid-feedback">
+                                            <i class="bi bi-exclamation-circle me-1"></i>{{ $message }}
+                                        </div>
+                                    @enderror
                                 </div>
+
                                 <div class="mb-3">
-                                    <input type="password" name="password" class="form-control" placeholder="Password"
-                                        required>
+                                    <input type="password" name="password"
+                                        class="form-control @error('password') is-invalid @enderror"
+                                        placeholder="Password" required>
+                                    @error('password')
+                                        <div class="invalid-feedback">
+                                            <i class="bi bi-exclamation-circle me-1"></i>{{ $message }}
+                                        </div>
+                                    @enderror
                                 </div>
+
                                 <button type="submit" class="btn btn-primary w-100"
                                     style="height:45px;">Daftar</button>
                                 <br><br>

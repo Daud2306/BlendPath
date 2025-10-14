@@ -34,7 +34,7 @@
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $tutorial->judul }}</td>
-                                    <td>{{ Str::limit($tutorial->deskripsi, 60) }}</td>
+                                    <td>{{ Str::limit($tutorial->konten, 60) }}</td>
                                     <td>{{ $tutorial->sort_order }}</td>
                                     <td class="text-end">
                                         <a href="{{ route('admin.roadmaps.tutorials.show', [$roadmap->id, $tutorial->id]) }}"
