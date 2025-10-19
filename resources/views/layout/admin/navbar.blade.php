@@ -6,10 +6,33 @@
             <span class="visually-hidden">Toggle menu</span>
         </label>
 
-
         <div class="d-none d-lg-flex align-items-center ms-auto gap-3">
 
+            <div class="dropdown">
+                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    <span class="mdi mdi-menu me-1"></span>Menu
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="{{ route('admin.roadmaps.index') }}">
+                            <span class="mdi mdi-map-marker-path me-2"></span>Roadmaps
+                        </a></li>
+                    <li><a class="dropdown-item" href="{{ route('admin.roadmaps.tutorials.index', 1) }}">
+                            <span class="mdi mdi-book-open-page-variant me-2"></span>Tutorials
+                        </a></li>
+                    <li><a class="dropdown-item" href="{{ route('admin.users.index') }}">
+                            <span class="mdi mdi-account-group me-2"></span>Users
+                        </a></li>
+                </ul>
+            </div>
+
             <form class="d-flex" method="GET" action="{{ route('admin.search') }}">
+                <select name="type" class="form-select form-select-sm me-2" style="width: 120px;">
+                    <option value="all" {{ request('type') == 'all' ? 'selected' : '' }}>All</option>
+                    <option value="roadmaps" {{ request('type') == 'roadmaps' ? 'selected' : '' }}>Roadmaps</option>
+                    <option value="tutorials" {{ request('type') == 'tutorials' ? 'selected' : '' }}>Tutorials</option>
+                    <option value="users" {{ request('type') == 'users' ? 'selected' : '' }}>Users</option>
+                </select>
                 <input name="q" class="form-control form-control-sm me-2" type="search" placeholder="Search..."
                     value="{{ request('q') }}">
                 <button class="btn btn-sm btn-outline-primary" type="submit" aria-label="Search">
@@ -35,8 +58,34 @@
 
         <div class="mobile-menu d-lg-none">
             <div class="p-3">
+                <div class="dropdown mb-3">
+                    <button class="btn btn-sm btn-outline-secondary w-100 dropdown-toggle" type="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <span class="mdi mdi-menu me-1"></span>Quick Menu
+                    </button>
+                    <ul class="dropdown-menu w-100">
+                        <li><a class="dropdown-item" href="{{ route('admin.roadmaps.index') }}">
+                                <span class="mdi mdi-map-marker-path me-2"></span>Roadmaps
+                            </a></li>
+                        <li><a class="dropdown-item" href="{{ route('admin.roadmaps.tutorials.index', 1) }}">
+                                <span class="mdi mdi-book-open-page-variant me-2"></span>Tutorials
+                            </a></li>
+                        <li><a class="dropdown-item" href="{{ route('admin.users.index') }}">
+                                <span class="mdi mdi-account-group me-2"></span>Users
+                            </a></li>
+                    </ul>
+                </div>
+
                 <form class="mb-3" method="GET" action="{{ route('admin.search') }}">
                     <div class="input-group">
+                        <select name="type" class="form-select form-select-sm">
+                            <option value="all" {{ request('type') == 'all' ? 'selected' : '' }}>All</option>
+                            <option value="roadmaps" {{ request('type') == 'roadmaps' ? 'selected' : '' }}>Roadmaps
+                            </option>
+                            <option value="tutorials" {{ request('type') == 'tutorials' ? 'selected' : '' }}>Tutorials
+                            </option>
+                            <option value="users" {{ request('type') == 'users' ? 'selected' : '' }}>Users</option>
+                        </select>
                         <input type="text" class="form-control form-control-sm" name="q"
                             placeholder="Search..." value="{{ request('q') }}">
                         <button class="btn btn-sm btn-outline-primary" type="submit">
