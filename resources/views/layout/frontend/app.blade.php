@@ -4,7 +4,8 @@
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>BlendPath - Start Your Journey!</title>
+    {{-- <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"> --}}
+    <title>BlendPath - @yield('title')</title>
     <meta name="description" content="">
     <meta name="keywords" content="">
 
@@ -30,20 +31,15 @@
     <link href="{{ asset('frontend/css/main.css') }}" rel="stylesheet">
 
     <style>
-        /* Fix untuk navbar fixed-top */
         .main-content {
             padding-top: 80px;
-            /* Sesuaikan dengan tinggi navbar */
             min-height: calc(100vh - 160px);
-            /* Untuk push footer ke bawah */
         }
 
-        /* Untuk halaman tertentu yang butuh lebih banyak space */
         .content-with-actions {
             padding-top: 100px;
         }
 
-        /* Pastikan semua konten visible */
         .container-fluid,
         .container {
             position: relative;
@@ -54,6 +50,7 @@
 
 <body class="index-page">
 
+
     <header id="header" class="header d-flex align-items-center fixed-top">
         <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
 
@@ -61,26 +58,28 @@
                 <img src="{{ asset('frontend/img/logo.png') }}" alt="">
             </a>
 
-            @include('layout.frontend.navbar')
-
         </div>
     </header>
 
     <main class="main">
+
+        @if (!View::hasSection('hide_navbar'))
+            @include('layout.frontend.navbar')
+        @endif
         <!-- Hero Section -->
         <div class="main-content">
             @yield('content')
         </div>
     </main>
 
-    @include('layout.frontend.footer')
+    {{-- @include('layout.frontend.footer') --}}
 
     <!-- Scroll Top -->
     <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
             class="bi bi-arrow-up-short"></i></a>
 
     <!-- Preloader -->
-    <div id="preloader"></div>
+    {{-- <div id="preloader"></div> --}}
 
     <!-- Vendor JS Files -->
     <script src="{{ asset('frontend/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>

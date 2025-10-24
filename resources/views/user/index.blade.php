@@ -20,12 +20,12 @@
                         <a href="{{ route('roadmaps.index') }}" class="btn btn-warning btn-lg">
                             <i class="fas fa-play me-2"></i>Mulai Belajar
                         </a>
-                        <a href="#roadmaps" class="btn btn-outline-light btn-lg">
+                        <a href="/roadmaps" class="btn btn-outline-light btn-lg">
                             <i class="fas fa-cube me-2"></i>Lihat Kursus
                         </a>
                     </div>
                 </div>
-                <div class="col-lg-6 d-none d-lg-block">
+                <div data-aos="fade-right" class="col-lg-6 d-none d-lg-block">
                     <img src="{{ asset('frontend/img/details-5.png') }}" alt="Blender 3D Hero image"
                         class="img-fluid rounded shadow-lg">
                 </div>
