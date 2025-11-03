@@ -3,28 +3,67 @@
 @section('title', 'Admin - Users')
 
 @section('content')
-@section('title', 'Admin - Manage Users')
-
-@section('content')
     <div class="container-fluid">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1 class="h3">👥 Manage Users</h1>
-            <a href="{{ route('admin.users.create') }}" class="btn btn-primary">
-                <i class="fas fa-plus me-1"></i>Tambah User
-            </a>
+            <div>
+                <div class="btn-group me-2">
+                    <button type="button" class="btn btn-success dropdown-toggle" data-bs-toggle="dropdown">
+                        <i class="fas fa-download me-1"></i>Export
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="{{ route('admin.users.export') }}">
+                                <i class="fas fa-file-csv me-1"></i>Download CSV
+                            </a></li>
+                        <li><a class="dropdown-item" href="{{ route('admin.users.template') }}">
+                                <i class="fas fa-file-alt me-1"></i>Download Template
+                            </a></li>
+                    </ul>
+                </div>
+
+                <button type="button" class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#importModal">
+                    <i class="fas fa-upload me-1"></i>Import
+                </button>
+
+                <a href="{{ route('admin.users.create') }}" class="btn btn-primary">
+                    <i class="fas fa-plus me-1"></i>Tambah User
+                </a>
+            </div>
         </div>
+
         @if (session('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 {{ session('success') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
         @endif
+
         @if (session('error'))
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                 {{ session('error') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
         @endif
+
+        @if (session('warning'))
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                {{ session('warning') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        @endif
+
+        @if (session('import_errors'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <h5 class="alert-heading">Error Import:</h5>
+                <ul class="mb-0">
+                    @foreach (session('import_errors') as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        @endif
+
         <div class="card shadow">
             <div class="card-body">
                 @if ($users->count() > 0)
@@ -164,6 +203,44 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="importModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Import Users dari CSV</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form action="{{ route('admin.users.import') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="csv_file" class="form-label">Pilih File CSV</label>
+                            <input type="file" class="form-control" id="csv_file" name="csv_file" accept=".csv"
+                                required>
+                            <div class="form-text">
+                                Format kolom: <strong>ID, Nama, Email, Role, Tanggal Dibuat</strong>
+                            </div>
+                        </div>
+
+                        <div class="alert alert-info">
+                            <h6>📋 Format CSV:</h6>
+                            <ul class="mb-0 small">
+                                <li>Gunakan <strong>koma (,) sebagai pemisah</strong></li>
+                                <li>File harus format <strong>.csv</strong></li>
+                                <li>Hanya bisa <strong>update user yang sudah ada</strong></li>
+                                <li>User baru harus dibuat manual</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary">Import Data</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

@@ -77,6 +77,10 @@ Route::prefix('admin')->middleware(['auth', AdminMiddleware::class])->name('admi
         Route::get('{user}/edit', [UserManagementController::class, 'edit'])->name('edit');
         Route::put('{user}', [UserManagementController::class, 'update'])->name('update');
         Route::delete('{user}', [UserManagementController::class, 'destroy'])->name('destroy');
+
+        Route::get('export', [UserManagementController::class, 'export'])->name('export');
+        Route::post('import', [UserManagementController::class, 'import'])->name('import');
+        Route::get('template', [UserManagementController::class, 'downloadTemplate'])->name('template');
     });
 
     Route::get('monitoring', [UserManagementController::class, 'monitoring'])->name('monitoring.index');
