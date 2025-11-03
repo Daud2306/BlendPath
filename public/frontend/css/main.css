@@ -17,50 +17,44 @@
   --nav-font: "Poppins", sans-serif;
 }
 
-/* Global Colors - The following color variables are used throughout the website. Updating them here will change the color scheme of the entire website */
+/* Global Colors - Updated for Blender Theme */
 :root {
   --background-color: #ffffff;
-  /* Background color for the entire website, including individual sections */
   --default-color: #444444;
-  /* Default color used for the majority of the text content across the entire website */
-  --heading-color: #040677;
-  /* Color for headings, subheadings and title throughout the website */
-  --accent-color: #1acc8d;
-  /* Accent color that represents your brand on the website. It's used for buttons, links, and other elements that need to stand out */
+  --heading-color: #E87C0D;
+  /* Changed to Blender orange for headings */
+  --accent-color: #E87C0D;
+  /* Changed to Blender orange */
   --surface-color: #ffffff;
-  /* The surface color is used as a background of boxed elements within sections, such as cards, icon boxes, or other elements that require a visual separation from the global background. */
   --contrast-color: #ffffff;
-  /* Contrast color for text, ensuring readability against backgrounds of accent, heading, or default colors. */
 }
 
-/* Nav Menu Colors - The following color variables are used specifically for the navigation menu. They are separate from the global colors to allow for more customization options */
+/* Nav Menu Colors - Updated for Blender Theme */
 :root {
   --nav-color: #ffffff;
-  /* The default color of the main navmenu links */
-  --nav-hover-color: #1acc8d;
-  /* Applied to main navmenu links when they are hovered over or active */
+  --nav-hover-color: #E87C0D;
+  /* Changed to Blender orange */
   --nav-mobile-background-color: #ffffff;
-  /* Used as the background color for mobile navigation menu */
   --nav-dropdown-background-color: #ffffff;
-  /* Used as the background color for dropdown items that appear when hovering over primary navigation items */
   --nav-dropdown-color: #444444;
-  /* Used for navigation links of the dropdown items in the navigation menu. */
-  --nav-dropdown-hover-color: #1acc8d;
-  /* Similar to --nav-hover-color, this color is applied to dropdown navigation links when they are hovered over. */
+  --nav-dropdown-hover-color: #E87C0D;
+  /* Changed to Blender orange */
 }
 
-/* Color Presets - These classes override global colors when applied to any section or element, providing reuse of the sam color scheme. */
-
+/* Color Presets */
 .light-background {
   --background-color: #f4f5fe;
   --surface-color: #ffffff;
 }
 
 .dark-background {
-  --background-color: #08005e;
+  --background-color: #1a1a1a;
+  /* Changed to dark charcoal */
   --default-color: #ffffff;
-  --heading-color: #ffffff;
-  --surface-color: #0c0091;
+  --heading-color: #E87C0D;
+  /* Orange headings on dark background */
+  --surface-color: #2D2D2D;
+  /* Changed to dark gray */
   --contrast-color: #ffffff;
 }
 
@@ -155,11 +149,12 @@ h6 {
 # Global Header
 --------------------------------------------------------------*/
 .header {
-  --background-color: rgba(255, 255, 255, 0);
+  --background-color: rgba(26, 26, 26, 0.9);
   --default-color: #ffffff;
   --heading-color: #ffffff;
   color: var(--default-color);
   background-color: var(--background-color);
+  padding: 20px 0;
   transition: all 0.5s;
   z-index: 997;
 }
@@ -187,7 +182,7 @@ h6 {
 /* Global Header on Scroll
 ------------------------------*/
 .scrolled .header {
-  --background-color: #10058c;
+  --background-color: #1a1a1a;
 }
 
 /*--------------------------------------------------------------
@@ -222,11 +217,11 @@ h6 {
 
   .navmenu a,
   .navmenu a:focus {
-    color: color-mix(in srgb, var(--nav-color), transparent 20%);
+    color: var(--nav-color);
     font-size: 15px;
     padding: 0 2px;
     font-family: var(--nav-font);
-    font-weight: 400;
+    font-weight: 500;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -265,7 +260,7 @@ h6 {
   .navmenu li:hover>a,
   .navmenu .active,
   .navmenu .active:focus {
-    color: var(--nav-color);
+    color: var(--nav-hover-color);
   }
 
   .navmenu .dropdown ul {
@@ -513,6 +508,7 @@ h6 {
   font-weight: bold;
   position: relative;
   padding-bottom: 12px;
+  color: var(--heading-color);
 }
 
 .footer .footer-links {
@@ -529,6 +525,7 @@ h6 {
   padding-right: 2px;
   font-size: 12px;
   line-height: 0;
+  color: var(--accent-color);
 }
 
 .footer .footer-links ul li {
@@ -706,6 +703,7 @@ h6 {
 .page-title .heading h1 {
   font-size: 38px;
   font-weight: 700;
+  color: var(--heading-color);
 }
 
 .page-title nav {
@@ -840,15 +838,6 @@ section,
   border-bottom: 4px solid var(--accent-color);
 }
 
-@font-face {
-  font-family: "Comfortaa";
-  src: url("/fonts/Comfortaa-Regular.ttf") format("truetype");
-}
-
-p {
-  font-family: "Comfortaa", sans-serif;
-}
-
 .hero p {
   color: color-mix(in srgb, var(--default-color), transparent 30%);
   margin: 5px 0 30px 0;
@@ -860,7 +849,7 @@ p {
   color: var(--contrast-color);
   background: var(--accent-color);
   font-family: var(--heading-font);
-  font-weight: 400;
+  font-weight: 500;
   font-size: 15px;
   letter-spacing: 1px;
   display: inline-block;
@@ -1013,6 +1002,7 @@ p {
 
 .about .content h2 {
   font-weight: 700;
+  color: var(--heading-color);
 }
 
 .about .content p:last-child {
@@ -1077,6 +1067,7 @@ p {
   margin-bottom: 10px;
   font-size: 24px;
   font-weight: 700;
+  color: var(--heading-color);
 }
 
 .about .icon-box p {
@@ -1118,6 +1109,7 @@ p {
   font-size: 32px;
   padding-right: 10px;
   line-height: 0;
+  color: var(--accent-color);
 }
 
 .features .features-item h3 {
@@ -1126,6 +1118,7 @@ p {
   padding: 0;
   line-height: 1;
   font-size: 16px;
+  color: var(--heading-color);
 }
 
 .features .features-item h3 a {
@@ -1176,7 +1169,7 @@ p {
   font-size: 36px;
   display: block;
   font-weight: 700;
-  color: color-mix(in srgb, var(--default-color), transparent 20%);
+  color: var(--heading-color);
 }
 
 .stats .stats-item p {
@@ -1184,6 +1177,7 @@ p {
   margin: 0;
   font-family: var(--heading-font);
   font-size: 16px;
+  color: var(--default-color);
 }
 
 /*--------------------------------------------------------------
@@ -1763,5 +1757,6 @@ p {
 /*--------------------------------------------------------------
 # Starter Section Section
 --------------------------------------------------------------*/
-/* .starter-section {
-} */
+.starter-section {
+  /* Add your styles here */
+}
