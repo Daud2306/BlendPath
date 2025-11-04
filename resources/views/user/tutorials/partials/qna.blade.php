@@ -8,7 +8,6 @@
         </div>
 
         <div class="card-body">
-            <!-- Success Message dengan auto-highlight -->
             @if (session('success'))
                 <div class="alert alert-success alert-dismissible fade show mb-4 success-highlight" role="alert">
                     <i class="bi bi-check-circle-fill me-2"></i>
@@ -17,7 +16,6 @@
                 </div>
             @endif
 
-            <!-- Form Pertanyaan -->
             @auth
                 <div class="ask-question-card card border-0 bg-light mb-4" id="askQuestionForm">
                     <div class="card-body">
@@ -79,14 +77,12 @@
                 <small class="text-muted">Menampilkan pertanyaan terbaru di atas</small>
             </div>
 
-            <!-- Daftar Pertanyaan -->
             <div class="questions-list">
                 @forelse ($tutorial->tanya as $tanya)
                     <div class="question-card card border-0 shadow-sm mb-4 
                                 @if ($loop->first && session('success')) new-question-highlight @endif"
                         data-question-id="{{ $tanya->id }}">
                         <div class="card-body">
-                            <!-- Badge Pertanyaan Baru -->
                             @if ($loop->first)
                                 <div class="new-badge mb-2">
                                     <span class="badge bg-primary">
@@ -95,7 +91,6 @@
                                 </div>
                             @endif
 
-                            <!-- Header Pertanyaan -->
                             <div class="d-flex justify-content-between align-items-start mb-3">
                                 <div class="d-flex align-items-center">
                                     <div class="user-avatar bg-primary rounded-circle d-flex align-items-center justify-content-center me-3"
@@ -136,12 +131,10 @@
                                 @endauth
                             </div>
 
-                            <!-- Konten Pertanyaan -->
                             <div class="question-content mb-3">
                                 <p class="mb-0">{{ $tanya->pertanyaan }}</p>
                             </div>
 
-                            <!-- Screenshot Pertanyaan -->
                             @if ($tanya->resources->count() > 0)
                                 <div class="question-images mb-3">
                                     <div class="d-flex flex-wrap gap-2">
@@ -157,7 +150,6 @@
                                 </div>
                             @endif
 
-                            <!-- Form Jawaban -->
                             @auth
                                 <div class="answer-form mt-4">
                                     <form action="{{ route('jawabs.store') }}" method="POST"
@@ -190,7 +182,6 @@
                                 </div>
                             @endauth
 
-                            <!-- Daftar Jawaban -->
                             @if ($tanya->jawabs->count() > 0)
                                 <div class="answers-section mt-4">
                                     <h6 class="answers-title mb-3">
@@ -202,7 +193,6 @@
                                         @foreach ($tanya->jawabs as $jawab)
                                             <div class="answer-card card border-0 bg-light mb-3">
                                                 <div class="card-body">
-                                                    <!-- Header Jawaban -->
                                                     <div class="d-flex justify-content-between align-items-start mb-2">
                                                         <div class="d-flex align-items-center">
                                                             <div class="user-avatar bg-success rounded-circle d-flex align-items-center justify-content-center me-2"
@@ -236,12 +226,10 @@
                                                         @endauth
                                                     </div>
 
-                                                    <!-- Konten Jawaban -->
                                                     <div class="answer-content">
                                                         <p class="mb-2 small">{{ $jawab->jawaban }}</p>
                                                     </div>
 
-                                                    <!-- Screenshot Jawaban -->
                                                     @if ($jawab->resources->count() > 0)
                                                         <div class="answer-images mt-2">
                                                             <div class="d-flex flex-wrap gap-2">
