@@ -16,7 +16,7 @@
                     </p>
                     <div class="d-flex flex-wrap gap-3">
                         <a href="{{ route('roadmaps.index') }}" class="btn-get-started">
-                            <i class="bi bi-play-circle me-2"></i>Mulai Belajar
+                            <i class="bi bi-book me-2"></i>Mulai Belajar
                         </a>
                     </div>
                 </div>
@@ -49,7 +49,7 @@
                     <div class="icon-box">
                         <i class="bi bi-play-btn"></i>
                         <h3>Video Tutorial Lengkap</h3>
-                        <p>Konten video step-by-step dengan penjelasan detail</p>
+                        <p>Konten video step-by-step dengan penjelasan (belum) detail</p>
                     </div>
                 </div>
 
@@ -73,7 +73,7 @@
 
             <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
                 @php
-                    $roadmaps = Roadmap::withCount('tutorials')->take(6)->get();
+                    $roadmaps = App\Models\Roadmap::withCount('tutorials')->take(6)->get();
                 @endphp
 
                 @if ($roadmaps->count() > 0)
@@ -135,15 +135,15 @@
                 <div class="col-lg-3 col-md-6">
                     <div class="stats-item">
                         <i class="bi bi-people"></i>
-                        <span>{{ User::count() }}+</span>
-                        <p>3D Artists</p>
+                        <span>{{ App\Models\User::count() }}</span>
+                        <p>Pengguna</p>
                     </div>
                 </div>
 
                 <div class="col-lg-3 col-md-6">
                     <div class="stats-item">
                         <i class="bi bi-play-circle"></i>
-                        <span>{{ Tutorial::count() }}+</span>
+                        <span>{{ App\Models\Tutorial::count() }}</span>
                         <p>Video Tutorial</p>
                     </div>
                 </div>
@@ -151,7 +151,7 @@
                 <div class="col-lg-3 col-md-6">
                     <div class="stats-item">
                         <i class="bi bi-diagram-3"></i>
-                        <span>{{ Roadmap::count() }}+</span>
+                        <span>{{ App\Models\Roadmap::count() }}</span>
                         <p>Learning Path</p>
                     </div>
                 </div>
@@ -159,7 +159,7 @@
                 <div class="col-lg-3 col-md-6">
                     <div class="stats-item">
                         <i class="bi bi-chat-dots"></i>
-                        <span>{{ Tanya::count() }}+</span>
+                        <span>{{ App\Models\Tanya::count() }}</span>
                         <p>Diskusi</p>
                     </div>
                 </div>

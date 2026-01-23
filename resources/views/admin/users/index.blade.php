@@ -13,10 +13,13 @@
                     </button>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="{{ route('admin.users.export') }}">
-                                <i class="fas fa-file-csv me-1"></i>Download CSV
+                                <i class="fas fa-file-xlsx me-1"></i>Download XLSX
                             </a></li>
                         <li><a class="dropdown-item" href="{{ route('admin.users.template') }}">
                                 <i class="fas fa-file-alt me-1"></i>Download Template
+                            </a></li>
+                        <li><a class="dropdown-item" href="{{ route('admin.users.view-pdf') }}">
+                                <i class="fas fa-file-pdf-o me-1"></i>Download PDF
                             </a></li>
                     </ul>
                 </div>
@@ -211,34 +214,51 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Import Users dari CSV</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    <h5 class="modal-title">
+                        <i class="fas fa-file-excel me-2 text-success"></i>Import Users dari Excel
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form action="{{ route('admin.users.import') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label for="csv_file" class="form-label">Pilih File CSV</label>
-                            <input type="file" class="form-control" id="csv_file" name="csv_file" accept=".csv"
-                                required>
+                            <label for="file" class="form-label">Pilih File Excel</label>
+                            <input type="file" class="form-control" id="file" name="file"
+                                accept=".xlsx,.xls" required>
                             <div class="form-text">
-                                Format kolom: <strong>ID, Nama, Email, Role, Tanggal Dibuat</strong>
+                                Format: <strong>.xlsx</strong> atau <strong>.xls</strong>
+                                <a href="{{ route('admin.users.template') }}" class="float-end">
+                                    <i class="fas fa-download me-1"></i>Download Template
+                                </a>
                             </div>
                         </div>
 
-                        <div class="alert alert-info">
-                            <h6>📋 Format CSV:</h6>
-                            <ul class="mb-0 small">
-                                <li>Gunakan <strong>koma (,) sebagai pemisah</strong></li>
-                                <li>File harus format <strong>.csv</strong></li>
-                                <li>Hanya bisa <strong>update user yang sudah ada</strong></li>
-                                <li>User baru harus dibuat manual</li>
-                            </ul>
+                        <div class="alert alert-light border">
+                            <h6 class="mb-2">📋 Struktur Data:</h6>
+                            <div class="row small">
+                                <div class="col-6">
+                                    <strong>Wajib:</strong>
+                                    <ul class="mb-0">
+                                        <li>Name</li>
+                                        <li>Email</li>
+                                    </ul>
+                                </div>
+                                <div class="col-6">
+                                    <strong>Opsional:</strong>
+                                    <ul class="mb-0">
+                                        <li>Role</li>
+                                        <li>Password</li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn btn-primary">Import Data</button>
+                        <button type="submit" class="btn btn-success">
+                            <i class="fas fa-upload me-1"></i>Import Data
+                        </button>
                     </div>
                 </form>
             </div>

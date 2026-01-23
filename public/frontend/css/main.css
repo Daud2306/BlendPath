@@ -1757,9 +1757,9 @@ section,
 /*--------------------------------------------------------------
 # Starter Section Section
 --------------------------------------------------------------*/
-.starter-section {
-  /* Add your styles here */
-}
+/* .starter-section {
+  Add your styles here
+ } */
 
 .roadmap-card {
   transition: transform 0.3s ease, box-shadow 0.3s ease;

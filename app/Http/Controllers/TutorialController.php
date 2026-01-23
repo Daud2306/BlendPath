@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use App\Models\Tutorial;
 use App\Models\Roadmap;
 use App\Models\Resource;
@@ -29,9 +30,37 @@ class TutorialController extends Controller
             ->where('sort_order', $sort_order)
             ->firstOrFail();
 
+        // CEK TUTORIAL SEBELUMNYA YANG BELUM SELESAI
+        if (Auth::check()) {
+            $previousTutorial = Tutorial::where('roadmap_id', $roadmap->id)
+                ->where('sort_order', '<', $tutorial->sort_order)
+                ->whereDoesntHave('progress', function ($query) {
+                    $query->where('user_id', Auth::id())
+                        ->where('is_completed', true);
+                })
+                ->orderBy('sort_order', 'desc')
+                ->first();
+
+            if ($previousTutorial && $tutorial->sort_order > 1) {
+                return redirect()
+                    ->route('roadmaps.tutorials.show', [
+                        'roadmap' => $roadmap->id,
+                        'sort_order' => $previousTutorial->sort_order
+                    ])
+                    ->with('error', 'Silakan selesaikan tutorial sebelumnya terlebih dahulu: ' . $previousTutorial->judul);
+            }
+        }
+
+        // Load relations dengan urutan yang benar - PERTANYAAN TERBARU DI ATAS
         $tutorial->load([
             'resources',
+            'tanya' => function ($query) {
+                $query->orderBy('created_at', 'desc'); // Pertanyaan terbaru di atas
+            },
             'tanya.user',
+            'tanya.jawabs' => function ($query) {
+                $query->orderBy('created_at', 'asc'); // Jawaban terlama di atas (chronological)
+            },
             'tanya.jawabs.user',
             'tanya.resources',
             'tanya.jawabs.resources'
@@ -295,5 +324,27 @@ class TutorialController extends Controller
         foreach ($tutorials as $tutorial) {
             $tutorial->update(['sort_order' => $order++]);
         }
+    }
+
+    public function complete(Roadmap $roadmap, $sort_order)
+    {
+        $tutorial = Tutorial::where('roadmap_id', $roadmap->id)
+            ->where('sort_order', $sort_order)
+            ->firstOrFail();
+
+        $tutorial->markAsCompleted();
+
+        return back()->with('success', 'Tutorial berhasil ditandai sebagai selesai!');
+    }
+
+    public function incomplete(Roadmap $roadmap, $sort_order)
+    {
+        $tutorial = Tutorial::where('roadmap_id', $roadmap->id)
+            ->where('sort_order', $sort_order)
+            ->firstOrFail();
+
+        $tutorial->markAsIncomplete();
+
+        return back()->with('success', 'Tutorial berhasil ditandai sebagai belum selesai.');
     }
 }

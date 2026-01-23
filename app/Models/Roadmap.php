@@ -20,7 +20,6 @@ class Roadmap extends Model
 
     public function getUserProgress($user_id = null)
     {
-        // Jika tidak ada user_id, gunakan user yang sedang login
         $user_id = $user_id ?? Auth::id();
 
         if (!$user_id) {

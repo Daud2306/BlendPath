@@ -9,8 +9,10 @@ use App\Http\Controllers\ProgressController;
 use App\Http\Controllers\QuizController;
 use App\Http\Controllers\Admin\UserManagementController;
 use App\Http\Controllers\AdminSearchController;
+use App\Http\Controllers\ExportPdfController;
 use App\Http\Middleware\AdminMiddleware;
 use Illuminate\Support\Facades\Route;
+use SebastianBergmann\Exporter\Exporter;
 
 Route::get('/', function () {
     return view('user.index');
@@ -69,7 +71,6 @@ Route::prefix('admin')->middleware(['auth', AdminMiddleware::class])->name('admi
         Route::delete('{roadmap}/tutorials/{tutorial}', [TutorialController::class, 'destroy'])->name('tutorials.destroy');
     });
 
-    //untuk admin manage member
     Route::prefix('users')->name('users.')->group(function () {
         Route::get('/', [UserManagementController::class, 'index'])->name('index');
         Route::get('create', [UserManagementController::class, 'create'])->name('create');
@@ -81,6 +82,7 @@ Route::prefix('admin')->middleware(['auth', AdminMiddleware::class])->name('admi
         Route::get('export', [UserManagementController::class, 'export'])->name('export');
         Route::post('import', [UserManagementController::class, 'import'])->name('import');
         Route::get('template', [UserManagementController::class, 'downloadTemplate'])->name('template');
+        Route::get('export-pdf', [ExportPdfController::class, 'usersExportPdf'])->name('view-pdf');
     });
 
     Route::get('monitoring', [UserManagementController::class, 'monitoring'])->name('monitoring.index');

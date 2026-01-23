@@ -10,6 +10,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Response;
+use App\Exports\UsersExport;
+use App\Imports\UsersImport;
+use Maatwebsite\Excel\Facades\Excel;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class UserManagementController extends Controller
 {
@@ -165,131 +169,30 @@ class UserManagementController extends Controller
         return round(($completedTutorials / $totalTutorials) * 100, 1);
     }
 
-    public function export()
+    public function export(): BinaryFileResponse
     {
-        $users = User::all();
-
-        $fileName = 'users_' . date('Y-m-d') . '.csv';
-
-        $headers = [
-            'Content-Type' => 'text/csv',
-            'Content-Disposition' => "attachment; filename=\"$fileName\"",
-        ];
-
-        $callback = function () use ($users) {
-            $file = fopen('php://output', 'w');
-
-            // FIXED: Gunakan koma sebagai delimiter
-            fputcsv($file, ['ID', 'Nama', 'Email', 'Role', 'Tanggal Dibuat']);
-
-            foreach ($users as $user) {
-                fputcsv($file, [
-                    $user->id,
-                    $user->name,
-                    $user->email,
-                    $user->role,
-                    $user->created_at->format('Y-m-d')
-                ]);
-            }
-
-            fclose($file);
-        };
-
-        return Response::stream($callback, 200, $headers);
+        return Excel::download(new UsersExport, 'users_' . date('Y-m-d_H-i-s') . '.xlsx');
     }
 
-    // FIXED: IMPORT DENGAN KOMA SEBAGAI DELIMITER
     public function import(Request $request)
     {
         $request->validate([
-            'csv_file' => 'required|file|mimes:csv,txt|max:5120'
+            'file' => 'required|file|mimes:xlsx,xls,csv|max:2048'
         ]);
 
-        $file = $request->file('csv_file');
-        $filePath = $file->getRealPath();
+        try {
+            Excel::import(new UsersImport, $request->file('file'));
 
-        $imported = 0;
-        $updated = 0;
-        $errors = [];
-
-        // FIXED: Baca file dengan delimiter koma
-        if (($handle = fopen($filePath, 'r')) !== FALSE) {
-            // Lewati header
-            fgetcsv($handle);
-
-            while (($row = fgetcsv($handle)) !== FALSE) {
-                if (empty($row[0]) && empty($row[1]) && empty($row[2])) {
-                    continue;
-                }
-
-                try {
-                    $id = $row[0] ?? null;
-                    $name = $row[1] ?? '';
-                    $email = $row[2] ?? '';
-                    $role = $row[3] ?? 'user';
-
-                    if (empty($name) || empty($email)) {
-                        $errors[] = "Data tidak lengkap: " . implode(', ', $row);
-                        continue;
-                    }
-
-                    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                        $errors[] = "Email tidak valid: $email";
-                        continue;
-                    }
-
-                    $existingUser = User::where('email', $email)->first();
-
-                    if ($existingUser) {
-                        $existingUser->update([
-                            'name' => $name,
-                            'role' => $role
-                        ]);
-                        $updated++;
-                    } else {
-                        $errors[] = "User baru '$name' ($email) perlu dibuat manual";
-                        continue;
-                    }
-                } catch (\Exception $e) {
-                    $errors[] = "Error: " . $e->getMessage();
-                }
-            }
-            fclose($handle);
+            return redirect()->route('admin.users.index')
+                ->with('success', 'Users imported successfully!');
+        } catch (\Exception $e) {
+            return redirect()->route('admin.users.index')
+                ->with('error', 'Error importing file: ' . $e->getMessage());
         }
-
-        $message = "Import selesai: $updated user diupdate.";
-
-        if (!empty($errors)) {
-            return redirect()->back()
-                ->with('warning', $message . ' Ada ' . count($errors) . ' error.')
-                ->with('import_errors', $errors);
-        }
-
-        return redirect()->back()->with('success', $message);
     }
 
-    // FIXED: TEMPLATE DENGAN KOMA SEBAGAI DELIMITER
-    public function downloadTemplate()
+    public function downloadTemplate(): BinaryFileResponse
     {
-        $fileName = 'template_import_user.csv';
-
-        $headers = [
-            'Content-Type' => 'text/csv',
-            'Content-Disposition' => "attachment; filename=\"$fileName\"",
-        ];
-
-        $callback = function () {
-            $file = fopen('php://output', 'w');
-
-            // FIXED: Gunakan koma sebagai delimiter
-            fputcsv($file, ['ID', 'Nama', 'Email', 'Role', 'Tanggal Dibuat']);
-
-            fputcsv($file, ['1', 'John Doe', 'john@example.com', 'user', '2024-01-01']);
-            fputcsv($file, ['2', 'Jane Smith', 'jane@example.com', 'admin', '2024-01-01']);
-
-            fclose($file);
-        };
-
-        return Response::stream($callback, 200, $headers);
+        return Excel::download(new UsersExport, 'users_import_template.xlsx');
     }
 }

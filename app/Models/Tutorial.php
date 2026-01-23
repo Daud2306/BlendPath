@@ -46,7 +46,6 @@ class Tutorial extends Model
 
     public function isCompletedByUser($user_id = null)
     {
-        // Jika tidak ada user_id, gunakan user yang sedang login
         $user_id = $user_id ?? Auth::id();
 
         if (!$user_id) {
@@ -78,4 +77,19 @@ class Tutorial extends Model
             ]
         );
     }
+
+    public function markAsIncomplete($user_id = null)
+    {
+        $user_id = $user_id ?? Auth::id();
+
+        if (!$user_id) {
+            return false;
+        }
+
+        return Progress::where('user_id', $user_id)
+            ->where('tutorial_id', $this->id)
+            ->delete();
+    }
+
+
 }

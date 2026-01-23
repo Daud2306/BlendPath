@@ -21,15 +21,15 @@ class TanyaController extends Controller
     }
 
     public function adminDestroy(Tanya $tanya)
-{
-    $tutorial = $tanya->tutorial;
-    $roadmap = $tutorial->roadmap;
+    {
+        $tutorial = $tanya->tutorial;
+        $roadmap = $tutorial->roadmap;
 
-    $tanya->delete();
+        $tanya->delete();
 
-    return redirect()->route('admin.roadmaps.tutorials.show', [$roadmap->id, $tutorial->id])
-                     ->with('success', 'Pertanyaan berhasil dihapus!');
-}
+        return redirect()->route('admin.roadmaps.tutorials.show', [$roadmap->id, $tutorial->id])
+            ->with('success', 'Pertanyaan berhasil dihapus!');
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -75,7 +75,10 @@ class TanyaController extends Controller
             }
         }
 
-        return redirect()->back()->with('success', 'Pertanyaan berhasil dikirim!');
+        // Redirect biasa tanpa JavaScript
+        return redirect()->back()
+            ->with('success', 'Pertanyaan berhasil dikirim!')
+            ->with('scroll_to', 'qna-section');
     }
 
 
