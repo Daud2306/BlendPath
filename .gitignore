@@ -22,3 +22,5 @@
 Homestead.json
 Homestead.yaml
 Thumbs.db
+/storage/app/public/media/tinymce-uploads/
+/storage/app/public/media/tinymce-videos/

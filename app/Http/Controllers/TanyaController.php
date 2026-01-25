@@ -155,4 +155,45 @@ class TanyaController extends Controller
         $tanya = Tanya::with(['user', 'submodul', 'jawabs.user'])->findOrFail($id);
         return view('user.qna.show', compact('tanya'));
     }
+
+    private function containsMedia($html)
+    {
+        return (strpos($html, '<img') !== false) ||
+            (strpos($html, '<iframe') !== false);
+    }
+
+    /**
+     * Track media usage dalam konten
+     */
+    private function trackMediaUsage($html, $contentId, $contentType)
+    {
+        // Ekstrak semua media URLs dari HTML
+        preg_match_all('/src="([^"]+)"/', $html, $matches);
+
+        foreach ($matches[1] as $url) {
+            // Cari resource berdasarkan URL
+            $path = $this->extractPathFromUrl($url);
+            if ($path) {
+                // Update resource record untuk tracking
+                Resource::where('resource', 'like', '%' . $path . '%')
+                    ->update([
+                        'used_in_content_id' => $contentId,
+                        'used_in_content_type' => $contentType
+                    ]);
+            }
+        }
+    }
+
+    /**
+     * Ekstrak path dari URL
+     */
+    private function extractPathFromUrl($url)
+    {
+        $parsed = parse_url($url);
+        if (isset($parsed['path'])) {
+            // Hilangkan /storage/ dari path
+            return str_replace('/storage/', '', $parsed['path']);
+        }
+        return null;
+    }
 }

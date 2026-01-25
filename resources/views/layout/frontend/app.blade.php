@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>BlendPath - @yield('title')</title>
     <meta name="description" content="">
     <meta name="keywords" content="">
@@ -33,7 +34,6 @@
     @if (request()->is('login*') || request()->is('register*'))
         <link href="{{ asset('frontend/css/auth.css') }}" rel="stylesheet">
     @endif
-
 </head>
 
 <body>
@@ -115,6 +115,8 @@
             });
         });
     </script>
+
+    @stack('tinymce-scripts')
 </body>
 
 </html>

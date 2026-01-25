@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\File; // ✅ TAMBAHKAN INI
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ModulController;
 use App\Http\Controllers\SubmodulController;
@@ -7,12 +9,11 @@ use App\Http\Controllers\TanyaController;
 use App\Http\Controllers\JawabController;
 use App\Http\Controllers\ProgressController;
 use App\Http\Controllers\QuizController;
+use App\Http\Controllers\TinyMCEController;
 use App\Http\Controllers\Admin\UserManagementController;
 use App\Http\Controllers\AdminSearchController;
 use App\Http\Controllers\ExportPdfController;
 use App\Http\Middleware\AdminMiddleware;
-use Illuminate\Support\Facades\Route;
-use SebastianBergmann\Exporter\Exporter;
 
 Route::get('/', function () {
     return view('user.index');
@@ -91,7 +92,24 @@ Route::prefix('admin')->middleware(['auth', AdminMiddleware::class])->name('admi
 Route::middleware('auth')->group(function () {
     Route::post('/tanyas', [TanyaController::class, 'store'])->name('tanyas.store');
     Route::delete('/tanyas/{tanya}', [TanyaController::class, 'destroy'])->name('tanyas.destroy');
+
+    // ✅ TAMBAHKAN ROUTE UNTUK TINYMCE UPLOAD
+    Route::post('/tinymce/upload', [TinyMCEController::class, 'upload'])->name('tinymce.upload');
+    Route::post('/tinymce/upload-video', [TinyMCEController::class, 'uploadVideo'])->name('tinymce.upload.video');
+    Route::delete('/tinymce/media/{id}', [TinyMCEController::class, 'delete'])->name('tinymce.media.delete');
 });
+
+// ✅ PERBAIKI ROUTE UNTUK FILE ACCESS - HAPUS DUPLIKASI
+// Hanya butuh satu route untuk handle semua file storage
+Route::get('/storage/{path}', function ($path) {
+    $fullPath = storage_path('app/public/' . $path);
+
+    if (!File::exists($fullPath)) {
+        abort(404);
+    }
+
+    return response()->file($fullPath);
+})->where('path', '.*')->name('storage.file');
 
 Route::prefix('admin/tanyas')->name('admin.tanyas.')->group(function () {
     Route::get('/', [TanyaController::class, 'index'])->name('index');
