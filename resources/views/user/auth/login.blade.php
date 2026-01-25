@@ -4,29 +4,27 @@
 @section('hide_navbar', true)
 
 @section('content')
-    <section class="auth-section light-background">
+    <section class="auth-section">
         <div class="container">
-            <div class="row gy-4 align-items-center">
-                <div class="col-lg-6 order-2 order-lg-1">
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-lg-6">
                     <div class="auth-container">
-                        <div class="auth-card" data-aos="fade-up">
-                            <div class="text-center">
-                                <a href="/" class="auth-logo">
-                                    <img src="{{ asset('frontend/img/logo.png') }}" alt="BlendPath Logo" class="me-2"
-                                        style="height: 40px;">
-                                </a>
-                            </div>
+                        <a href="/" class="auth-logo">
+                            <img src="{{ asset('frontend/img/logo.png') }}" alt="BlendPath Logo">
+                        </a>
 
-                            <h2 class="auth-title text-center">Login ke Akun Anda</h2>
-                            <p class="auth-subtitle text-center">
-                                <i class="bi bi-cube me-2"></i>Masuk dan bentuk dunia 3D-mu hari ini!
+                        <div class="auth-card">
+                            <p class="auth-subtitle-only">
+                                Lanjutkan perjalanan belajar Blender 3D-mu
                             </p>
 
                             @if ($errors->any())
-                                <div class="alert alert-danger" data-aos="fade-up" data-aos-delay="100">
-                                    <i class="bi bi-exclamation-triangle me-2"></i>
-                                    <strong>Terjadi kesalahan:</strong>
-                                    <ul class="mb-0 mt-2">
+                                <div class="alert alert-danger">
+                                    <div class="d-flex align-items-center">
+                                        <i class="bi bi-exclamation-triangle me-2"></i>
+                                        <strong>Terjadi kesalahan:</strong>
+                                    </div>
+                                    <ul class="mb-0 mt-2 ps-4">
                                         @foreach ($errors->all() as $error)
                                             <li>{{ $error }}</li>
                                         @endforeach
@@ -35,24 +33,24 @@
                             @endif
 
                             @if (session('success'))
-                                <div class="alert alert-success" data-aos="fade-up" data-aos-delay="100">
+                                <div class="alert alert-success">
                                     <i class="bi bi-check-circle me-2"></i>
                                     {{ session('success') }}
                                 </div>
                             @endif
 
-                            <form action="{{ route('login.process') }}" method="POST" class="auth-form" data-aos="fade-up"
-                                data-aos-delay="200">
+                            <form action="{{ route('login.process') }}" method="POST" class="auth-form">
                                 @csrf
 
                                 <div class="form-group">
+                                    <label class="form-label mb-2 small text-muted">Email</label>
                                     <div class="input-group">
                                         <span class="input-group-text">
                                             <i class="bi bi-envelope"></i>
                                         </span>
                                         <input type="email" name="email"
                                             class="form-control @error('email') is-invalid @enderror"
-                                            placeholder="Alamat Email" value="{{ old('email') }}" required autofocus>
+                                            placeholder="Masukkan email" value="{{ old('email') }}" required autofocus>
                                     </div>
                                     @error('email')
                                         <div class="invalid-feedback d-block">
@@ -62,13 +60,14 @@
                                 </div>
 
                                 <div class="form-group">
+                                    <label class="form-label mb-2 small text-muted">Kata Sandi</label>
                                     <div class="input-group">
                                         <span class="input-group-text">
                                             <i class="bi bi-lock"></i>
                                         </span>
                                         <input type="password" name="password"
                                             class="form-control @error('password') is-invalid @enderror"
-                                            placeholder="Kata Sandi" required>
+                                            placeholder="Masukkan kata sandi" required>
                                     </div>
                                     @error('password')
                                         <div class="invalid-feedback d-block">
@@ -77,28 +76,18 @@
                                     @enderror
                                 </div>
 
-                                <button type="submit" class="auth-btn">
-                                    <i class="bi bi-box-arrow-in-right me-2"></i>Masuk ke Akun
+                                <button type="submit" class="auth-btn mt-3">
+                                    <i class="bi bi-box-arrow-in-right me-2"></i>Masuk
                                 </button>
 
                                 <div class="auth-footer">
                                     <span>Belum punya akun?
                                         <a href="{{ route('register') }}" class="auth-link">
-                                            <i class="bi bi-person-plus me-1"></i>Daftar Sekarang!
+                                            Daftar Sekarang
                                         </a>
                                     </span>
                                 </div>
                             </form>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-6 order-1 order-lg-2">
-                    <div class="auth-image" data-aos="zoom-out" data-aos-delay="300">
-                        <img src="{{ asset('frontend/img/details-5.png') }}" alt="Blender 3D Login" class="img-fluid">
-                        <div class="mt-4">
-                            <h4><i class="bi bi-stars me-2"></i>Mulai Perjalanan 3D Anda</h4>
-                            <p class="auth-image-description">Bergabung dengan komunitas Blender terbesar di Indonesia</p>
                         </div>
                     </div>
                 </div>

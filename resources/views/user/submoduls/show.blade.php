@@ -1,52 +1,52 @@
 @extends('layout.frontend.app')
 
-@section('title', $tutorial->judul . ' - BlendPath')
+@section('title', $submodul->judul . ' - BlendPath')
 
 @section('content')
     <!-- Hero Section -->
-    <section class="tutorial-hero dark-background">
+    <section class="submodul-hero dark-background">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-8">
                     <nav aria-label="breadcrumb" class="mb-3">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item">
-                                <a href="{{ route('roadmaps.index') }}" class="breadcrumb-link">
-                                    <i class="bi bi-map me-1"></i>Roadmaps
+                                <a href="{{ route('moduls.index') }}" class="breadcrumb-link">
+                                    <i class="bi bi-map me-1"></i>Moduls
                                 </a>
                             </li>
                             <li class="breadcrumb-item">
-                                <a href="{{ route('roadmaps.show', $roadmap->id) }}" class="breadcrumb-link">
-                                    <i class="bi bi-signpost-2 me-1"></i>{{ Str::limit($roadmap->judul, 20) }}
+                                <a href="{{ route('moduls.show', $modul->id) }}" class="breadcrumb-link">
+                                    <i class="bi bi-signpost-2 me-1"></i>{{ Str::limit($modul->judul, 20) }}
                                 </a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">
-                                <i class="bi bi-play-circle me-1"></i>{{ Str::limit($tutorial->judul, 25) }}
+                                <i class="bi bi-play-circle me-1"></i>{{ Str::limit($submodul->judul, 25) }}
                             </li>
                         </ol>
                     </nav>
 
-                    <h1 class="tutorial-title" data-aos="fade-up">
-                        <i class="bi bi-play-circle-fill me-3"></i>{{ $tutorial->judul }}
+                    <h1 class="submodul-title" data-aos="fade-up">
+                        <i class="bi bi-play-circle-fill me-3"></i>{{ $submodul->judul }}
                     </h1>
 
-                    <div class="tutorial-meta" data-aos="fade-up" data-aos-delay="100">
+                    <div class="submodul-meta" data-aos="fade-up" data-aos-delay="100">
                         <span class="meta-item">
-                            <i class="bi bi-list-ol me-1"></i>Urutan: {{ $tutorial->sort_order }}
+                            <i class="bi bi-list-ol me-1"></i>Urutan: {{ $submodul->sort_order }}
                         </span>
                         <span class="meta-item">
                             <i class="bi bi-calendar3 me-1"></i>
-                            {{ $tutorial->created_at->format('d M Y') }}
+                            {{ $submodul->created_at->format('d M Y') }}
                         </span>
                     </div>
                 </div>
 
                 <div class="col-lg-4 text-center" data-aos="zoom-in">
-                    @if ($roadmap->gambar)
-                        <img src="{{ asset('storage/' . $roadmap->gambar) }}" alt="{{ $roadmap->judul }}"
-                            class="roadmap-thumbnail img-fluid rounded">
+                    @if ($modul->gambar)
+                        <img src="{{ asset('storage/' . $modul->gambar) }}" alt="{{ $modul->judul }}"
+                            class="modul-thumbnail img-fluid rounded">
                     @else
-                        <div class="roadmap-thumbnail-placeholder">
+                        <div class="modul-thumbnail-placeholder">
                             <i class="bi bi-signpost-2 display-1"></i>
                         </div>
                     @endif
@@ -66,13 +66,13 @@
         </div>
     @endif
 
-    <!-- Tutorial Content -->
-    <section class="tutorial-content py-5 light-background">
+    <!-- Submodul Content -->
+    <section class="submodul-content py-5 light-background">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-10">
                     <!-- Video Resources -->
-                    @foreach ($tutorial->resources ?? [] as $res)
+                    @foreach ($submodul->resources ?? [] as $res)
                         @if (str_contains($res->resource, 'youtube.com/embed'))
                             <div class="video-container mb-5" data-aos="fade-up">
                                 <div class="ratio ratio-16x9">
@@ -83,15 +83,15 @@
                         @endif
                     @endforeach
 
-                    <!-- Tutorial Content -->
-                    @if (!empty($tutorial->konten))
+                    <!-- Submodul Content -->
+                    @if (!empty($submodul->konten))
                         <div class="content-card card shadow-sm mb-5" data-aos="fade-up">
                             <div class="card-body">
                                 <h4 class="card-title mb-4">
-                                    <i class="bi bi-journal-text me-2"></i>Materi Tutorial
+                                    <i class="bi bi-journal-text me-2"></i>Materi Submodul
                                 </h4>
-                                <div class="tutorial-text">
-                                    {!! nl2br(e($tutorial->konten)) !!}
+                                <div class="submodul-text">
+                                    {!! nl2br(e($submodul->konten)) !!}
                                 </div>
                             </div>
                         </div>
@@ -99,35 +99,35 @@
 
                     <!-- Navigation Buttons -->
                     <div class="navigation-buttons d-flex justify-content-between mt-5" data-aos="fade-up">
-                        @if ($prevTutorial)
-                            <a href="{{ route('roadmaps.tutorials.show', ['roadmap' => $roadmap->id, 'sort_order' => $prevTutorial->sort_order]) }}"
+                        @if ($prevSubmodul)
+                            <a href="{{ route('moduls.submoduls.show', ['modul' => $modul->id, 'sort_order' => $prevSubmodul->sort_order]) }}"
                                 class="btn btn-outline-primary">
-                                <i class="bi bi-chevron-left me-2"></i>Tutorial Sebelumnya
+                                <i class="bi bi-chevron-left me-2"></i>Submodul Sebelumnya
                             </a>
                         @else
-                            <a href="{{ route('roadmaps.show', $roadmap->id) }}" class="btn btn-outline-secondary">
-                                <i class="bi bi-arrow-left me-2"></i>Kembali ke Roadmap
+                            <a href="{{ route('moduls.show', $modul->id) }}" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left me-2"></i>Kembali ke Modul
                             </a>
                         @endif
 
-                        @if ($nextTutorial)
+                        @if ($nextSubmodul)
                             @php
-                                $isNextAccessible = auth()->check() && $tutorial->isCompletedByUser();
+                                $isNextAccessible = auth()->check() && $submodul->isCompletedByUser();
                             @endphp
 
                             @if ($isNextAccessible)
-                                <a href="{{ route('roadmaps.tutorials.show', ['roadmap' => $roadmap->id, 'sort_order' => $nextTutorial->sort_order]) }}"
+                                <a href="{{ route('moduls.submoduls.show', ['modul' => $modul->id, 'sort_order' => $nextSubmodul->sort_order]) }}"
                                     class="btn btn-primary">
-                                    Tutorial Selanjutnya <i class="bi bi-chevron-right ms-2"></i>
+                                    Submodul Selanjutnya <i class="bi bi-chevron-right ms-2"></i>
                                 </a>
                             @else
-                                <button class="btn btn-secondary" disabled title="Selesaikan tutorial ini terlebih dahulu">
-                                    Tutorial Selanjutnya <i class="bi bi-lock ms-2"></i>
+                                <button class="btn btn-secondary" disabled title="Selesaikan submodul ini terlebih dahulu">
+                                    Submodul Selanjutnya <i class="bi bi-lock ms-2"></i>
                                 </button>
                             @endif
                         @else
-                            <a href="{{ route('roadmaps.show', $roadmap->id) }}" class="btn btn-success">
-                                <i class="bi bi-check-circle me-2"></i>Selesai Roadmap
+                            <a href="{{ route('moduls.show', $modul->id) }}" class="btn btn-success">
+                                <i class="bi bi-check-circle me-2"></i>Selesai Modul
                             </a>
                         @endif
                     </div>
@@ -139,13 +139,13 @@
                                     <i class="bi bi-graph-up me-2"></i>Progress Belajar
                                 </h5>
 
-                                @if ($tutorial->isCompletedByUser())
+                                @if ($submodul->isCompletedByUser())
                                     <div class="alert alert-success">
                                         <i class="bi bi-check-circle-fill me-2"></i>
-                                        Anda sudah menyelesaikan tutorial ini!
+                                        Anda sudah menyelesaikan submodul ini!
                                     </div>
                                     <form
-                                        action="{{ route('roadmaps.tutorials.incomplete', ['roadmap' => $roadmap->id, 'sort_order' => $tutorial->sort_order]) }}"
+                                        action="{{ route('moduls.submoduls.incomplete', ['modul' => $modul->id, 'sort_order' => $submodul->sort_order]) }}"
                                         method="POST">
                                         @csrf
                                         <button type="submit" class="btn btn-outline-warning">
@@ -155,10 +155,10 @@
                                 @else
                                     <div class="alert alert-info">
                                         <i class="bi bi-clock me-2"></i>
-                                        Tutorial ini belum diselesaikan
+                                        Submodul ini belum diselesaikan
                                     </div>
                                     <form
-                                        action="{{ route('roadmaps.tutorials.complete', ['roadmap' => $roadmap->id, 'sort_order' => $tutorial->sort_order]) }}"
+                                        action="{{ route('moduls.submoduls.complete', ['modul' => $modul->id, 'sort_order' => $submodul->sort_order]) }}"
                                         method="POST">
                                         @csrf
                                         <button type="submit" class="btn btn-success">
@@ -167,19 +167,19 @@
                                     </form>
                                 @endif
 
-                                @if (isset($roadmapProgress))
-                                    <div class="roadmap-progress mt-4">
+                                @if (isset($modulProgress))
+                                    <div class="modul-progress mt-4">
                                         <div class="d-flex justify-content-between align-items-center mb-2">
-                                            <small class="text-muted">Progress Roadmap</small>
+                                            <small class="text-muted">Progress Modul</small>
                                             <small class="fw-bold text-primary">
-                                                {{ $roadmapProgress['progress_text'] }}
-                                                ({{ $roadmapProgress['percentage'] }}%)
+                                                {{ $modulProgress['progress_text'] }}
+                                                ({{ $modulProgress['percentage'] }}%)
                                             </small>
                                         </div>
                                         <div class="progress" style="height: 8px;">
                                             <div class="progress-bar" role="progressbar"
-                                                style="width: {{ $roadmapProgress['percentage'] }}%;"
-                                                aria-valuenow="{{ $roadmapProgress['percentage'] }}" aria-valuemin="0"
+                                                style="width: {{ $modulProgress['percentage'] }}%;"
+                                                aria-valuenow="{{ $modulProgress['percentage'] }}" aria-valuemin="0"
                                                 aria-valuemax="100">
                                             </div>
                                         </div>
@@ -194,7 +194,7 @@
                         </div>
                     @endauth
 
-                    @if ($tutorial->quizzes->count() > 0)
+                    @if ($submodul->quizzes->count() > 0)
                         <div class="quizzes-card card mt-4" data-aos="fade-up">
                             <div class="card-header bg-primary text-white">
                                 <h5 class="mb-0">
@@ -203,10 +203,10 @@
                             </div>
                             <div class="card-body">
                                 <div class="quizzes-list">
-                                    @foreach ($tutorial->quizzes as $quiz)
-                                        <a href="{{ route('roadmaps.tutorials.quiz.show', [
-                                            'roadmap' => $roadmap->id,
-                                            'sort_order' => $tutorial->sort_order,
+                                    @foreach ($submodul->quizzes as $quiz)
+                                        <a href="{{ route('moduls.submoduls.quiz.show', [
+                                            'modul' => $modul->id,
+                                            'sort_order' => $submodul->sort_order,
                                         ]) }}"
                                             class="quiz-item d-block p-3 border rounded mb-3 text-decoration-none">
                                             <div class="d-flex justify-content-between align-items-center">
@@ -227,7 +227,7 @@
                         </div>
                     @endif
 
-                    @include('user.tutorials.partials.qna')
+                    @include('user.submoduls.partials.qna')
                 </div>
             </div>
         </div>

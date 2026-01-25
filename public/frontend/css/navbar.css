@@ -1,0 +1,247 @@
+/* ===== NAVBAR BASE ===== */
+.header {
+    background: var(--bg-navbar);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    height: 60px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.header .container-fluid {
+    padding: 0 1.5rem;
+}
+
+/* ===== LOGO ===== */
+.logo {
+    text-decoration: none;
+    height: 40px;
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    height: 30px;
+    width: auto;
+    transition: opacity 0.2s;
+}
+
+.logo:hover img {
+    opacity: 0.8;
+}
+
+/* ===== NAV MENU ===== */
+.navmenu {
+    flex-grow: 1;
+}
+
+.navmenu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.navmenu a {
+    color: var(--text-primary);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    padding: 0.5rem 0;
+    position: relative;
+    transition: color 0.2s;
+}
+
+/* FIX: Hover warna harus #0099ff */
+.navmenu a:hover {
+    color: #0099ff !important; /* Pastikan warna hover sesuai */
+}
+
+/* FIX: Active link dengan underline */
+.navmenu a.active {
+    color: #0099ff !important;
+}
+
+.navmenu a.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: #0099ff;
+    border-radius: 2px;
+}
+
+/* FIX: Hover underline untuk semua link */
+.navmenu a:not(.btn-primary):not(.active):hover::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: #0099ff;
+    border-radius: 2px;
+    opacity: 0.5;
+}
+
+/* ===== BUTTONS IN NAV ===== */
+.navmenu .btn-primary {
+    background: var(--text-primary);
+    border: none;
+    padding: 0.5rem 1.25rem;
+    font-size: 0.9rem;
+    border-radius: 6px;
+    color: white !important;
+    transition: all 0.2s;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.navmenu .btn-primary:hover {
+    background: #0099ff !important;
+    transform: translateY(-1px);
+    color: white !important;
+}
+
+.navmenu .btn-primary:hover::after {
+    display: none !important;
+}
+
+/* ===== DROPDOWN ===== */
+.dropdown {
+    position: relative;
+}
+
+.dropdown > a {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    min-width: 160px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+    display: none;
+    z-index: 1000;
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+.dropdown-item {
+    padding: 0.5rem 0.75rem;
+    color: var(--text-primary);
+    text-decoration: none;
+    display: block;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    transition: all 0.2s;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+}
+
+.dropdown-item:hover {
+    background-color: #f8f9fa;
+    color: #0099ff !important;
+}
+
+/* FIX: Dropdown link styling */
+.dropdown > a::after {
+    display: none;
+}
+
+.dropdown > a:hover::after {
+    display: none;
+}
+
+/* ===== MOBILE TOGGLE ===== */
+.mobile-nav-toggle {
+    font-size: 1.5rem;
+    color: var(--text-primary);
+    cursor: pointer;
+    display: none;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1200px) {
+    .navmenu ul {
+        gap: 1rem;
+    }
+}
+
+@media (max-width: 992px) {
+    .mobile-nav-toggle {
+        display: block;
+    }
+    
+    .navmenu {
+        position: fixed;
+        top: 60px;
+        left: 0;
+        width: 100%;
+        background: var(--bg-card);
+        border-top: 1px solid var(--border-color);
+        padding: 1rem 1.5rem;
+        display: none;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    }
+    
+    .navmenu.active {
+        display: block;
+    }
+    
+    .navmenu ul {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    
+    .navmenu ul li {
+        width: 100%;
+    }
+    
+    .navmenu a {
+        display: block;
+        padding: 0.75rem 0;
+        border-bottom: 1px solid var(--border-color);
+        width: 100%;
+    }
+    
+    .navmenu a::after {
+        display: none !important;
+    }
+    
+    .navmenu .btn-primary {
+        width: 100%;
+        text-align: center;
+        margin-top: 0.5rem;
+    }
+    
+    .dropdown-menu {
+        position: static;
+        border: none;
+        box-shadow: none;
+        margin: 0.5rem 0 0 0;
+        padding: 0;
+        display: block;
+        background: none;
+    }
+    
+    .dropdown-item {
+        padding: 0.5rem 1rem;
+        border-bottom: none;
+    }
+}

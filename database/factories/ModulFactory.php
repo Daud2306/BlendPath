@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class RoadmapFactory extends Factory
+class ModulFactory extends Factory
 {
     public function definition(): array
     {

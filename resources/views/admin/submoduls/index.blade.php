@@ -4,17 +4,17 @@
     <div class="container my-4">
         <div class="d-flex justify-content-between align-items-center mb-4 mt-5">
             <div class="mt-2">
-                <h1 class="h3 mb-1">Tutorial pada Roadmap: {{ $roadmap->judul }}</h1>
-                <p class="text-muted mb-0">Kelola semua tutorial dalam roadmap ini.</p>
+                <h1 class="h3 mb-1">Submodul pada Modul: {{ $modul->judul }}</h1>
+                <p class="text-muted mb-0">Kelola semua submodul dalam modul ini.</p>
             </div>
-            <a href="{{ route('admin.roadmaps.tutorials.create', $roadmap->id) }}" class="btn btn-primary">
-                + Tambah Tutorial
+            <a href="{{ route('admin.moduls.submoduls.create', $modul->id) }}" class="btn btn-primary">
+                + Tambah Submodul
             </a>
         </div>
 
-        @if ($tutorials->isEmpty())
+        @if ($submoduls->isEmpty())
             <div class="alert alert-info">
-                Belum ada tutorial untuk roadmap ini.
+                Belum ada submodul untuk modul ini.
             </div>
         @else
             <div class="card shadow-sm">
@@ -30,28 +30,28 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($tutorials as $tutorial)
+                            @foreach ($submoduls as $submodul)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $tutorial->judul }}</td>
-                                    <td>{{ Str::limit($tutorial->konten, 60) }}</td>
-                                    <td>{{ $tutorial->sort_order }}</td>
+                                    <td>{{ $submodul->judul }}</td>
+                                    <td>{{ Str::limit($submodul->konten, 60) }}</td>
+                                    <td>{{ $submodul->sort_order }}</td>
                                     <td class="text-end">
-                                        <a href="{{ route('admin.roadmaps.tutorials.show', [$roadmap->id, $tutorial->id]) }}"
+                                        <a href="{{ route('admin.moduls.submoduls.show', [$modul->id, $submodul->id]) }}"
                                             class="btn btn-sm btn-info">
                                             Detail
                                         </a>
-                                        <a href="{{ route('admin.roadmaps.tutorials.edit', [$roadmap->id, $tutorial->id]) }}"
+                                        <a href="{{ route('admin.moduls.submoduls.edit', [$modul->id, $submodul->id]) }}"
                                             class="btn btn-sm btn-warning">
                                             Edit
                                         </a>
                                         <form
-                                            action="{{ route('admin.roadmaps.tutorials.destroy', [$roadmap->id, $tutorial->id]) }}"
+                                            action="{{ route('admin.moduls.submoduls.destroy', [$modul->id, $submodul->id]) }}"
                                             method="POST" class="d-inline">
                                             @csrf
                                             @method('DELETE')
                                             <button class="btn btn-sm btn-danger" type="submit"
-                                                onclick="return confirm('Yakin ingin menghapus tutorial ini?')">
+                                                onclick="return confirm('Yakin ingin menghapus submodul ini?')">
                                                 Hapus
                                             </button>
                                         </form>

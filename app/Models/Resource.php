@@ -11,11 +11,11 @@ class Resource extends Model
 
     protected $table = 'resources';
 
-    protected $fillable = ['tutorial_id', 'tanya_id', 'jawab_id', 'resource'];
+    protected $fillable = ['submodul_id', 'tanya_id', 'jawab_id', 'resource'];
 
-    public function tutorial()
+    public function submodul()
     {
-        return $this->belongsTo(Tutorial::class);
+        return $this->belongsTo(Submodul::class);
     }
 
     public function isYouTube()

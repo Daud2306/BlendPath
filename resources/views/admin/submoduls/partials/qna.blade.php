@@ -9,7 +9,7 @@
                         <h6 class="card-title">Ajukan Pertanyaan</h6>
                         <form action="{{ route('tanyas.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
-                            <input type="hidden" name="tutorial_id" value="{{ $tutorial->id }}">
+                            <input type="hidden" name="submodul_id" value="{{ $submodul->id }}">
 
                             <div class="mb-3">
                                 <textarea name="pertanyaan" class="form-control" rows="3" placeholder="Tulis pertanyaan..." required></textarea>
@@ -27,7 +27,7 @@
             @endif
         @endauth
 
-        @forelse ($tutorial->tanya as $tanya)
+        @forelse ($submodul->tanya as $tanya)
             <div class="card mb-3">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-start mb-2">

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Roadmap;
-use App\Models\Tutorial;
+use App\Models\Modul;
+use App\Models\Submodul;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -22,14 +22,14 @@ class AdminSearchController extends Controller
         $results = [];
 
         switch ($type) {
-            case 'roadmaps':
-                $results['roadmaps'] = Roadmap::where('judul', 'like', "%{$query}%")
+            case 'moduls':
+                $results['moduls'] = Modul::where('judul', 'like', "%{$query}%")
                     ->orWhere('deskripsi', 'like', "%{$query}%")
                     ->get();
                 break;
 
-            case 'tutorials':
-                $results['tutorials'] = Tutorial::where('judul', 'like', "%{$query}%")
+            case 'submoduls':
+                $results['submoduls'] = Submodul::where('judul', 'like', "%{$query}%")
                     ->orWhere('konten', 'like', "%{$query}%")
                     ->get();
                 break;
@@ -42,10 +42,10 @@ class AdminSearchController extends Controller
 
             case 'all':
             default:
-                $results['roadmaps'] = Roadmap::where('judul', 'like', "%{$query}%")
+                $results['moduls'] = Modul::where('judul', 'like', "%{$query}%")
                     ->orWhere('deskripsi', 'like', "%{$query}%")
                     ->get();
-                $results['tutorials'] = Tutorial::where('judul', 'like', "%{$query}%")
+                $results['submoduls'] = Submodul::where('judul', 'like', "%{$query}%")
                     ->orWhere('konten', 'like', "%{$query}%")
                     ->get();
                 $results['users'] = User::where('name', 'like', "%{$query}%")

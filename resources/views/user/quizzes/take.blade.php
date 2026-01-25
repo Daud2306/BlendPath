@@ -6,14 +6,14 @@
             <div class="col-12">
                 <nav aria-label="breadcrumb" class="mb-4">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{ route('roadmaps.index') }}">Roadmaps</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('roadmaps.show', $roadmap) }}">{{ $roadmap->nama }}</a>
+                        <li class="breadcrumb-item"><a href="{{ route('moduls.index') }}">Moduls</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('moduls.show', $modul) }}">{{ $modul->nama }}</a>
                         </li>
                         <li class="breadcrumb-item"><a
-                                href="{{ route('roadmaps.tutorials.show', ['roadmap' => $roadmap->id, 'sort_order' => $tutorial->sort_order]) }}">{{ $tutorial->judul }}</a>
+                                href="{{ route('moduls.submoduls.show', ['modul' => $modul->id, 'sort_order' => $submodul->sort_order]) }}">{{ $submodul->judul }}</a>
                         </li>
                         <li class="breadcrumb-item"><a
-                                href="{{ route('roadmaps.tutorials.quiz.show', ['roadmap' => $roadmap->id, 'sort_order' => $tutorial->sort_order]) }}">Quizzes</a>
+                                href="{{ route('moduls.submoduls.quiz.show', ['modul' => $modul->id, 'sort_order' => $submodul->sort_order]) }}">Quizzes</a>
                         </li>
                         <li class="breadcrumb-item active">{{ $quiz->judul_quiz }}</li>
                     </ol>
@@ -42,9 +42,9 @@
                         </div>
 
                         <form
-                            action="{{ route('roadmaps.tutorials.quiz.submit', [
-                                'roadmap' => $roadmap->id,
-                                'sort_order' => $tutorial->sort_order,
+                            action="{{ route('moduls.submoduls.quiz.submit', [
+                                'modul' => $modul->id,
+                                'sort_order' => $submodul->sort_order,
                             ]) }}"
                             method="POST">
                             @csrf
@@ -79,9 +79,9 @@
                             @endforeach
 
                             <div class="d-flex justify-content-between mt-4">
-                                <a href="{{ route('roadmaps.tutorials.quiz.show', [
-                                    'roadmap' => $roadmap->id,
-                                    'sort_order' => $tutorial->sort_order,
+                                <a href="{{ route('moduls.submoduls.quiz.show', [
+                                    'modul' => $modul->id,
+                                    'sort_order' => $submodul->sort_order,
                                 ]) }}"
                                     class="btn btn-secondary">
                                     <i class="fas fa-arrow-left me-1"></i>Kembali

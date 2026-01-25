@@ -7,7 +7,7 @@
     <nav id="navmenu" class="navmenu flex-grow-1">
         <ul class="d-flex align-items-center justify-content-end mb-0">
             <li><a href="/" class="{{ request()->is('/') ? 'active' : '' }}">Home</a></li>
-            <li><a href="/roadmaps" class="{{ request()->is('roadmaps*') ? 'active' : '' }}">Learning Path</a></li>
+            <li><a href="/moduls" class="{{ request()->is('moduls*') ? 'active' : '' }}">Learning Path</a></li>
             <li><a href="/about" class="{{ request()->is('about*') ? 'active' : '' }}">Tentang</a></li>
 
             @guest

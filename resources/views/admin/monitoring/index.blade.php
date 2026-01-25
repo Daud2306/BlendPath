@@ -67,8 +67,8 @@
                                 </div>
                             </div>
                             <div class="flex-grow-1 ms-3">
-                                <h4 class="mb-0">{{ $totalTutorialsCompleted }}</h4>
-                                <p class="text-muted mb-0">Tutorial Selesai</p>
+                                <h4 class="mb-0">{{ $totalSubmodulsCompleted }}</h4>
+                                <p class="text-muted mb-0">Submodul Selesai</p>
                             </div>
                         </div>
                     </div>
@@ -88,7 +88,7 @@
                                 <tr>
                                     <th class="border-0 ps-4">User</th>
                                     <th class="border-0">Progress</th>
-                                    <th class="border-0">Tutorial Selesai</th>
+                                    <th class="border-0">Submodul Selesai</th>
                                     <th class="border-0">Terakhir Aktif</th>
                                     <th class="border-0">Status</th>
                                 </tr>
@@ -126,7 +126,7 @@
                                         <td>
                                             <span
                                                 class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25">
-                                                {{ $user->completed_tutorials_count }} selesai
+                                                {{ $user->completed_submoduls_count }} selesai
                                             </span>
                                         </td>
                                         <td>
@@ -190,7 +190,7 @@
                                     </div>
                                     <div class="flex-grow-1">
                                         <h6 class="mb-0">{{ \Illuminate\Support\Str::limit($performer->name, 20) }}</h6>
-                                        <small class="text-muted">{{ $performer->completed_count }} tutorial
+                                        <small class="text-muted">{{ $performer->completed_count }} submodul
                                             selesai</small>
                                     </div>
                                     <div class="text-end">

@@ -1,8 +1,8 @@
 <?php
 
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\RoadmapController;
-use App\Http\Controllers\TutorialController;
+use App\Http\Controllers\ModulController;
+use App\Http\Controllers\SubmodulController;
 use App\Http\Controllers\TanyaController;
 use App\Http\Controllers\JawabController;
 use App\Http\Controllers\ProgressController;
@@ -31,15 +31,15 @@ Route::middleware('guest')->group(function () {
 
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
 
-Route::middleware('auth')->prefix('roadmaps')->name('roadmaps.')->group(function () {
-    Route::get('/', [RoadmapController::class, 'index'])->name('index');
-    Route::get('{roadmap}/tutorials', [RoadmapController::class, 'show'])->name('show');
-    Route::get('{roadmap}/tutorials/{sort_order}', [TutorialController::class, 'userShow'])->name('tutorials.show');
+Route::middleware('auth')->prefix('moduls')->name('moduls.')->group(function () {
+    Route::get('/', [ModulController::class, 'index'])->name('index');
+    Route::get('{modul}/submoduls', [ModulController::class, 'show'])->name('show');
+    Route::get('{modul}/submoduls/{sort_order}', [SubmodulController::class, 'userShow'])->name('submoduls.show');
 
-    Route::post('{roadmap}/tutorials/{sort_order}/complete', [ProgressController::class, 'markAsCompleted'])
-        ->name('tutorials.complete');
-    Route::post('{roadmap}/tutorials/{sort_order}/incomplete', [ProgressController::class, 'markAsIncomplete'])
-        ->name('tutorials.incomplete');
+    Route::post('{modul}/submoduls/{sort_order}/complete', [ProgressController::class, 'markAsCompleted'])
+        ->name('submoduls.complete');
+    Route::post('{modul}/submoduls/{sort_order}/incomplete', [ProgressController::class, 'markAsIncomplete'])
+        ->name('submoduls.incomplete');
 });
 
 Route::prefix('admin')->middleware(['auth', AdminMiddleware::class])->name('admin.')->group(function () {
@@ -49,26 +49,26 @@ Route::prefix('admin')->middleware(['auth', AdminMiddleware::class])->name('admi
 
     Route::get('search', [AdminSearchController::class, 'search'])->name('search');
 
-    Route::prefix('roadmaps')->name('roadmaps.')->group(function () {
-        Route::get('/', [RoadmapController::class, 'adminIndex'])->name('index');
-        Route::get('create', [RoadmapController::class, 'create'])->name('create');
-        Route::post('/', [RoadmapController::class, 'store'])->name('store');
-        Route::get('{roadmap}/edit', [RoadmapController::class, 'edit'])->name('edit');
-        Route::put('{roadmap}', [RoadmapController::class, 'update'])->name('update');
-        Route::delete('{roadmap}', [RoadmapController::class, 'destroy'])->name('destroy');
+    Route::prefix('moduls')->name('moduls.')->group(function () {
+        Route::get('/', [ModulController::class, 'adminIndex'])->name('index');
+        Route::get('create', [ModulController::class, 'create'])->name('create');
+        Route::post('/', [ModulController::class, 'store'])->name('store');
+        Route::get('{modul}/edit', [ModulController::class, 'edit'])->name('edit');
+        Route::put('{modul}', [ModulController::class, 'update'])->name('update');
+        Route::delete('{modul}', [ModulController::class, 'destroy'])->name('destroy');
 
-        Route::post('{roadmap}/tutorials/{tutorial}/resources', [TutorialController::class, 'updateResources'])
-            ->name('tutorials.resources.store');
-        Route::delete('{roadmap}/tutorials/{tutorial}/resources/{resource}', [TutorialController::class, 'destroyResource'])
-            ->name('tutorials.resources.destroy');
+        Route::post('{modul}/submoduls/{submodul}/resources', [SubmodulController::class, 'updateResources'])
+            ->name('submoduls.resources.store');
+        Route::delete('{modul}/submoduls/{submodul}/resources/{resource}', [SubmodulController::class, 'destroyResource'])
+            ->name('submoduls.resources.destroy');
 
-        Route::get('{roadmap}/tutorials', [RoadmapController::class, 'adminShow'])->name('tutorials.index');
-        Route::get('{roadmap}/tutorials/create', [TutorialController::class, 'create'])->name('tutorials.create');
-        Route::post('{roadmap}/tutorials', [TutorialController::class, 'store'])->name('tutorials.store');
-        Route::get('{roadmap}/tutorials/{tutorial}', [TutorialController::class, 'adminShow'])->name('tutorials.show');
-        Route::get('{roadmap}/tutorials/{tutorial}/edit', [TutorialController::class, 'edit'])->name('tutorials.edit');
-        Route::put('{roadmap}/tutorials/{tutorial}', [TutorialController::class, 'update'])->name('tutorials.update');
-        Route::delete('{roadmap}/tutorials/{tutorial}', [TutorialController::class, 'destroy'])->name('tutorials.destroy');
+        Route::get('{modul}/submoduls', [ModulController::class, 'adminShow'])->name('submoduls.index');
+        Route::get('{modul}/submoduls/create', [SubmodulController::class, 'create'])->name('submoduls.create');
+        Route::post('{modul}/submoduls', [SubmodulController::class, 'store'])->name('submoduls.store');
+        Route::get('{modul}/submoduls/{submodul}', [SubmodulController::class, 'adminShow'])->name('submoduls.show');
+        Route::get('{modul}/submoduls/{submodul}/edit', [SubmodulController::class, 'edit'])->name('submoduls.edit');
+        Route::put('{modul}/submoduls/{submodul}', [SubmodulController::class, 'update'])->name('submoduls.update');
+        Route::delete('{modul}/submoduls/{submodul}', [SubmodulController::class, 'destroy'])->name('submoduls.destroy');
     });
 
     Route::prefix('users')->name('users.')->group(function () {
@@ -105,7 +105,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/jawabs/{jawab}', [JawabController::class, 'destroy'])->name('jawabs.destroy');
 });
 
-Route::prefix('admin/roadmaps/{roadmap}/tutorials/{tutorial}/quizzes')->name('admin.roadmaps.tutorials.quizzes.')->group(function () {
+Route::prefix('admin/moduls/{modul}/submoduls/{submodul}/quizzes')->name('admin.moduls.submoduls.quizzes.')->group(function () {
     Route::get('create', [QuizController::class, 'create'])->name('create');
     Route::post('/', [QuizController::class, 'store'])->name('store');
     Route::get('{quiz}/edit', [QuizController::class, 'edit'])->name('edit');
@@ -113,7 +113,7 @@ Route::prefix('admin/roadmaps/{roadmap}/tutorials/{tutorial}/quizzes')->name('ad
     Route::delete('{quiz}', [QuizController::class, 'destroy'])->name('destroy');
 });
 
-Route::middleware('auth')->prefix('roadmaps/{roadmap}/tutorials/{sort_order}/quiz')->name('roadmaps.tutorials.quiz.')->group(function () {
+Route::middleware('auth')->prefix('moduls/{modul}/submoduls/{sort_order}/quiz')->name('moduls.submoduls.quiz.')->group(function () {
     Route::get('/', [QuizController::class, 'show'])->name('show');
     Route::get('{quiz}/take', [QuizController::class, 'showQuiz'])->name('take');
     Route::post('submit', [QuizController::class, 'submit'])->name('submit');

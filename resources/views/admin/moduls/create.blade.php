@@ -1,10 +1,10 @@
 @extends('layout.admin.app')
 
-@section('title', 'Admin - Tambah Roadmap')
+@section('title', 'Admin - Tambah Modul')
 
 @section('content')
     <div class="container py-4">
-        <h1 class="mb-4">Buat Roadmap Baru</h1>
+        <h1 class="mb-4">Buat Modul Baru</h1>
 
         @if (session('success'))
             <div class="alert alert-success" role="alert">
@@ -25,7 +25,7 @@
 
         <div class="card border-0 shadow-sm">
             <div class="card-body">
-                <form action="{{ route('admin.roadmaps.store') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('admin.moduls.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
 
                     <div class="mb-3">
@@ -53,7 +53,7 @@
                         @error('gambar')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
-                        <div class="form-text">Unggah gambar untuk thumbnail roadmap (opsional).</div>
+                        <div class="form-text">Unggah gambar untuk thumbnail modul (opsional).</div>
                     </div>
 
                     <div class="mb-3">
@@ -68,8 +68,8 @@
                     </div>
 
                     <div class="d-flex gap-2">
-                        <button type="submit" class="btn btn-primary">Simpan Roadmap</button>
-                        <a href="{{ route('admin.roadmaps.index') }}" class="btn btn-secondary">Batal</a>
+                        <button type="submit" class="btn btn-primary">Simpan Modul</button>
+                        <a href="{{ route('admin.moduls.index') }}" class="btn btn-secondary">Batal</a>
                     </div>
                 </form>
             </div>

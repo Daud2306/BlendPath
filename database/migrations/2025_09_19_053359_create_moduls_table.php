@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tutorials', function (Blueprint $table) {
+        Schema::create('moduls', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->foreignId('roadmap_id')->constrained()->onDelete('cascade');
             $table->string('judul');
-            $table->text('konten');
-            $table->integer('sort_order')->default(0);
+            $table->text('deskripsi');
+            $table->string('gambar')->nullable();
+            $table->integer('sort_order')->default(1);
         });
     }
 
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tutorials');
+        Schema::dropIfExists('moduls');
     }
 };

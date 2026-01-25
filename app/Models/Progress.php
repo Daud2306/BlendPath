@@ -9,7 +9,7 @@ class Progress extends Model
 {
     use HasFactory;
     
-    protected $fillable = ['user_id', 'tutorial_id', 'is_completed', 'completed_at'];
+    protected $fillable = ['user_id', 'submodul_id', 'is_completed', 'completed_at'];
 
     protected $casts = [
         'is_completed' => 'boolean',
@@ -21,8 +21,8 @@ class Progress extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function tutorial()
+    public function submodul()
     {
-        return $this->belongsTo(Tutorial::class);
+        return $this->belongsTo(Submodul::class);
     }
 }

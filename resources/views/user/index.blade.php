@@ -15,7 +15,7 @@
                         rendering Anda.
                     </p>
                     <div class="d-flex flex-wrap gap-3">
-                        <a href="{{ route('roadmaps.index') }}" class="btn-get-started">
+                        <a href="{{ route('moduls.index') }}" class="btn-get-started">
                             <i class="bi bi-book me-2"></i>Mulai Belajar
                         </a>
                     </div>
@@ -41,14 +41,14 @@
                     <div class="icon-box">
                         <i class="bi bi-diagram-3"></i>
                         <h3>Struktur Belajar Terarah</h3>
-                        <p>Roadmap pembelajaran yang jelas dari dasar hingga advanced</p>
+                        <p>Modul pembelajaran yang jelas dari dasar hingga advanced</p>
                     </div>
                 </div>
 
                 <div class="col-lg-4 col-md-6 mt-4 mt-md-0">
                     <div class="icon-box">
                         <i class="bi bi-play-btn"></i>
-                        <h3>Video Tutorial Lengkap</h3>
+                        <h3>Video Submodul Lengkap</h3>
                         <p>Konten video step-by-step dengan penjelasan (belum) detail</p>
                     </div>
                 </div>
@@ -64,7 +64,7 @@
         </div>
     </section>
 
-    <section id="roadmaps" class="roadmaps light-background">
+    <section id="moduls" class="moduls light-background">
         <div class="container">
             <div class="section-title">
                 <h2>Learning Path</h2>
@@ -73,18 +73,18 @@
 
             <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
                 @php
-                    $roadmaps = App\Models\Roadmap::withCount('tutorials')->take(6)->get();
+                    $moduls = App\Models\Modul::withCount('submoduls')->take(6)->get();
                 @endphp
 
-                @if ($roadmaps->count() > 0)
-                    @foreach ($roadmaps as $roadmap)
+                @if ($moduls->count() > 0)
+                    @foreach ($moduls as $modul)
                         <div class="col">
-                            <div class="card h-100 roadmap-card">
+                            <div class="card h-100 modul-card">
                                 <div class="card-body d-flex flex-column">
                                     <div class="d-flex align-items-start mb-3">
-                                        @if ($roadmap->gambar)
-                                            <img src="{{ asset('storage/' . $roadmap->gambar) }}"
-                                                alt="{{ $roadmap->judul }}" class="rounded me-3"
+                                        @if ($modul->gambar)
+                                            <img src="{{ asset('storage/' . $modul->gambar) }}"
+                                                alt="{{ $modul->judul }}" class="rounded me-3"
                                                 style="width: 60px; height: 60px; object-fit: cover;">
                                         @else
                                             <div class="rounded d-flex align-items-center justify-content-center me-3"
@@ -93,16 +93,16 @@
                                             </div>
                                         @endif
                                         <div class="flex-grow-1">
-                                            <h5 class="fw-bold mb-1">{{ $roadmap->judul }}</h5>
+                                            <h5 class="fw-bold mb-1">{{ $modul->judul }}</h5>
                                             <span class="badge" style="background: var(--accent-color); color: white;">
-                                                {{ $roadmap->tutorials_count }} Tutorial
+                                                {{ $modul->submoduls_count }} Submodul
                                             </span>
                                         </div>
                                     </div>
-                                    <p class="mb-3 flex-grow-1">{{ Str::limit($roadmap->deskripsi, 120) }}</p>
+                                    <p class="mb-3 flex-grow-1">{{ Str::limit($modul->deskripsi, 120) }}</p>
                                     <div class="mt-auto">
-                                        <a href="{{ route('roadmaps.show', $roadmap) }}"
-                                            class="btn btn-sm w-100 roadmap-btn">
+                                        <a href="{{ route('moduls.show', $modul) }}"
+                                            class="btn btn-sm w-100 modul-btn">
                                             Lihat Kursus
                                         </a>
                                     </div>
@@ -119,9 +119,9 @@
                 @endif
             </div>
 
-            @if ($roadmaps->count() > 0)
+            @if ($moduls->count() > 0)
                 <div class="text-center mt-4">
-                    <a href="{{ route('roadmaps.index') }}" class="btn-get-started">
+                    <a href="{{ route('moduls.index') }}" class="btn-get-started">
                         <i class="bi bi-grid me-2"></i>Lihat Semua Kursus
                     </a>
                 </div>
@@ -143,15 +143,15 @@
                 <div class="col-lg-3 col-md-6">
                     <div class="stats-item">
                         <i class="bi bi-play-circle"></i>
-                        <span>{{ App\Models\Tutorial::count() }}</span>
-                        <p>Video Tutorial</p>
+                        <span>{{ App\Models\Submodul::count() }}</span>
+                        <p>Video Submodul</p>
                     </div>
                 </div>
 
                 <div class="col-lg-3 col-md-6">
                     <div class="stats-item">
                         <i class="bi bi-diagram-3"></i>
-                        <span>{{ App\Models\Roadmap::count() }}</span>
+                        <span>{{ App\Models\Modul::count() }}</span>
                         <p>Learning Path</p>
                     </div>
                 </div>
@@ -174,7 +174,7 @@
                 <p>Bergabung dengan komunitas Blender terbaik dan kembangkan skill Anda</p>
 
                 @auth
-                    <a href="{{ route('roadmaps.index') }}" class="btn-get-started">
+                    <a href="{{ route('moduls.index') }}" class="btn-get-started">
                         <i class="bi bi-play-circle me-2"></i>Lanjutkan Belajar
                     </a>
                 @else

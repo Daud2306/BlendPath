@@ -43,8 +43,8 @@
                                     </a>
                                 </div>
                                 <div class="col-md-6">
-                                    <a href="{{ route('roadmaps.index') }}" class="btn btn-outline-primary btn-lg w-100">
-                                        <i class="bi bi-map me-2"></i>Lihat Roadmaps
+                                    <a href="{{ route('moduls.index') }}" class="btn btn-outline-primary btn-lg w-100">
+                                        <i class="bi bi-map me-2"></i>Lihat Moduls
                                     </a>
                                 </div>
                             </div>

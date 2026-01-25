@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Quiz;
-use App\Models\Tutorial;
-use App\Models\Roadmap;
+use App\Models\Submodul;
+use App\Models\Modul;
 use App\Models\PertanyaanQuiz;
 use App\Models\ResponQuiz;
 use Illuminate\Support\Facades\Auth;
@@ -12,18 +12,18 @@ use Illuminate\Http\Request;
 
 class QuizController extends Controller
 {
-    public function create(Roadmap $roadmap, Tutorial $tutorial)
+    public function create(Modul $modul, Submodul $submodul)
     {
-        if ($tutorial->roadmap_id !== $roadmap->id) {
+        if ($submodul->modul_id !== $modul->id) {
             abort(404);
         }
 
-        return view('admin.quizzes.create', compact('roadmap', 'tutorial'));
+        return view('admin.quizzes.create', compact('modul', 'submodul'));
     }
 
-    public function store(Request $request, Roadmap $roadmap, Tutorial $tutorial)
+    public function store(Request $request, Modul $modul, Submodul $submodul)
     {
-        if ($tutorial->roadmap_id !== $roadmap->id) {
+        if ($submodul->modul_id !== $modul->id) {
             abort(404);
         }
 
@@ -48,7 +48,7 @@ class QuizController extends Controller
         ]);
 
         $quiz = Quiz::create([
-            'tutorial_id' => $tutorial->id,
+            'submodul_id' => $submodul->id,
             'judul_quiz' => $request->judul_quiz,
             'urutan' => $request->urutan,
             'passing_score' => $request->passing_score,
@@ -71,25 +71,25 @@ class QuizController extends Controller
             ]);
         }
 
-        return redirect()->route('admin.roadmaps.tutorials.show', [
-            'roadmap' => $roadmap,
-            'tutorial' => $tutorial
+        return redirect()->route('admin.moduls.submoduls.show', [
+            'modul' => $modul,
+            'submodul' => $submodul
         ])->with('success', 'Quiz berhasil dibuat!');
     }
 
-    public function edit(Roadmap $roadmap, Tutorial $tutorial, Quiz $quiz)
+    public function edit(Modul $modul, Submodul $submodul, Quiz $quiz)
     {
-        if ($tutorial->roadmap_id !== $roadmap->id || $quiz->tutorial_id !== $tutorial->id) {
+        if ($submodul->modul_id !== $modul->id || $quiz->submodul_id !== $submodul->id) {
             abort(404);
         }
 
         $quiz->load('pertanyaan');
-        return view('admin.quizzes.edit', compact('roadmap', 'tutorial', 'quiz'));
+        return view('admin.quizzes.edit', compact('modul', 'submodul', 'quiz'));
     }
 
-    public function update(Request $request, Roadmap $roadmap, Tutorial $tutorial, Quiz $quiz)
+    public function update(Request $request, Modul $modul, Submodul $submodul, Quiz $quiz)
     {
-        if ($tutorial->roadmap_id !== $roadmap->id || $quiz->tutorial_id !== $tutorial->id) {
+        if ($submodul->modul_id !== $modul->id || $quiz->submodul_id !== $submodul->id) {
             abort(404);
         }
 
@@ -138,52 +138,53 @@ class QuizController extends Controller
             ]);
         }
 
-        return redirect()->route('admin.roadmaps.tutorials.show', [
-            'roadmap' => $roadmap,
-            'tutorial' => $tutorial
+        return redirect()->route('admin.moduls.submoduls.show', [
+            'modul' => $modul,
+            'submodul' => $submodul
         ])->with('success', 'Quiz berhasil diperbarui!');
     }
 
-    public function destroy(Roadmap $roadmap, Tutorial $tutorial, Quiz $quiz)
+    public function destroy(Modul $modul, Submodul $submodul, Quiz $quiz)
     {
-        if ($tutorial->roadmap_id !== $roadmap->id || $quiz->tutorial_id !== $tutorial->id) {
+        if ($submodul->modul_id !== $modul->id || $quiz->submodul_id !== $submodul->id) {
             abort(404);
         }
 
         $quiz->delete();
 
-        return redirect()->route('admin.roadmaps.tutorials.show', [
-            'roadmap' => $roadmap,
-            'tutorial' => $tutorial
+        return redirect()->route('admin.moduls.submoduls.show', [
+            'modul' => $modul,
+            'submodul' => $submodul
         ])->with('success', 'Quiz berhasil dihapus!');
     }
 
-    public function show(Roadmap $roadmap, $sort_order)
+    public function show(Modul $modul, Submodul $submodul, Quiz $quiz)
     {
-        $tutorial = Tutorial::where('roadmap_id', $roadmap->id)
-            ->where('sort_order', $sort_order)
-            ->firstOrFail();
+        if ($submodul->modul_id !== $modul->id || $quiz->submodul_id !== $submodul->id) {
+            abort(404);
+        }
 
-        $tutorial->load('quizzes.pertanyaan');
+        $quiz->load('pertanyaan');
+        $submodul->load('quizzes.pertanyaan');
 
         $userRespon = [];
         if (Auth::check()) {
             $userRespon = ResponQuiz::where('user_id', Auth::id())
-                ->whereIn('quiz_id', $tutorial->quizzes->pluck('id'))
+                ->whereIn('quiz_id', $submodul->quizzes->pluck('id'))
                 ->get()
                 ->keyBy('quiz_id');
         }
 
-        return view('user.quizzes.show', compact('roadmap', 'tutorial', 'userRespon'));
+        return view('user.quizzes.show', compact('modul', 'submodul', 'userRespon'));
     }
 
-    public function showQuiz(Roadmap $roadmap, $sort_order, Quiz $quiz)
+    public function showQuiz(Modul $modul, Submodul $submodul, Quiz $quiz)
     {
-        $tutorial = Tutorial::where('roadmap_id', $roadmap->id)
-            ->where('sort_order', $sort_order)
+        $submodul = Submodul::where('modul_id', $modul->id)
+            ->where('sort_order', $submodul->sort_order)
             ->firstOrFail();
 
-        if ($quiz->tutorial_id !== $tutorial->id) {
+        if ($quiz->submodul_id !== $submodul->id) {
             abort(404);
         }
 
@@ -196,14 +197,18 @@ class QuizController extends Controller
                 ->first();
         }
 
-        return view('user.quizzes.take', compact('roadmap', 'tutorial', 'quiz', 'userRespon'));
+        return view('user.quizzes.take', compact('modul', 'submodul', 'quiz', 'userRespon'));
     }
 
-    public function submit(Request $request, Roadmap $roadmap, $sort_order)
+    public function submit(Request $request, Modul $modul, Submodul $submodul, Quiz $quiz)
     {
-        $tutorial = Tutorial::where('roadmap_id', $roadmap->id)
-            ->where('sort_order', $sort_order)
+        $submodul = Submodul::where('modul_id', $modul->id)
+            ->where('sort_order', $submodul->sort_order)
             ->firstOrFail();
+
+        if ($quiz->submodul_id !== $submodul->id) {
+            abort(404);
+        }
 
         $request->validate([
             'quiz_id' => 'required|exists:quizzes,id',
@@ -213,7 +218,7 @@ class QuizController extends Controller
 
         $quiz = Quiz::findOrFail($request->quiz_id);
 
-        if ($quiz->tutorial_id !== $tutorial->id) {
+        if ($quiz->submodul_id !== $submodul->id) {
             abort(404);
         }
 
@@ -244,8 +249,8 @@ class QuizController extends Controller
         );
 
         return view('user.quizzes.result', compact(
-            'roadmap',
-            'tutorial',
+            'modul',
+            'submodul',
             'quiz',
             'totalPoin',
             'jumlahBenar',
@@ -256,13 +261,13 @@ class QuizController extends Controller
         ));
     }
 
-    public function result(Roadmap $roadmap, $sort_order, Quiz $quiz)
+    public function result(Modul $modul, $sort_order, Quiz $quiz)
     {
-        $tutorial = Tutorial::where('roadmap_id', $roadmap->id)
+        $submodul = Submodul::where('modul_id', $modul->id)
             ->where('sort_order', $sort_order)
             ->firstOrFail();
 
-        if ($quiz->tutorial_id !== $tutorial->id) {
+        if ($quiz->submodul_id !== $submodul->id) {
             abort(404);
         }
 
@@ -282,8 +287,8 @@ class QuizController extends Controller
         $lulus = $persentase >= $quiz->passing_score;
 
         return view('user.quizzes.result', compact(
-            'roadmap',
-            'tutorial',
+            'modul',
+            'submodul',
             'quiz',
             'respon',
             'totalSoal',

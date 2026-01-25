@@ -12,7 +12,7 @@
                     </div>
                     <div class="card-body">
                         <form
-                            action="{{ route('admin.roadmaps.tutorials.quizzes.update', ['roadmap' => $roadmap, 'tutorial' => $tutorial, 'quiz' => $quiz]) }}"
+                            action="{{ route('admin.moduls.submoduls.quizzes.update', ['modul' => $modul, 'submodul' => $submodul, 'quiz' => $quiz]) }}"
                             method="POST">
                             @csrf
                             @method('PUT')
@@ -153,7 +153,7 @@
                             </div>
 
                             <div class="d-flex justify-content-between border-top pt-3">
-                                <a href="{{ route('admin.roadmaps.tutorials.show', ['roadmap' => $roadmap, 'tutorial' => $tutorial]) }}"
+                                <a href="{{ route('admin.moduls.submoduls.show', ['modul' => $modul, 'submodul' => $submodul]) }}"
                                     class="btn btn-secondary">
                                     <i class="fas fa-arrow-left me-1"></i>Kembali
                                 </a>
@@ -169,7 +169,7 @@
                         </form>
 
                         <form id="delete-form"
-                            action="{{ route('admin.roadmaps.tutorials.quizzes.destroy', ['roadmap' => $roadmap, 'tutorial' => $tutorial, 'quiz' => $quiz]) }}"
+                            action="{{ route('admin.moduls.submoduls.quizzes.destroy', ['modul' => $modul, 'submodul' => $submodul, 'quiz' => $quiz]) }}"
                             method="POST" class="d-none">
                             @csrf
                             @method('DELETE')

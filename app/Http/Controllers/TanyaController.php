@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Tanya;
 use App\Models\Resource;
-use App\Models\Tutorial;
+use App\Models\Submodul;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -16,28 +16,28 @@ class TanyaController extends Controller
      */
     public function index()
     {
-        $tanyas = Tanya::with(['user', 'tutorial.roadmap'])->latest()->get();
+        $tanyas = Tanya::with(['user', 'submodul.modul'])->latest()->get();
         return view('admin.tanyas.index', compact('tanyas'));
     }
 
     public function adminDestroy(Tanya $tanya)
     {
-        $tutorial = $tanya->tutorial;
-        $roadmap = $tutorial->roadmap;
+        $submodul = $tanya->submodul;
+        $modul = $submodul->modul;
 
         $tanya->delete();
 
-        return redirect()->route('admin.roadmaps.tutorials.show', [$roadmap->id, $tutorial->id])
+        return redirect()->route('admin.moduls.submoduls.show', [$modul->id, $submodul->id])
             ->with('success', 'Pertanyaan berhasil dihapus!');
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create($tutorial_id)
+    public function create($submodul_id)
     {
-        $tutorial = Tutorial::findOrFail($tutorial_id);
-        return view('user.tutorials.show', compact('tutorial'))
+        $submodul = Submodul::findOrFail($submodul_id);
+        return view('user.submoduls.show', compact('submodul'))
             ->with('user', Auth::user());
     }
 
@@ -51,14 +51,14 @@ class TanyaController extends Controller
         }
 
         $request->validate([
-            'tutorial_id' => 'required|exists:tutorials,id',
+            'submodul_id' => 'required|exists:submoduls,id',
             'pertanyaan' => 'required|min:5',
             'gambar.*' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
         ]);
 
         $tanya = Tanya::create([
             'user_id' => Auth::id(),
-            'tutorial_id' => $request->tutorial_id,
+            'submodul_id' => $request->submodul_id,
             'pertanyaan' => $request->pertanyaan
         ]);
 
@@ -115,11 +115,11 @@ class TanyaController extends Controller
             'pertanyaan' => $request->pertanyaan,
         ]);
 
-        $tutorial = $tanya->tutorial;
+        $submodul = $tanya->submodul;
 
-        return redirect()->route('roadmaps.tutorials.show', [
-            $tutorial->roadmap_id,
-            $tutorial->id
+        return redirect()->route('moduls.submoduls.show', [
+            $submodul->modul_id,
+            $submodul->id
         ])->with('success', 'Pertanyaan berhasil diupdate!');
     }
 
@@ -138,21 +138,21 @@ class TanyaController extends Controller
 
     public function indexAdmin()
     {
-        $tanyas = Tanya::with('user', 'tutorial')->latest()->get();
+        $tanyas = Tanya::with('user', 'submodul')->latest()->get();
         return view('admin.qna.index', compact('tanyas'));
     }
 
-    public function indexUser($tutorialId)
+    public function indexUser($submodulId)
     {
-        $tutorial = Tutorial::findOrFail($tutorialId);
-        $tanyas = $tutorial->tanyas()->with('user')->latest()->get();
+        $submodul = Submodul::findOrFail($submodulId);
+        $tanyas = $submodul->tanyas()->with('user')->latest()->get();
 
-        return view('user.qna.index', compact('tutorial', 'tanyas'));
+        return view('user.qna.index', compact('submodul', 'tanyas'));
     }
 
     public function show($id)
     {
-        $tanya = Tanya::with(['user', 'tutorial', 'jawabs.user'])->findOrFail($id);
+        $tanya = Tanya::with(['user', 'submodul', 'jawabs.user'])->findOrFail($id);
         return view('user.qna.show', compact('tanya'));
     }
 }

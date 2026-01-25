@@ -6,22 +6,21 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
-class Tutorial extends Model
+class Submodul extends Model
 {
     use HasFactory;
 
-    protected $table = 'tutorials';
-
+    protected $table = 'submoduls';
     protected $fillable = [
-        'roadmap_id',
+        'modul_id',
         'judul',
         'konten',
         'sort_order',
     ];
 
-    public function roadmap()
+    public function modul()
     {
-        return $this->belongsTo(Roadmap::class);
+        return $this->belongsTo(Modul::class);
     }
 
     public function progress()
@@ -31,7 +30,7 @@ class Tutorial extends Model
 
     public function resources()
     {
-        return $this->hasMany(Resource::class, 'tutorial_id');
+        return $this->hasMany(Resource::class, 'submodul_id');
     }
 
     public function tanya()
@@ -69,7 +68,7 @@ class Tutorial extends Model
         return Progress::updateOrCreate(
             [
                 'user_id' => $user_id,
-                'tutorial_id' => $this->id
+                'submodul_id' => $this->id
             ],
             [
                 'is_completed' => true,
@@ -87,7 +86,7 @@ class Tutorial extends Model
         }
 
         return Progress::where('user_id', $user_id)
-            ->where('tutorial_id', $this->id)
+            ->where('submodul_id', $this->id)
             ->delete();
     }
 

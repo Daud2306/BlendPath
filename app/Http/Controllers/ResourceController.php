@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Resource;
-use App\Models\Tutorial;
+use App\Models\Submodul;
 use Illuminate\Http\Request;
 
 class ResourceController extends Controller
@@ -12,7 +12,7 @@ class ResourceController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, $roadmapId)
+    public function store(Request $request, $modulId)
     {
         $validated = $request->validate([
             'judul'          => 'required|string|max:255',
@@ -22,8 +22,8 @@ class ResourceController extends Controller
             'resource_link.*' => 'nullable|string|max:255',
         ]);
 
-        $tutorial = Tutorial::create([
-            'roadmap_id' => $roadmapId,
+        $submodul = Submodul::create([
+            'modul_id' => $modulId,
             'judul'      => $validated['judul'],
             'konten'     => $validated['konten'] ?? '',
             'sort_order' => $validated['sort_order'] ?? 1,
@@ -33,7 +33,7 @@ class ResourceController extends Controller
             foreach ($request->resource_links as $link) {
                 if (!empty($link)) {
                     Resource::create([
-                        'tutorial_id'   => $tutorial->id,
+                        'submodul_id'   => $submodul->id,
                         'resource_link' => $link,
                     ]);
                 }
@@ -41,8 +41,8 @@ class ResourceController extends Controller
         }
 
         return redirect()
-            ->route('admin.roadmaps.tutorials.index', $roadmapId)
-            ->with('success', 'Tutorial berhasil dibuat beserta resources.');
+            ->route('admin.moduls.submoduls.index', $modulId)
+            ->with('success', 'Submodul berhasil dibuat beserta resources.');
     }
 
 }

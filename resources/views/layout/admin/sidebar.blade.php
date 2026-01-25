@@ -20,11 +20,11 @@
             </a>
         </li>
         <li class="nav-item menu-items">
-            <a href="/admin/roadmaps" class="nav-link">
+            <a href="/admin/moduls" class="nav-link">
                 <span class="menu-icon">
                     <i class="mdi mdi-map-marker-path"></i>
                 </span>
-                <span class="menu-title">Roadmap</span>
+                <span class="menu-title">Modul</span>
             </a>
         </li>
         <li class="nav-item menu-items">

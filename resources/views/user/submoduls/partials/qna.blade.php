@@ -25,12 +25,12 @@
                         <form action="{{ route('tanyas.store') }}" method="POST" enctype="multipart/form-data"
                             class="mt-3">
                             @csrf
-                            <input type="hidden" name="tutorial_id" value="{{ $tutorial->id }}">
+                            <input type="hidden" name="submodul_id" value="{{ $submodul->id }}">
 
                             <div class="mb-3">
                                 <label class="form-label fw-semibold">Pertanyaan Anda</label>
                                 <textarea name="pertanyaan" class="form-control question-textarea" rows="4"
-                                    placeholder="Tulis pertanyaan detail tentang tutorial ini..." required>{{ old('pertanyaan') }}</textarea>
+                                    placeholder="Tulis pertanyaan detail tentang submodul ini..." required>{{ old('pertanyaan') }}</textarea>
                                 @error('pertanyaan')
                                     <div class="text-danger small mt-1">{{ $message }}</div>
                                 @enderror
@@ -78,7 +78,7 @@
             </div>
 
             <div class="questions-list">
-                @forelse ($tutorial->tanya as $tanya)
+                @forelse ($submodul->tanya as $tanya)
                     <div class="question-card card border-0 shadow-sm mb-4 
                                 @if ($loop->first && session('success')) new-question-highlight @endif"
                         data-question-id="{{ $tanya->id }}">
@@ -263,7 +263,7 @@
                     <div class="empty-state text-center py-5">
                         <i class="bi bi-chat-square-text display-1 text-muted mb-3"></i>
                         <h5 class="text-muted">Belum Ada Diskusi</h5>
-                        <p class="text-muted mb-4">Jadilah yang pertama memulai diskusi tentang tutorial ini</p>
+                        <p class="text-muted mb-4">Jadilah yang pertama memulai diskusi tentang submodul ini</p>
                         @auth
                             <a href="#askQuestionForm" class="btn btn-primary">
                                 <i class="bi bi-plus-circle me-2"></i>Ajukan Pertanyaan Pertama

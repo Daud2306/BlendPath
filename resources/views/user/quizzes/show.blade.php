@@ -6,11 +6,11 @@
             <div class="col-12">
                 <nav aria-label="breadcrumb" class="mb-4">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{ route('roadmaps.index') }}">Roadmaps</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('roadmaps.show', $roadmap) }}">{{ $roadmap->nama }}</a>
+                        <li class="breadcrumb-item"><a href="{{ route('moduls.index') }}">Moduls</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('moduls.show', $modul) }}">{{ $modul->nama }}</a>
                         </li>
                         <li class="breadcrumb-item"><a
-                                href="{{ route('roadmaps.tutorials.show', ['roadmap' => $roadmap->id, 'sort_order' => $tutorial->sort_order]) }}">{{ $tutorial->judul }}</a>
+                                href="{{ route('moduls.submoduls.show', ['modul' => $modul->id, 'sort_order' => $submodul->sort_order]) }}">{{ $submodul->judul }}</a>
                         </li>
                         <li class="breadcrumb-item active">Quizzes</li>
                     </ol>
@@ -19,13 +19,13 @@
                 <div class="card shadow-sm">
                     <div class="card-header bg-primary text-white">
                         <h4 class="mb-0">
-                            <i class="fas fa-tasks me-2"></i>Quizzes - {{ $tutorial->judul }}
+                            <i class="fas fa-tasks me-2"></i>Quizzes - {{ $submodul->judul }}
                         </h4>
                     </div>
                     <div class="card-body">
-                        @if ($tutorial->quizzes->count() > 0)
+                        @if ($submodul->quizzes->count() > 0)
                             <div class="row">
-                                @foreach ($tutorial->quizzes as $quiz)
+                                @foreach ($submodul->quizzes as $quiz)
                                     @php
                                         $userQuizRespon = $userRespon[$quiz->id] ?? null;
                                     @endphp
@@ -68,17 +68,17 @@
                                             <div class="card-footer bg-transparent">
                                                 @if ($userQuizRespon)
                                                     <div class="d-grid gap-2">
-                                                        <a href="{{ route('roadmaps.tutorials.quiz.result', [
-                                                            'roadmap' => $roadmap->id,
-                                                            'sort_order' => $tutorial->sort_order,
+                                                        <a href="{{ route('moduls.submoduls.quiz.result', [
+                                                            'modul' => $modul->id,
+                                                            'sort_order' => $submodul->sort_order,
                                                             'quiz' => $quiz->id,
                                                         ]) }}"
                                                             class="btn btn-outline-primary">
                                                             <i class="fas fa-chart-bar me-1"></i>Lihat Hasil
                                                         </a>
-                                                        <a href="{{ route('roadmaps.tutorials.quiz.take', [
-                                                            'roadmap' => $roadmap->id,
-                                                            'sort_order' => $tutorial->sort_order,
+                                                        <a href="{{ route('moduls.submoduls.quiz.take', [
+                                                            'modul' => $modul->id,
+                                                            'sort_order' => $submodul->sort_order,
                                                             'quiz' => $quiz->id,
                                                         ]) }}"
                                                             class="btn btn-outline-secondary">
@@ -87,9 +87,9 @@
                                                     </div>
                                                 @else
                                                     <div class="d-grid">
-                                                        <a href="{{ route('roadmaps.tutorials.quiz.take', [
-                                                            'roadmap' => $roadmap->id,
-                                                            'sort_order' => $tutorial->sort_order,
+                                                        <a href="{{ route('moduls.submoduls.quiz.take', [
+                                                            'modul' => $modul->id,
+                                                            'sort_order' => $submodul->sort_order,
                                                             'quiz' => $quiz->id,
                                                         ]) }}"
                                                             class="btn btn-primary">
@@ -106,10 +106,10 @@
                             <div class="text-center py-5">
                                 <i class="fas fa-question-circle fa-4x text-muted mb-3"></i>
                                 <h4 class="text-muted">Belum Ada Quiz</h4>
-                                <p class="text-muted">Tutorial ini belum memiliki quiz.</p>
-                                <a href="{{ route('roadmaps.tutorials.show', ['roadmap' => $roadmap->id, 'sort_order' => $tutorial->sort_order]) }}"
+                                <p class="text-muted">Submodul ini belum memiliki quiz.</p>
+                                <a href="{{ route('moduls.submoduls.show', ['modul' => $modul->id, 'sort_order' => $submodul->sort_order]) }}"
                                     class="btn btn-primary">
-                                    <i class="fas fa-arrow-left me-1"></i>Kembali ke Tutorial
+                                    <i class="fas fa-arrow-left me-1"></i>Kembali ke Submodul
                                 </a>
                             </div>
                         @endif

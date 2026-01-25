@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('roadmaps', function (Blueprint $table) {
+        Schema::create('submoduls', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->foreignId('modul_id')->constrained()->onDelete('cascade');
             $table->string('judul');
-            $table->text('deskripsi');
-            $table->string('gambar')->nullable();
-            $table->integer('sort_order')->default(1);
+            $table->text('konten');
+            $table->integer('sort_order')->default(0);
         });
     }
 
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('roadmaps');
+        Schema::dropIfExists('submoduls');
     }
 };

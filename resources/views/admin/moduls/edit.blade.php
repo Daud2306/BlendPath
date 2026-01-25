@@ -1,12 +1,12 @@
 @extends('layout.admin.app')
 
-@section('title', 'Admin - Edit Roadmap')
+@section('title', 'Admin - Edit Modul')
 
 @section('content')
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1>Edit Roadmap</h1>
-            <a href="{{ route('admin.roadmaps.index') }}" class="btn btn-secondary">Back</a>
+            <h1>Edit Modul</h1>
+            <a href="{{ route('admin.moduls.index') }}" class="btn btn-secondary">Back</a>
         </div>
 
         @if ($errors->any())
@@ -19,7 +19,7 @@
 
         <div class="card">
             <div class="card-body">
-                <form action="{{ route('admin.roadmaps.update', $roadmap) }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('admin.moduls.update', $modul) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
 
@@ -28,28 +28,28 @@
                             <div class="mb-3">
                                 <label class="form-label">Title *</label>
                                 <input type="text" class="form-control" name="judul"
-                                    value="{{ old('judul', $roadmap->judul) }}" required>
+                                    value="{{ old('judul', $modul->judul) }}" required>
                             </div>
 
                             <div class="mb-3">
                                 <label class="form-label">Description</label>
-                                <textarea class="form-control" name="deskripsi" rows="4">{{ old('deskripsi', $roadmap->deskripsi) }}</textarea>
+                                <textarea class="form-control" name="deskripsi" rows="4">{{ old('deskripsi', $modul->deskripsi) }}</textarea>
                             </div>
 
                             <div class="mb-3">
                                 <label class="form-label">Sort Order</label>
                                 <input type="number" class="form-control" name="sort_order"
-                                    value="{{ old('sort_order', $roadmap->sort_order) }}">
+                                    value="{{ old('sort_order', $modul->sort_order) }}">
                             </div>
                         </div>
 
                         <div class="col-md-4">
-                            @if ($roadmap->gambar)
+                            @if ($modul->gambar)
                                 <div class="mb-3">
                                     <label class="form-label">Current Image</label>
-                                    <img src="{{ asset('storage/' . $roadmap->gambar) }}"
+                                    <img src="{{ asset('storage/' . $modul->gambar) }}"
                                         class="img-fluid rounded border mb-2">
-                                    <a href="{{ asset('storage/' . $roadmap->gambar) }}" target="_blank"
+                                    <a href="{{ asset('storage/' . $modul->gambar) }}" target="_blank"
                                         class="btn btn-sm btn-outline-primary w-100">
                                         View Image
                                     </a>
@@ -65,12 +65,12 @@
                     </div>
 
                     <div class="d-flex gap-2 mt-4">
-                        <button type="submit" class="btn btn-primary">Update Roadmap</button>
-                        <a href="{{ route('admin.roadmaps.index') }}" class="btn btn-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-primary">Update Modul</button>
+                        <a href="{{ route('admin.moduls.index') }}" class="btn btn-secondary">Cancel</a>
                     </div>
                 </form>
 
-                <form method="POST" action="{{ route('admin.roadmaps.destroy', $roadmap) }}" class="ms-auto mt-2"
+                <form method="POST" action="{{ route('admin.moduls.destroy', $modul) }}" class="ms-auto mt-2"
                     onsubmit="return confirm('Apakah anda yakin?')">
                     @csrf
                     @method('DELETE')

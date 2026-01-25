@@ -4,8 +4,8 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\User;
-use App\Models\Roadmap;
-use App\Models\Tutorial;
+use App\Models\Modul;
+use App\Models\Submodul;
 use App\Models\Quiz;
 use App\Models\PertanyaanQuiz;
 use App\Models\Progress;
@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
 
         $users = User::factory(99)->create();
 
-        $roadmaps = Roadmap::factory()->createMany([
+        $moduls = Modul::factory()->createMany([
             [
                 'judul' => 'Blender Fundamentals',
                 'deskripsi' => 'Belajar dasar-dasar Blender untuk pemula',
@@ -58,35 +58,35 @@ class DatabaseSeeder extends Seeder
             ],
         ]);
 
-        $tutorials = collect();
+        $submoduls = collect();
 
-        $roadmaps->each(function ($roadmap) use (&$tutorials) {
-            $roadmapTutorials = [];
+        $moduls->each(function ($modul) use (&$submoduls) {
+            $modulSubmoduls = [];
 
             for ($i = 1; $i <= 10; $i++) {
-                $roadmapTutorials[] = [
-                    'roadmap_id' => $roadmap->id,
-                    'judul' => "Tutorial {$i}: " . $this->getTutorialTitle($roadmap->judul, $i),
-                    'konten' => $this->getTutorialContent($roadmap->judul, $i),
+                $modulSubmoduls[] = [
+                    'modul_id' => $modul->id,
+                    'judul' => "Submodul {$i}: " . $this->getSubmodulTitle($modul->judul, $i),
+                    'konten' => $this->getSubmodulContent($modul->judul, $i),
                     'sort_order' => $i,
                 ];
             }
 
-            $createdTutorials = Tutorial::factory()->createMany($roadmapTutorials);
-            $tutorials = $tutorials->merge($createdTutorials);
+            $createdSubmoduls = Submodul::factory()->createMany($modulSubmoduls);
+            $submoduls = $submoduls->merge($createdSubmoduls);
         });
 
         $quizzes = collect();
 
-        $roadmaps->each(function ($roadmap) use ($tutorials, &$quizzes) {
-            $lastTutorial = $tutorials->where('roadmap_id', $roadmap->id)
+        $moduls->each(function ($modul) use ($submoduls, &$quizzes) {
+            $lastSubmodul = $submoduls->where('modul_id', $modul->id)
                 ->where('sort_order', 10)
                 ->first();
 
-            if ($lastTutorial) {
+            if ($lastSubmodul) {
                 $quiz = Quiz::factory()->create([
-                    'tutorial_id' => $lastTutorial->id,
-                    'judul_quiz' => "Final Quiz: " . $roadmap->judul,
+                    'submodul_id' => $lastSubmodul->id,
+                    'judul_quiz' => "Final Quiz: " . $modul->judul,
                     'urutan' => 1,
                     'passing_score' => 75,
                 ]);
@@ -175,13 +175,13 @@ class DatabaseSeeder extends Seeder
             PertanyaanQuiz::factory()->create($question);
         }
 
-        $users->each(function ($user) use ($tutorials) {
-            $randomTutorials = $tutorials->random(rand(20, 40));
+        $users->each(function ($user) use ($submoduls) {
+            $randomSubmoduls = $submoduls->random(rand(20, 40));
 
-            $randomTutorials->each(function ($tutorial) use ($user) {
+            $randomSubmoduls->each(function ($submodul) use ($user) {
                 Progress::factory()->create([
                     'user_id' => $user->id,
-                    'tutorial_id' => $tutorial->id,
+                    'submodul_id' => $submodul->id,
                     'is_completed' => true,
                     'completed_at' => now()->subDays(rand(1, 90)),
                 ]);
@@ -191,7 +191,7 @@ class DatabaseSeeder extends Seeder
         for ($i = 0; $i < 20; $i++) {
             Tanya::factory()->create([
                 'user_id' => $users->random()->id,
-                'tutorial_id' => $tutorials->random()->id,
+                'submodul_id' => $submoduls->random()->id,
             ]);
         }
 
@@ -205,7 +205,7 @@ class DatabaseSeeder extends Seeder
         }
     }
 
-    private function getTutorialTitle(string $roadmapTitle, int $tutorialNumber): string
+    private function getSubmodulTitle(string $modulTitle, int $submodulNumber): string
     {
         $titles = [
             'Blender Fundamentals' => [
@@ -270,12 +270,12 @@ class DatabaseSeeder extends Seeder
             ]
         ];
 
-        return $titles[$roadmapTitle][$tutorialNumber - 1] ?? "Tutorial {$tutorialNumber}";
+        return $titles[$modulTitle][$submodulNumber - 1] ?? "Submodul {$submodulNumber}";
     }
 
-    private function getTutorialContent(string $roadmapTitle, int $tutorialNumber): string
+    private function getSubmodulContent(string $modulTitle, int $submodulNumber): string
     {
-        return "Ini adalah tutorial {$tutorialNumber} dari roadmap {$roadmapTitle}. " .
+        return "Ini adalah submodul {$submodulNumber} dari modul {$modulTitle}. " .
             "Materi ini mencakup konsep-konsep penting yang perlu dikuasai untuk melanjutkan ke tahap berikutnya. " .
             "Pelajari dengan seksama dan praktikkan semua langkah-langkah yang diberikan.";
     }

@@ -2,19 +2,19 @@
 <div class="card mt-4">
     <div class="card-header d-flex justify-content-between align-items-center">
         <h5 class="mb-0">
-            <i class="fas fa-question-circle me-2"></i>Quizzes Tutorial
+            <i class="fas fa-question-circle me-2"></i>Quizzes Submodul
         </h5>
 
-        <a href="{{ route('admin.roadmaps.tutorials.quizzes.create', ['roadmap' => $roadmap, 'tutorial' => $tutorial]) }}"
+        <a href="{{ route('admin.moduls.submoduls.quizzes.create', ['modul' => $modul, 'submodul' => $submodul]) }}"
             class="btn btn-primary">
             <i class="fas fa-plus me-1"></i>Tambah Quiz
         </a>
     </div>
 
     <div class="card-body">
-        @if ($tutorial->quizzes->count() > 0)
+        @if ($submodul->quizzes->count() > 0)
             <div class="row">
-                @foreach ($tutorial->quizzes as $quiz)
+                @foreach ($submodul->quizzes as $quiz)
                     <div class="col-md-6 mb-4">
                         <div class="card h-100">
                             <div class="card-header bg-light d-flex justify-content-between align-items-center">
@@ -69,13 +69,13 @@
                             </div>
                             <div class="card-footer bg-transparent">
                                 <div class="d-flex justify-content-between">
-                                    <a href="{{ route('admin.roadmaps.tutorials.quizzes.edit', ['roadmap' => $roadmap, 'tutorial' => $tutorial, 'quiz' => $quiz]) }}"
+                                    <a href="{{ route('admin.moduls.submoduls.quizzes.edit', ['modul' => $modul, 'submodul' => $submodul, 'quiz' => $quiz]) }}"
                                         class="btn btn-outline-warning btn-sm">
                                         <i class="fas fa-edit me-1"></i>Edit
                                     </a>
 
                                     <form
-                                        action="{{ route('admin.roadmaps.tutorials.quizzes.destroy', ['roadmap' => $roadmap, 'tutorial' => $tutorial, 'quiz' => $quiz]) }}"
+                                        action="{{ route('admin.moduls.submoduls.quizzes.destroy', ['modul' => $modul, 'submodul' => $submodul, 'quiz' => $quiz]) }}"
                                         method="POST">
                                         @csrf
                                         @method('DELETE')
@@ -99,22 +99,22 @@
             <div class="mt-4 pt-3 border-top">
                 <div class="row text-center">
                     <div class="col-md-3">
-                        <h4 class="text-primary mb-0">{{ $tutorial->quizzes->count() }}</h4>
+                        <h4 class="text-primary mb-0">{{ $submodul->quizzes->count() }}</h4>
                         <small class="text-muted">Total Quiz</small>
                     </div>
                     <div class="col-md-3">
                         <h4 class="text-success mb-0">
-                            {{ $tutorial->quizzes->sum(function ($quiz) {return $quiz->pertanyaan->count();}) }}</h4>
+                            {{ $submodul->quizzes->sum(function ($quiz) {return $quiz->pertanyaan->count();}) }}</h4>
                         <small class="text-muted">Total Soal</small>
                     </div>
                     <div class="col-md-3">
                         <h4 class="text-info mb-0">
-                            {{ $tutorial->quizzes->sum(function ($quiz) {return $quiz->pertanyaan->sum('poin');}) }}
+                            {{ $submodul->quizzes->sum(function ($quiz) {return $quiz->pertanyaan->sum('poin');}) }}
                         </h4>
                         <small class="text-muted">Total Poin</small>
                     </div>
                     <div class="col-md-3">
-                        <h4 class="text-warning mb-0">{{ $tutorial->quizzes->avg('passing_score') }}%</h4>
+                        <h4 class="text-warning mb-0">{{ $submodul->quizzes->avg('passing_score') }}%</h4>
                         <small class="text-muted">Rata-rata Passing</small>
                     </div>
                 </div>
@@ -123,9 +123,9 @@
             <div class="text-center py-4">
                 <i class="fas fa-question-circle fa-3x text-muted mb-3"></i>
                 <h5 class="text-muted">Belum Ada Quiz</h5>
-                <p class="text-muted mb-3">Tutorial ini belum memiliki quiz. Klik tombol "Tambah Quiz" untuk membuat
+                <p class="text-muted mb-3">Submodul ini belum memiliki quiz. Klik tombol "Tambah Quiz" untuk membuat
                     quiz pertama.</p>
-                <a href="{{ route('admin.roadmaps.tutorials.quizzes.create', ['roadmap' => $roadmap, 'tutorial' => $tutorial]) }}"
+                <a href="{{ route('admin.moduls.submoduls.quizzes.create', ['modul' => $modul, 'submodul' => $submodul]) }}"
                     class="btn btn-primary">
                     <i class="fas fa-plus me-1"></i>Tambah Quiz Pertama
                 </a>

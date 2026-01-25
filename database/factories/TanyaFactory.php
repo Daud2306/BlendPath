@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\User;
-use App\Models\Tutorial;
+use App\Models\Submodul;
 
 class TanyaFactory extends Factory
 {
@@ -25,7 +25,7 @@ class TanyaFactory extends Factory
 
         return [
             'user_id' => 1,
-            'tutorial_id' => 1,
+            'submodul_id' => 1,
             'pertanyaan' => $this->faker->randomElement($questions),
             'created_at' => $this->faker->dateTimeBetween('-90 days', 'now'),
             'updated_at' => now(),

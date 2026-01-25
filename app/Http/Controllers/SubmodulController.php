@@ -3,37 +3,37 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
-use App\Models\Tutorial;
-use App\Models\Roadmap;
+use App\Models\Submodul;
+use App\Models\Modul;
 use App\Models\Resource;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
-class TutorialController extends Controller
+class SubmodulController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function userIndex(Roadmap $roadmap)
+    public function userIndex(Modul $modul)
     {
-        $tutorials = Tutorial::where('roadmap_id', $roadmap->id)
+        $submoduls = Submodul::where('modul_id', $modul->id)
             ->orderBy('sort_order')
             ->paginate(12);
 
-        return view('user.tutorials.index', compact('roadmap', 'tutorials'));
+        return view('user.submoduls.index', compact('modul', 'submoduls'));
     }
 
-    public function userShow(Roadmap $roadmap, $sort_order)
+    public function userShow(Modul $modul, $sort_order)
     {
-        $tutorial = Tutorial::where('roadmap_id', $roadmap->id)
+        $submodul = Submodul::where('modul_id', $modul->id)
             ->where('sort_order', $sort_order)
             ->firstOrFail();
 
-        // CEK TUTORIAL SEBELUMNYA YANG BELUM SELESAI
+        // CEK SUBMODUL SEBELUMNYA YANG BELUM SELESAI
         if (Auth::check()) {
-            $previousTutorial = Tutorial::where('roadmap_id', $roadmap->id)
-                ->where('sort_order', '<', $tutorial->sort_order)
+            $previousSubmodul = Submodul::where('modul_id', $modul->id)
+                ->where('sort_order', '<', $submodul->sort_order)
                 ->whereDoesntHave('progress', function ($query) {
                     $query->where('user_id', Auth::id())
                         ->where('is_completed', true);
@@ -41,18 +41,18 @@ class TutorialController extends Controller
                 ->orderBy('sort_order', 'desc')
                 ->first();
 
-            if ($previousTutorial && $tutorial->sort_order > 1) {
+            if ($previousSubmodul && $submodul->sort_order > 1) {
                 return redirect()
-                    ->route('roadmaps.tutorials.show', [
-                        'roadmap' => $roadmap->id,
-                        'sort_order' => $previousTutorial->sort_order
+                    ->route('moduls.submoduls.show', [
+                        'modul' => $modul->id,
+                        'sort_order' => $previousSubmodul->sort_order
                     ])
-                    ->with('error', 'Silakan selesaikan tutorial sebelumnya terlebih dahulu: ' . $previousTutorial->judul);
+                    ->with('error', 'Silakan selesaikan submodul sebelumnya terlebih dahulu: ' . $previousSubmodul->judul);
             }
         }
 
         // Load relations dengan urutan yang benar - PERTANYAAN TERBARU DI ATAS
-        $tutorial->load([
+        $submodul->load([
             'resources',
             'tanya' => function ($query) {
                 $query->orderBy('created_at', 'desc'); // Pertanyaan terbaru di atas
@@ -66,48 +66,48 @@ class TutorialController extends Controller
             'tanya.jawabs.resources'
         ]);
 
-        $roadmapProgress = $roadmap->getUserProgress();
+        $modulProgress = $modul->getUserProgress();
 
-        $prevTutorial = Tutorial::where('roadmap_id', $roadmap->id)
-            ->where('sort_order', '<', $tutorial->sort_order)
+        $prevSubmodul = Submodul::where('modul_id', $modul->id)
+            ->where('sort_order', '<', $submodul->sort_order)
             ->orderBy('sort_order', 'desc')
             ->first();
 
-        $nextTutorial = Tutorial::where('roadmap_id', $roadmap->id)
-            ->where('sort_order', '>', $tutorial->sort_order)
+        $nextSubmodul = Submodul::where('modul_id', $modul->id)
+            ->where('sort_order', '>', $submodul->sort_order)
             ->orderBy('sort_order', 'asc')
             ->first();
 
-        return view('user.tutorials.show', compact(
-            'roadmap',
-            'tutorial',
-            'prevTutorial',
-            'nextTutorial',
-            'roadmapProgress'
+        return view('user.submoduls.show', compact(
+            'modul',
+            'submodul',
+            'prevSubmodul',
+            'nextSubmodul',
+            'modulProgress'
         ));
     }
 
-    public function adminIndex(Roadmap $roadmap)
+    public function adminIndex(Modul $modul)
     {
-        $tutorials = Tutorial::where('roadmap_id', $roadmap->id)
+        $submoduls = Submodul::where('modul_id', $modul->id)
             ->orderBy('sort_order')
             ->paginate(20);
 
-        return view('admin.tutorials.index', compact('roadmap', 'tutorials'));
+        return view('admin.submoduls.index', compact('modul', 'submoduls'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create(Roadmap $roadmap)
+    public function create(Modul $modul)
     {
-        return view('admin.tutorials.create', compact('roadmap'));
+        return view('admin.submoduls.create', compact('modul'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, $roadmapId)
+    public function store(Request $request, $modulId)
     {
         $request->validate([
             'judul'           => 'required|string|max:255',
@@ -118,8 +118,8 @@ class TutorialController extends Controller
             'resource_links'  => 'nullable|string',
         ]);
 
-        $tutorial = Tutorial::create([
-            'roadmap_id' => $roadmapId,
+        $submodul = Submodul::create([
+            'modul_id' => $modulId,
             'judul'      => $request->input('judul'),
             'konten'     => $request->input('konten', ''),
             'sort_order' => $request->input('sort_order', 0),
@@ -130,7 +130,7 @@ class TutorialController extends Controller
                 if ($file && $file->isValid()) {
                     $path = $file->store('resources', 'public');
                     Resource::create([
-                        'tutorial_id' => $tutorial->id,
+                        'submodul_id' => $submodul->id,
                         'resource'    => $path,
                     ]);
                 }
@@ -139,23 +139,23 @@ class TutorialController extends Controller
 
         if ($request->filled('resource')) {
             Resource::create([
-                'tutorial_id' => $tutorial->id,
+                'submodul_id' => $submodul->id,
                 'resource'    => trim($request->input('resource')),
             ]);
         }
 
         return redirect()
-            ->route('admin.roadmaps.tutorials.index', $roadmapId)
-            ->with('success', 'Tutorial berhasil dibuat.');
+            ->route('admin.moduls.submoduls.index', $modulId)
+            ->with('success', 'Submodul berhasil dibuat.');
     }
 
-    public function adminShow(Roadmap $roadmap, Tutorial $tutorial)
+    public function adminShow(Modul $modul, Submodul $submodul)
     {
-        if ($tutorial->roadmap_id !== $roadmap->id) {
+        if ($submodul->modul_id !== $modul->id) {
             abort(404);
         }
 
-        $tutorial->load([
+        $submodul->load([
             'resources',
             'tanya.user',
             'tanya.jawabs.user',
@@ -164,42 +164,42 @@ class TutorialController extends Controller
             'quizzes.pertanyaan'
         ]);
 
-        $prevTutorial = Tutorial::where('roadmap_id', $roadmap->id)
-            ->where('sort_order', '<', $tutorial->sort_order)
+        $prevSubmodul = Submodul::where('modul_id', $modul->id)
+            ->where('sort_order', '<', $submodul->sort_order)
             ->orderBy('sort_order', 'desc')
             ->first();
 
-        $nextTutorial = Tutorial::where('roadmap_id', $roadmap->id)
-            ->where('sort_order', '>', $tutorial->sort_order)
+        $nextSubmodul = Submodul::where('modul_id', $modul->id)
+            ->where('sort_order', '>', $submodul->sort_order)
             ->orderBy('sort_order', 'asc')
             ->first();
 
-        return view('admin.tutorials.show', compact(
-            'roadmap',
-            'tutorial',
-            'prevTutorial',
-            'nextTutorial'
+        return view('admin.submoduls.show', compact(
+            'modul',
+            'submodul',
+            'prevSubmodul',
+            'nextSubmodul'
         ));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Roadmap $roadmap, Tutorial $tutorial)
+    public function edit(Modul $modul, Submodul $submodul)
     {
-        if ($tutorial->roadmap_id !== $roadmap->id) {
+        if ($submodul->modul_id !== $modul->id) {
             abort(404);
         }
 
-        return view('admin.tutorials.edit', compact('roadmap', 'tutorial'));
+        return view('admin.submoduls.edit', compact('modul', 'submodul'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Roadmap $roadmap, Tutorial $tutorial)
+    public function update(Request $request, Modul $modul, Submodul $submodul)
     {
-        if ($tutorial->roadmap_id !== $roadmap->id) {
+        if ($submodul->modul_id !== $modul->id) {
             abort(404);
         }
 
@@ -209,38 +209,38 @@ class TutorialController extends Controller
             'sort_order' => 'nullable|integer|min:0',
         ]);
 
-        $tutorial->update($request->only(['judul', 'deskripsi', 'konten', 'sort_order']));
+        $submodul->update($request->only(['judul', 'deskripsi', 'konten', 'sort_order']));
 
         return redirect()
-            ->route('admin.roadmaps.tutorials.index', $roadmap)
-            ->with('success', 'Tutorial berhasil diperbarui.');
+            ->route('admin.moduls.submoduls.index', $modul)
+            ->with('success', 'Submodul berhasil diperbarui.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Roadmap $roadmap, Tutorial $tutorial)
+    public function destroy(Modul $modul, Submodul $submodul)
     {
-        if ($tutorial->roadmap_id !== $roadmap->id) {
+        if ($submodul->modul_id !== $modul->id) {
             abort(404);
         }
 
-        foreach ($tutorial->resources as $resource) {
+        foreach ($submodul->resources as $resource) {
 
             if (!Str::startsWith($resource->resource, ['http://', 'https://'])) {
                 Storage::disk('public')->delete($resource->resource);
             }
         }
-        $tutorial->resources()->delete();
+        $submodul->resources()->delete();
 
-        $tutorial->delete();
+        $submodul->delete();
 
         return redirect()
-            ->route('admin.roadmaps.tutorials.index', $roadmap->id)
-            ->with('success', 'Tutorial dan semua media berhasil dihapus.');
+            ->route('admin.moduls.submoduls.index', $modul->id)
+            ->with('success', 'Submodul dan semua media berhasil dihapus.');
     }
 
-    public function updateResources(Request $request, Roadmap $roadmap, Tutorial $tutorial)
+    public function updateResources(Request $request, Modul $modul, Submodul $submodul)
     {
         $request->validate([
             'resources.*'   => 'nullable|file|max:20480|mimes:jpg,jpeg,png,gif,mp4,mov,webm,zip,pdf',
@@ -253,9 +253,9 @@ class TutorialController extends Controller
         if ($request->hasFile('resources')) {
             foreach ($request->file('resources') as $file) {
                 if ($file && $file->isValid()) {
-                    $path = $file->store('tutorials/resources', 'public');
+                    $path = $file->store('submoduls/resources', 'public');
                     Resource::create([
-                        'tutorial_id' => $tutorial->id,
+                        'submodul_id' => $submodul->id,
                         'resource'    => $path,
                     ]);
                     $messages[] = 'File uploaded: ' . basename($path);
@@ -269,7 +269,7 @@ class TutorialController extends Controller
             if ($request->filled('resource_id')) {
                 $res = Resource::find($request->input('resource_id'));
 
-                if (! $res || $res->tutorial_id !== $tutorial->id) {
+                if (! $res || $res->submodul_id !== $submodul->id) {
                     return back()->withErrors('Invalid resource selected for update.');
                 }
 
@@ -283,7 +283,7 @@ class TutorialController extends Controller
                 $messages[] = 'Resource link updated.';
             } else {
                 Resource::create([
-                    'tutorial_id' => $tutorial->id,
+                    'submodul_id' => $submodul->id,
                     'resource'    => $resourceUrl,
                 ]);
                 $messages[] = 'Resource link added.';
@@ -297,10 +297,10 @@ class TutorialController extends Controller
         return back()->with('success', implode(' ', $messages));
     }
 
-    public function destroyResource(Roadmap $roadmap, Tutorial $tutorial, Resource $resource)
+    public function destroyResource(Modul $modul, Submodul $submodul, Resource $resource)
     {
 
-        if ($resource->tutorial_id !== $tutorial->id) {
+        if ($resource->submodul_id !== $submodul->id) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -313,38 +313,38 @@ class TutorialController extends Controller
         return back()->with('success', 'Resource berhasil dihapus!');
     }
 
-    private function resetSortOrder($roadmapId)
+    private function resetSortOrder($modulId)
     {
-        $tutorials = Tutorial::where('roadmap_id', $roadmapId)
+        $submoduls = Submodul::where('modul_id', $modulId)
             ->orderBy('sort_order')
             ->orderBy('created_at')
             ->get();
 
         $order = 1;
-        foreach ($tutorials as $tutorial) {
-            $tutorial->update(['sort_order' => $order++]);
+        foreach ($submoduls as $submodul) {
+            $submodul->update(['sort_order' => $order++]);
         }
     }
 
-    public function complete(Roadmap $roadmap, $sort_order)
+    public function complete(Modul $modul, $sort_order)
     {
-        $tutorial = Tutorial::where('roadmap_id', $roadmap->id)
+        $submodul = Submodul::where('modul_id', $modul->id)
             ->where('sort_order', $sort_order)
             ->firstOrFail();
 
-        $tutorial->markAsCompleted();
+        $submodul->markAsCompleted();
 
-        return back()->with('success', 'Tutorial berhasil ditandai sebagai selesai!');
+        return back()->with('success', 'Submodul berhasil ditandai sebagai selesai!');
     }
 
-    public function incomplete(Roadmap $roadmap, $sort_order)
+    public function incomplete(Modul $modul, $sort_order)
     {
-        $tutorial = Tutorial::where('roadmap_id', $roadmap->id)
+        $submodul = Submodul::where('modul_id', $modul->id)
             ->where('sort_order', $sort_order)
             ->firstOrFail();
 
-        $tutorial->markAsIncomplete();
+        $submodul->markAsIncomplete();
 
-        return back()->with('success', 'Tutorial berhasil ditandai sebagai belum selesai.');
+        return back()->with('success', 'Submodul berhasil ditandai sebagai belum selesai.');
     }
 }

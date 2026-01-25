@@ -10,8 +10,8 @@
             <form class="d-flex" method="GET" action="{{ route('admin.search') }}">
                 <select name="type" class="form-select form-select-sm me-2" style="width: 120px;">
                     <option value="all" {{ $type == 'all' ? 'selected' : '' }}>All</option>
-                    <option value="roadmaps" {{ $type == 'roadmaps' ? 'selected' : '' }}>Roadmaps</option>
-                    <option value="tutorials" {{ $type == 'tutorials' ? 'selected' : '' }}>Tutorials</option>
+                    <option value="moduls" {{ $type == 'moduls' ? 'selected' : '' }}>Moduls</option>
+                    <option value="submoduls" {{ $type == 'submoduls' ? 'selected' : '' }}>Submoduls</option>
                     <option value="users" {{ $type == 'users' ? 'selected' : '' }}>Users</option>
                 </select>
                 <input name="q" class="form-control form-control-sm me-2" type="search" placeholder="Search..."
@@ -24,13 +24,13 @@
 
         <div class="text-muted mb-4">Keyword: "{{ $query }}" | Category: {{ ucfirst($type) }}</div>
 
-        @if ($type == 'all' || $type == 'roadmaps')
-            @if (isset($results['roadmaps']) && $results['roadmaps']->count() > 0)
+        @if ($type == 'all' || $type == 'moduls')
+            @if (isset($results['moduls']) && $results['moduls']->count() > 0)
                 <div class="card shadow-sm mb-4">
                     <div class="card-header bg-primary text-white">
                         <h5 class="mb-0">
                             <i class="mdi mdi-map-marker-path me-2"></i>
-                            Roadmaps ({{ $results['roadmaps']->count() }})
+                            Moduls ({{ $results['moduls']->count() }})
                         </h5>
                     </div>
                     <div class="card-body">
@@ -44,15 +44,15 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($results['roadmaps'] as $roadmap)
+                                    @foreach ($results['moduls'] as $modul)
                                         <tr>
-                                            <td>{{ $roadmap->judul }}</td>
-                                            <td>{{ Str::limit(strip_tags($roadmap->deskripsi), 100) }}</td>
+                                            <td>{{ $modul->judul }}</td>
+                                            <td>{{ Str::limit(strip_tags($modul->deskripsi), 100) }}</td>
                                             <td>
-                                                <a href="{{ route('admin.roadmaps.edit', $roadmap) }}"
+                                                <a href="{{ route('admin.moduls.edit', $modul) }}"
                                                     class="btn btn-sm btn-warning">Edit</a>
-                                                <a href="{{ route('admin.roadmaps.tutorials.index', $roadmap) }}"
-                                                    class="btn btn-sm btn-info">Tutorials</a>
+                                                <a href="{{ route('admin.moduls.submoduls.index', $modul) }}"
+                                                    class="btn btn-sm btn-info">Submoduls</a>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -61,21 +61,21 @@
                         </div>
                     </div>
                 </div>
-            @elseif($type == 'roadmaps')
+            @elseif($type == 'moduls')
                 <div class="alert alert-info">
                     <i class="mdi mdi-information-outline me-2"></i>
-                    Tidak ditemukan roadmap untuk "{{ $query }}".
+                    Tidak ditemukan modul untuk "{{ $query }}".
                 </div>
             @endif
         @endif
 
-        @if ($type == 'all' || $type == 'tutorials')
-            @if (isset($results['tutorials']) && $results['tutorials']->count() > 0)
+        @if ($type == 'all' || $type == 'submoduls')
+            @if (isset($results['submoduls']) && $results['submoduls']->count() > 0)
                 <div class="card shadow-sm mb-4">
                     <div class="card-header bg-success text-white">
                         <h5 class="mb-0">
                             <i class="mdi mdi-book-open-page-variant me-2"></i>
-                            Tutorials ({{ $results['tutorials']->count() }})
+                            Submoduls ({{ $results['submoduls']->count() }})
                         </h5>
                     </div>
                     <div class="card-body">
@@ -85,18 +85,18 @@
                                     <tr>
                                         <th>Judul</th>
                                         <th>Konten</th>
-                                        <th>Roadmap</th>
+                                        <th>Modul</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($results['tutorials'] as $tutorial)
+                                    @foreach ($results['submoduls'] as $submodul)
                                         <tr>
-                                            <td>{{ $tutorial->judul }}</td>
-                                            <td>{{ Str::limit(strip_tags($tutorial->konten), 100) }}</td>
-                                            <td>{{ $tutorial->roadmap->judul ?? 'N/A' }}</td>
+                                            <td>{{ $submodul->judul }}</td>
+                                            <td>{{ Str::limit(strip_tags($submodul->konten), 100) }}</td>
+                                            <td>{{ $submodul->modul->judul ?? 'N/A' }}</td>
                                             <td>
-                                                <a href="{{ route('admin.roadmaps.tutorials.edit', [$tutorial->roadmap_id, $tutorial]) }}"
+                                                <a href="{{ route('admin.moduls.submoduls.edit', [$submodul->modul_id, $submodul]) }}"
                                                     class="btn btn-sm btn-warning">Edit</a>
                                             </td>
                                         </tr>
@@ -106,10 +106,10 @@
                         </div>
                     </div>
                 </div>
-            @elseif($type == 'tutorials')
+            @elseif($type == 'submoduls')
                 <div class="alert alert-info">
                     <i class="mdi mdi-information-outline me-2"></i>
-                    Tidak ditemukan tutorial untuk "{{ $query }}".
+                    Tidak ditemukan submodul untuk "{{ $query }}".
                 </div>
             @endif
         @endif
@@ -159,8 +159,8 @@
 
         @if (
             $type == 'all' &&
-                (!isset($results['roadmaps']) || $results['roadmaps']->count() == 0) &&
-                (!isset($results['tutorials']) || $results['tutorials']->count() == 0) &&
+                (!isset($results['moduls']) || $results['moduls']->count() == 0) &&
+                (!isset($results['submoduls']) || $results['submoduls']->count() == 0) &&
                 (!isset($results['users']) || $results['users']->count() == 0))
             <div class="alert alert-info">
                 <i class="mdi mdi-information-outline me-2"></i>

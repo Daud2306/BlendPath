@@ -19,10 +19,10 @@
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                    Total Roadmaps
+                                    Total Moduls
                                 </div>
                                 <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                    {{ \App\Models\Roadmap::count() }}
+                                    {{ \App\Models\Modul::count() }}
                                 </div>
                             </div>
                             <div class="col-auto">
@@ -39,10 +39,10 @@
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                    Total Tutorials
+                                    Total Submoduls
                                 </div>
                                 <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                    {{ \App\Models\Tutorial::count() }}
+                                    {{ \App\Models\Submodul::count() }}
                                 </div>
                             </div>
                             <div class="col-auto">
@@ -103,18 +103,18 @@
                     <div class="card-body">
                         <div class="list-group list-group-flush">
                             @php
-                                $recentTutorials = \App\Models\Tutorial::latest()->take(5)->get();
+                                $recentSubmoduls = \App\Models\Submodul::latest()->take(5)->get();
                                 $recentTanyas = \App\Models\Tanya::latest()->take(5)->get();
                             @endphp
 
-                            @if ($recentTutorials->count() > 0)
-                                @foreach ($recentTutorials as $tutorial)
+                            @if ($recentSubmoduls->count() > 0)
+                                @foreach ($recentSubmoduls as $submodul)
                                     <div class="list-group-item d-flex justify-content-between align-items-center">
                                         <div>
                                             <i class="fas fa-book text-primary me-2"></i>
-                                            <strong>Tutorial Baru:</strong> {{ Str::limit($tutorial->judul, 40) }}
+                                            <strong>Submodul Baru:</strong> {{ Str::limit($submodul->judul, 40) }}
                                         </div>
-                                        <small class="text-muted">{{ $tutorial->created_at->diffForHumans() }}</small>
+                                        <small class="text-muted">{{ $submodul->created_at->diffForHumans() }}</small>
                                     </div>
                                 @endforeach
                             @endif
@@ -131,7 +131,7 @@
                                 @endforeach
                             @endif
 
-                            @if ($recentTutorials->count() == 0 && $recentTanyas->count() == 0)
+                            @if ($recentSubmoduls->count() == 0 && $recentTanyas->count() == 0)
                                 <div class="text-center text-muted py-3">
                                     <i class="fas fa-inbox fa-2x mb-2"></i>
                                     <p>Belum ada aktivitas terbaru</p>
@@ -149,11 +149,11 @@
                     </div>
                     <div class="card-body">
                         <div class="d-grid gap-2">
-                            <a href="{{ route('admin.roadmaps.create') }}" class="btn btn-primary btn-block">
-                                <i class="fas fa-plus me-2"></i>Buat Roadmap Baru
+                            <a href="{{ route('admin.moduls.create') }}" class="btn btn-primary btn-block">
+                                <i class="fas fa-plus me-2"></i>Buat Modul Baru
                             </a>
-                            <a href="{{ route('admin.roadmaps.index') }}" class="btn btn-outline-primary btn-block">
-                                <i class="fas fa-list me-2"></i>Kelola Roadmaps
+                            <a href="{{ route('admin.moduls.index') }}" class="btn btn-outline-primary btn-block">
+                                <i class="fas fa-list me-2"></i>Kelola Moduls
                             </a>
                         </div>
                     </div>
@@ -189,24 +189,24 @@
             <div class="col-12">
                 <div class="card shadow">
                     <div class="card-header py-3 d-flex justify-content-between align-items-center">
-                        <h6 class="m-0 font-weight-bold text-primary">🗺️ Roadmaps Overview</h6>
-                        <a href="{{ route('admin.roadmaps.index') }}" class="btn btn-sm btn-outline-primary">
+                        <h6 class="m-0 font-weight-bold text-primary">🗺️ Moduls Overview</h6>
+                        <a href="{{ route('admin.moduls.index') }}" class="btn btn-sm btn-outline-primary">
                             Lihat Semua
                         </a>
                     </div>
                     <div class="card-body">
                         @php
-                            $roadmaps = \App\Models\Roadmap::withCount('tutorials')->latest()->take(6)->get();
+                            $moduls = \App\Models\Modul::withCount('submoduls')->latest()->take(6)->get();
                         @endphp
 
-                        @if ($roadmaps->count() > 0)
+                        @if ($moduls->count() > 0)
                             <div class="row">
-                                @foreach ($roadmaps as $roadmap)
+                                @foreach ($moduls as $modul)
                                     <div class="col-md-4 mb-3">
                                         <div class="card h-100">
-                                            @if ($roadmap->gambar)
-                                                <img src="{{ asset('storage/' . $roadmap->gambar) }}" class="card-img-top"
-                                                    alt="{{ $roadmap->judul }}" style="height: 120px; object-fit: cover;">
+                                            @if ($modul->gambar)
+                                                <img src="{{ asset('storage/' . $modul->gambar) }}" class="card-img-top"
+                                                    alt="{{ $modul->judul }}" style="height: 120px; object-fit: cover;">
                                             @else
                                                 <div class="card-img-top bg-light d-flex align-items-center justify-content-center"
                                                     style="height: 120px;">
@@ -214,16 +214,16 @@
                                                 </div>
                                             @endif
                                             <div class="card-body">
-                                                <h6 class="card-title">{{ Str::limit($roadmap->judul, 30) }}</h6>
+                                                <h6 class="card-title">{{ Str::limit($modul->judul, 30) }}</h6>
                                                 <p class="card-text small text-muted">
-                                                    {{ $roadmap->tutorials_count }} Tutorial
+                                                    {{ $modul->submoduls_count }} Submodul
                                                 </p>
                                                 <div class="d-flex gap-2">
-                                                    <a href="{{ route('admin.roadmaps.tutorials.index', $roadmap) }}"
+                                                    <a href="{{ route('admin.moduls.submoduls.index', $modul) }}"
                                                         class="btn btn-sm btn-outline-primary">
-                                                        Lihat Tutorial
+                                                        Lihat Submodul
                                                     </a>
-                                                    <a href="{{ route('admin.roadmaps.edit', $roadmap) }}"
+                                                    <a href="{{ route('admin.moduls.edit', $modul) }}"
                                                         class="btn btn-sm btn-outline-secondary">
                                                         Edit
                                                     </a>
@@ -236,9 +236,9 @@
                         @else
                             <div class="text-center py-4">
                                 <i class="fas fa-map-signs fa-3x text-muted mb-3"></i>
-                                <p class="text-muted">Belum ada roadmap. Mulai dengan membuat roadmap pertama!</p>
-                                <a href="{{ route('admin.roadmaps.create') }}" class="btn btn-primary">
-                                    Buat Roadmap Pertama
+                                <p class="text-muted">Belum ada modul. Mulai dengan membuat modul pertama!</p>
+                                <a href="{{ route('admin.moduls.create') }}" class="btn btn-primary">
+                                    Buat Modul Pertama
                                 </a>
                             </div>
                         @endif

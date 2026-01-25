@@ -4,30 +4,29 @@
 @section('hide_navbar', true)
 
 @section('content')
-    <section class="auth-section light-background">
+    <section class="auth-section">
         <div class="container">
-            <div class="row gy-4 align-items-center">
-                <div class="col-lg-6 order-2 order-lg-1">
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-lg-6">
                     <div class="auth-container">
-                        <div class="auth-card" data-aos="fade-up">
-                            <div class="text-center">
-                                <a href="/" class="auth-logo">
-                                    <img src="{{ asset('frontend/img/logo.png') }}" alt="BlendPath Logo" class="me-2"
-                                        style="height: 40px;">
-                                </a>
-                            </div>
+                        <!-- Logo di atas form (diluar card) -->
+                        <a href="/" class="auth-logo">
+                            <img src="{{ asset('frontend/img/logo.png') }}" alt="BlendPath Logo">
+                        </a>
 
-                            <h2 class="auth-title text-center">Daftarkan Akun Anda</h2>
-                            <p class="auth-subtitle text-center">
-                                <i class="bi bi-rocket-takeoff me-2"></i>Daftar sekarang dan mulai perjalanan kreatifmu di
-                                BlendPath.
+                        <div class="auth-card">
+                            <!-- Hanya subtitle, tanpa title -->
+                            <p class="auth-subtitle-only">
+                                Daftar sekarang untuk memulai perjalananmu!
                             </p>
 
                             @if ($errors->any())
-                                <div class="alert alert-danger" data-aos="fade-up" data-aos-delay="100">
-                                    <i class="bi bi-exclamation-triangle me-2"></i>
-                                    <strong>Terjadi kesalahan:</strong>
-                                    <ul class="mb-0 mt-2">
+                                <div class="alert alert-danger">
+                                    <div class="d-flex align-items-center">
+                                        <i class="bi bi-exclamation-triangle me-2"></i>
+                                        <strong>Terjadi kesalahan:</strong>
+                                    </div>
+                                    <ul class="mb-0 mt-2 ps-4">
                                         @foreach ($errors->all() as $error)
                                             <li>{{ $error }}</li>
                                         @endforeach
@@ -35,18 +34,19 @@
                                 </div>
                             @endif
 
-                            <form action="{{ route('register.process') }}" method="POST" class="auth-form"
-                                data-aos="fade-up" data-aos-delay="200">
+                            <form action="{{ route('register.process') }}" method="POST" class="auth-form">
                                 @csrf
 
                                 <div class="form-group">
+                                    <label class="form-label mb-2 small text-muted">Nama Lengkap</label>
                                     <div class="input-group">
                                         <span class="input-group-text">
                                             <i class="bi bi-person"></i>
                                         </span>
                                         <input type="text" name="name"
                                             class="form-control @error('name') is-invalid @enderror"
-                                            placeholder="Nama Lengkap" value="{{ old('name') }}" required autofocus>
+                                            placeholder="Masukkan nama lengkap" value="{{ old('name') }}" required
+                                            autofocus>
                                     </div>
                                     @error('name')
                                         <div class="invalid-feedback d-block">
@@ -56,13 +56,14 @@
                                 </div>
 
                                 <div class="form-group">
+                                    <label class="form-label mb-2 small text-muted">Email</label>
                                     <div class="input-group">
                                         <span class="input-group-text">
                                             <i class="bi bi-envelope"></i>
                                         </span>
                                         <input type="email" name="email"
                                             class="form-control @error('email') is-invalid @enderror"
-                                            placeholder="Alamat Email" value="{{ old('email') }}" required>
+                                            placeholder="Masukkan email" value="{{ old('email') }}" required>
                                     </div>
                                     @error('email')
                                         <div class="invalid-feedback d-block">
@@ -72,13 +73,14 @@
                                 </div>
 
                                 <div class="form-group">
+                                    <label class="form-label mb-2 small text-muted">Kata Sandi</label>
                                     <div class="input-group">
                                         <span class="input-group-text">
-                                            <i class="bi bi-key"></i>
+                                            <i class="bi bi-lock"></i>
                                         </span>
                                         <input type="password" name="password"
                                             class="form-control @error('password') is-invalid @enderror"
-                                            placeholder="Kata Sandi" required>
+                                            placeholder="Buat kata sandi" required>
                                     </div>
                                     @error('password')
                                         <div class="invalid-feedback d-block">
@@ -88,37 +90,28 @@
                                 </div>
 
                                 <div class="form-group">
+                                    <label class="form-label mb-2 small text-muted">Konfirmasi Kata Sandi</label>
                                     <div class="input-group">
                                         <span class="input-group-text">
-                                            <i class="bi bi-key-fill"></i>
+                                            <i class="bi bi-lock-fill"></i>
                                         </span>
                                         <input type="password" name="password_confirmation" class="form-control"
-                                            placeholder="Konfirmasi Kata Sandi" required>
+                                            placeholder="Ulangi kata sandi" required>
                                     </div>
                                 </div>
 
-                                <button type="submit" class="auth-btn">
-                                    <i class="bi bi-person-plus me-2"></i>Buat Akun
+                                <button type="submit" class="auth-btn mt-3">
+                                    <i class="bi bi-person-plus me-2"></i>Daftar Sekarang
                                 </button>
 
                                 <div class="auth-footer">
                                     <span>Sudah punya akun?
                                         <a href="{{ route('login') }}" class="auth-link">
-                                            <i class="bi bi-box-arrow-in-right me-1"></i>Masuk Sekarang!
+                                            Masuk
                                         </a>
                                     </span>
                                 </div>
                             </form>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-6 order-1 order-lg-2">
-                    <div class="auth-image" data-aos="zoom-out" data-aos-delay="300">
-                        <img src="{{ asset('frontend/img/details-5.png') }}" alt="Blender 3D Register" class="img-fluid">
-                        <div class="mt-4">
-                            <h4><i class="bi bi-people me-2"></i>Bergabung dengan Komunitas</h4>
-                            <p class="auth-image-description">Akses roadmap lengkap dan belajar bersama expert</p>
                         </div>
                     </div>
                 </div>

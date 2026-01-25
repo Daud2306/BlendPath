@@ -3,8 +3,8 @@
 @section('content')
     <div class="container py-4">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1 class="h4 mb-0">Edit Tutorial</h1>
-            <a href="{{ route('admin.roadmaps.tutorials.index', $roadmap) }}" class="btn btn-secondary">Back to Tutorials</a>
+            <h1 class="h4 mb-0">Edit Submodul</h1>
+            <a href="{{ route('admin.moduls.submoduls.index', $modul) }}" class="btn btn-secondary">Back to Submoduls</a>
         </div>
 
         @if ($errors->any())
@@ -23,7 +23,7 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-8">
-                        <form action="{{ route('admin.roadmaps.tutorials.update', [$roadmap, $tutorial]) }}" method="POST"
+                        <form action="{{ route('admin.moduls.submoduls.update', [$modul, $submodul]) }}" method="POST"
                             novalidate>
                             @csrf
                             @method('PUT')
@@ -31,23 +31,23 @@
                             <div class="mb-3">
                                 <label class="form-label">Title *</label>
                                 <input type="text" name="judul" class="form-control" required
-                                    value="{{ old('judul', $tutorial->judul) }}">
+                                    value="{{ old('judul', $submodul->judul) }}">
                             </div>
 
                             <div class="mb-3">
                                 <label class="form-label">Content *</label>
-                                <textarea name="konten" class="form-control" rows="12" required>{{ old('konten', $tutorial->konten) }}</textarea>
+                                <textarea name="konten" class="form-control" rows="12" required>{{ old('konten', $submodul->konten) }}</textarea>
                             </div>
 
                             <div class="mb-3">
                                 <label class="form-label">Sort Order</label>
                                 <input type="number" name="sort_order" class="form-control"
-                                    value="{{ old('sort_order', $tutorial->sort_order) }}">
+                                    value="{{ old('sort_order', $submodul->sort_order) }}">
                             </div>
 
                             <div class="d-flex gap-2">
-                                <button type="submit" class="btn btn-primary">Update Tutorial</button>
-                                <a href="{{ route('admin.roadmaps.tutorials.index', $roadmap) }}"
+                                <button type="submit" class="btn btn-primary">Update Submodul</button>
+                                <a href="{{ route('admin.moduls.submoduls.index', $modul) }}"
                                     class="btn btn-secondary">Cancel</a>
                             </div>
                         </form>
@@ -56,21 +56,21 @@
                     <div class="col-md-4">
                         <div class="card bg-light mb-3">
                             <div class="card-body">
-                                <h6 class="mb-2">Tutorial Info</h6>
-                                <div class="small">Roadmap: <strong>{{ $roadmap->judul }}</strong></div>
-                                <div class="small">Created: <strong>{{ $tutorial->created_at->format('d M Y') }}</strong>
+                                <h6 class="mb-2">Submodul Info</h6>
+                                <div class="small">Modul: <strong>{{ $modul->judul }}</strong></div>
+                                <div class="small">Created: <strong>{{ $submodul->created_at->format('d M Y') }}</strong>
                                 </div>
-                                <div class="small">Questions: <strong>{{ $tutorial->tanya->count() }}</strong></div>
-                                <div class="small">Resources: <strong>{{ $tutorial->resources->count() }}</strong></div>
+                                <div class="small">Questions: <strong>{{ $submodul->tanya->count() }}</strong></div>
+                                <div class="small">Resources: <strong>{{ $submodul->resources->count() }}</strong></div>
                             </div>
                         </div>
 
-                        @if ($tutorial->resources->count() > 0)
+                        @if ($submodul->resources->count() > 0)
                             <div class="card mb-3">
                                 <div class="card-body">
                                     <h6 class="mb-3">Current Resources</h6>
 
-                                    @foreach ($tutorial->resources as $resource)
+                                    @foreach ($submodul->resources as $resource)
                                         <div class="mb-3 border rounded p-2">
                                             @php
                                                 $isYoutube = Str::contains($resource->resource, [
@@ -90,7 +90,7 @@
                                                 </div>
 
                                                 <form
-                                                    action="{{ route('admin.roadmaps.tutorials.resources.store', [$roadmap, $tutorial]) }}"
+                                                    action="{{ route('admin.moduls.submoduls.resources.store', [$modul, $submodul]) }}"
                                                     method="POST" class="mb-2">
                                                     @csrf
                                                     <input type="hidden" name="resource_id" value="{{ $resource->id }}">
@@ -111,7 +111,7 @@
                                             @endif
 
                                             <form
-                                                action="{{ route('admin.roadmaps.tutorials.resources.destroy', [$roadmap, $tutorial, $resource]) }}"
+                                                action="{{ route('admin.moduls.submoduls.resources.destroy', [$modul, $submodul, $resource]) }}"
                                                 method="POST" class="d-inline">
                                                 @csrf
                                                 @method('DELETE')
@@ -130,10 +130,10 @@
 
         <div class="d-flex">
             <div class="ms-auto">
-                <form action="{{ route('admin.roadmaps.tutorials.destroy', [$roadmap, $tutorial]) }}" method="POST">
+                <form action="{{ route('admin.moduls.submoduls.destroy', [$modul, $submodul]) }}" method="POST">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="btn btn-outline-danger">Delete Tutorial</button>
+                    <button type="submit" class="btn btn-outline-danger">Delete Submodul</button>
                 </form>
             </div>
         </div>

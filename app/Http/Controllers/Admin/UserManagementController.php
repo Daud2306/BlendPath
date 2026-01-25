@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Models\Tutorial;
+use App\Models\Submodul;
 use App\Models\Progress;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -99,7 +99,7 @@ class UserManagementController extends Controller
     public function monitoring()
     {
         $users = User::where('role', 'user')
-            ->withCount(['progress as completed_tutorials_count' => function ($query) {
+            ->withCount(['progress as completed_submoduls_count' => function ($query) {
                 $query->where('is_completed', true);
             }])
             ->with('progress')
@@ -114,7 +114,7 @@ class UserManagementController extends Controller
         $totalUsers = User::where('role', 'user')->count();
         $activeUsers = $this->getActiveUsersCount();
         $averageProgress = $this->calculateAverageProgress();
-        $totalTutorialsCompleted = Progress::where('is_completed', true)->count();
+        $totalSubmodulsCompleted = Progress::where('is_completed', true)->count();
         $topPerformers = $this->getTopPerformers();
 
         return view('admin.monitoring.index', compact(
@@ -122,7 +122,7 @@ class UserManagementController extends Controller
             'totalUsers',
             'activeUsers',
             'averageProgress',
-            'totalTutorialsCompleted',
+            'totalSubmodulsCompleted',
             'topPerformers'
         ));
     }
@@ -136,12 +136,11 @@ class UserManagementController extends Controller
 
     private function calculateAverageProgress()
     {
-        $totalTutorials = Tutorial::count();
-        if ($totalTutorials === 0) return 0;
+        $totalSubmoduls = Submodul::count();
+        if ($totalSubmoduls === 0) return 0;
 
         $totalCompleted = Progress::where('is_completed', true)->count();
-        $totalPossible = User::where('role', 'user')->count() * $totalTutorials;
-
+        $totalPossible = User::where('role', 'user')->count() * $totalSubmoduls;
         return $totalPossible > 0 ? round(($totalCompleted / $totalPossible) * 100, 1) : 0;
     }
 
@@ -162,11 +161,11 @@ class UserManagementController extends Controller
 
     private function calculateUserProgress(User $user)
     {
-        $totalTutorials = Tutorial::count();
-        if ($totalTutorials === 0) return 0;
+        $totalSubmoduls = Submodul::count();
+        if ($totalSubmoduls === 0) return 0;
 
-        $completedTutorials = $user->progress()->where('is_completed', true)->count();
-        return round(($completedTutorials / $totalTutorials) * 100, 1);
+        $completedSubmoduls = $user->progress()->where('is_completed', true)->count();
+        return round(($completedSubmoduls / $totalSubmoduls) * 100, 1);
     }
 
     public function export(): BinaryFileResponse

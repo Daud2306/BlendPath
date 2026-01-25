@@ -1,39 +1,39 @@
 @extends('layout.frontend.app')
 
-@section('title', $roadmap->judul . ' - BlendPath')
+@section('title', $modul->judul . ' - BlendPath')
 
 @section('content')
     <!-- Hero Section -->
-    <section class="roadmap-hero dark-background">
+    <section class="modul-hero dark-background">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-8">
                     <nav aria-label="breadcrumb" class="mb-3">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item">
-                                <a href="{{ route('roadmaps.index') }}" class="breadcrumb-link">
-                                    <i class="bi bi-map me-1"></i>Roadmaps
+                                <a href="{{ route('moduls.index') }}" class="breadcrumb-link">
+                                    <i class="bi bi-map me-1"></i>Moduls
                                 </a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">
-                                <i class="bi bi-signpost-2 me-1"></i>{{ Str::limit($roadmap->judul, 30) }}
+                                <i class="bi bi-signpost-2 me-1"></i>{{ Str::limit($modul->judul, 30) }}
                             </li>
                         </ol>
                     </nav>
 
-                    <h1 class="roadmap-title" data-aos="fade-up">
-                        <i class="bi bi-signpost-2-fill me-3"></i>{{ $roadmap->judul }}
+                    <h1 class="modul-title" data-aos="fade-up">
+                        <i class="bi bi-signpost-2-fill me-3"></i>{{ $modul->judul }}
                     </h1>
 
-                    <p class="roadmap-description" data-aos="fade-up" data-aos-delay="100">
-                        {{ $roadmap->deskripsi }}
+                    <p class="modul-description" data-aos="fade-up" data-aos-delay="100">
+                        {{ $modul->deskripsi }}
                     </p>
 
-                    <div class="roadmap-stats" data-aos="fade-up" data-aos-delay="200">
+                    <div class="modul-stats" data-aos="fade-up" data-aos-delay="200">
                         <div class="stat-item">
                             <i class="bi bi-play-circle"></i>
-                            <span class="stat-number">{{ $tutorials->count() }}</span>
-                            <span class="stat-label">Tutorial</span>
+                            <span class="stat-number">{{ $submoduls->count() }}</span>
+                            <span class="stat-label">Submodul</span>
                         </div>
                         <div class="stat-item">
                             <i class="bi bi-clock"></i>
@@ -44,11 +44,11 @@
                 </div>
 
                 <div class="col-lg-4 text-center" data-aos="zoom-in" data-aos-delay="300">
-                    @if ($roadmap->gambar)
-                        <img src="{{ asset('storage/' . $roadmap->gambar) }}" alt="{{ $roadmap->judul }}"
-                            class="roadmap-image img-fluid rounded">
+                    @if ($modul->gambar)
+                        <img src="{{ asset('storage/' . $modul->gambar) }}" alt="{{ $modul->judul }}"
+                            class="modul-image img-fluid rounded">
                     @else
-                        <div class="roadmap-image-placeholder">
+                        <div class="modul-image-placeholder">
                             <i class="bi bi-signpost-2 display-1"></i>
                         </div>
                     @endif
@@ -73,7 +73,7 @@
                             </span>
                         </div>
 
-                        <div class="progress roadmap-progress-bar">
+                        <div class="progress modul-progress-bar">
                             <div class="progress-bar 
                             @if ($progress['percentage'] == 100) bg-success
                             @elseif($progress['percentage'] > 50) bg-primary
@@ -87,7 +87,7 @@
                         @if ($progress['percentage'] == 100)
                             <div class="completion-message text-center mt-3">
                                 <i class="bi bi-trophy-fill me-2"></i>
-                                <strong>Selamat!</strong> Anda telah menyelesaikan roadmap ini!
+                                <strong>Selamat!</strong> Anda telah menyelesaikan modul ini!
                             </div>
                         @endif
                     </div>
@@ -96,59 +96,59 @@
         </div>
     </section>
 
-    <!-- Tutorials Section -->
-    <section class="tutorials-section py-5">
+    <!-- Submoduls Section -->
+    <section class="submoduls-section py-5">
         <div class="container">
             <div class="row">
                 <div class="col-12">
                     <div class="section-header mb-5" data-aos="fade-up">
                         <h2 class="section-title">
-                            <i class="bi bi-list-task me-3"></i>Daftar Tutorial
+                            <i class="bi bi-list-task me-3"></i>Daftar Submodul
                         </h2>
-                        <p class="section-subtitle">Ikuti tutorial secara berurutan untuk menguasai materi</p>
+                        <p class="section-subtitle">Ikuti submodul secara berurutan untuk menguasai materi</p>
                     </div>
 
-                    @if ($tutorials->count() === 0)
+                    @if ($submoduls->count() === 0)
                         <div class="empty-state text-center py-5" data-aos="fade-up">
                             <i class="bi bi-book display-1 text-muted"></i>
-                            <h3 class="mt-3">Belum ada tutorial tersedia</h3>
-                            <p class="text-muted">Tutorial untuk roadmap ini sedang dalam pengembangan.</p>
+                            <h3 class="mt-3">Belum ada submodul tersedia</h3>
+                            <p class="text-muted">Submodul untuk modul ini sedang dalam pengembangan.</p>
                         </div>
                     @else
-                        <div class="tutorials-list">
-                            @foreach ($tutorials as $tutorial)
+                        <div class="submoduls-list">
+                            @foreach ($submoduls as $submodul)
                                 @php
-                                    $isCompleted = $tutorial->isCompletedByUser();
+                                    $isCompleted = $submodul->isCompletedByUser();
                                     $isNext =
                                         !$isCompleted &&
-                                        ($loop->first || $tutorials[$loop->index - 1]->isCompletedByUser());
+                                        ($loop->first || $submoduls[$loop->index - 1]->isCompletedByUser());
                                 @endphp
 
-                                <div class="tutorial-card card mb-4 {{ $isCompleted ? 'completed' : '' }} {{ $isNext ? 'next-tutorial' : '' }}"
+                                <div class="submodul-card card mb-4 {{ $isCompleted ? 'completed' : '' }} {{ $isNext ? 'next-submodul' : '' }}"
                                     data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 }}">
                                     <div class="card-body">
                                         <div class="row align-items-center">
                                             <div class="col-md-1 text-center">
-                                                <div class="tutorial-order">
+                                                <div class="submodul-order">
                                                     @if ($isCompleted)
                                                         <span class="order-badge completed">
                                                             <i class="bi bi-check-lg"></i>
                                                         </span>
                                                     @elseif($isNext)
                                                         <span class="order-badge next">
-                                                            {{ $tutorial->sort_order }}
+                                                            {{ $submodul->sort_order }}
                                                         </span>
                                                     @else
                                                         <span class="order-badge">
-                                                            {{ $tutorial->sort_order }}
+                                                            {{ $submodul->sort_order }}
                                                         </span>
                                                     @endif
                                                 </div>
                                             </div>
 
                                             <div class="col-md-8">
-                                                <div class="tutorial-info">
-                                                    <h5 class="tutorial-title {{ $isCompleted ? 'completed' : '' }}">
+                                                <div class="submodul-info">
+                                                    <h5 class="submodul-title {{ $isCompleted ? 'completed' : '' }}">
                                                         @if ($isCompleted)
                                                             <i class="bi bi-check-circle-fill text-success me-2"></i>
                                                         @elseif($isNext)
@@ -156,21 +156,21 @@
                                                         @else
                                                             <i class="bi bi-circle text-muted me-2"></i>
                                                         @endif
-                                                        {{ $tutorial->judul }}
+                                                        {{ $submodul->judul }}
                                                     </h5>
 
-                                                    <p class="tutorial-description">
-                                                        {{ Str::limit(strip_tags($tutorial->deskripsi), 120) }}
+                                                    <p class="submodul-description">
+                                                        {{ Str::limit(strip_tags($submodul->deskripsi), 120) }}
                                                     </p>
 
-                                                    <div class="tutorial-meta">
+                                                    <div class="submodul-meta">
                                                         <span class="meta-item">
                                                             <i class="bi bi-calendar3 me-1"></i>
-                                                            {{ $tutorial->created_at->format('d M Y') }}
+                                                            {{ $submodul->created_at->format('d M Y') }}
                                                         </span>
                                                         <span class="meta-item">
                                                             <i class="bi bi-chat-dots me-1"></i>
-                                                            {{ $tutorial->tanya->count() }} diskusi
+                                                            {{ $submodul->tanya->count() }} diskusi
                                                         </span>
                                                         @if ($isCompleted)
                                                             <span class="meta-item completed">
@@ -183,8 +183,8 @@
                                             </div>
 
                                             <div class="col-md-3 text-end">
-                                                <a href="{{ route('roadmaps.tutorials.show', ['roadmap' => $roadmap->id, 'sort_order' => $tutorial->sort_order]) }}"
-                                                    class="btn tutorial-btn {{ $isCompleted ? 'btn-outline-success' : ($isNext ? 'btn-primary' : 'btn-outline-primary') }}">
+                                                <a href="{{ route('moduls.submoduls.show', ['modul' => $modul->id, 'sort_order' => $submodul->sort_order]) }}"
+                                                    class="btn submodul-btn {{ $isCompleted ? 'btn-outline-success' : ($isNext ? 'btn-primary' : 'btn-outline-primary') }}">
                                                     @if ($isCompleted)
                                                         <i class="bi bi-arrow-repeat me-2"></i>
                                                         Review
@@ -204,7 +204,7 @@
                         </div>
 
                         <div class="mt-5">
-                            {{ $tutorials->links() }}
+                            {{ $submoduls->links() }}
                         </div>
                     @endif
                 </div>

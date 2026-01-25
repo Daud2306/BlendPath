@@ -14,11 +14,11 @@
                     <span class="mdi mdi-menu me-1"></span>Menu
                 </button>
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="{{ route('admin.roadmaps.index') }}">
-                            <span class="mdi mdi-map-marker-path me-2"></span>Roadmaps
+                    <li><a class="dropdown-item" href="{{ route('admin.moduls.index') }}">
+                            <span class="mdi mdi-map-marker-path me-2"></span>Moduls
                         </a></li>
-                    <li><a class="dropdown-item" href="{{ route('admin.roadmaps.tutorials.index', 1) }}">
-                            <span class="mdi mdi-book-open-page-variant me-2"></span>Tutorials
+                    <li><a class="dropdown-item" href="{{ route('admin.moduls.submoduls.index', 1) }}">
+                            <span class="mdi mdi-book-open-page-variant me-2"></span>Submoduls
                         </a></li>
                     <li><a class="dropdown-item" href="{{ route('admin.users.index') }}">
                             <span class="mdi mdi-account-group me-2"></span>Users
@@ -29,8 +29,8 @@
             <form class="d-flex" method="GET" action="{{ route('admin.search') }}">
                 <select name="type" class="form-select form-select-sm me-2" style="width: 120px;">
                     <option value="all" {{ request('type') == 'all' ? 'selected' : '' }}>All</option>
-                    <option value="roadmaps" {{ request('type') == 'roadmaps' ? 'selected' : '' }}>Roadmaps</option>
-                    <option value="tutorials" {{ request('type') == 'tutorials' ? 'selected' : '' }}>Tutorials</option>
+                    <option value="moduls" {{ request('type') == 'moduls' ? 'selected' : '' }}>Moduls</option>
+                    <option value="submoduls" {{ request('type') == 'submoduls' ? 'selected' : '' }}>Submoduls</option>
                     <option value="users" {{ request('type') == 'users' ? 'selected' : '' }}>Users</option>
                 </select>
                 <input name="q" class="form-control form-control-sm me-2" type="search" placeholder="Search..."
@@ -64,11 +64,11 @@
                         <span class="mdi mdi-menu me-1"></span>Quick Menu
                     </button>
                     <ul class="dropdown-menu w-100">
-                        <li><a class="dropdown-item" href="{{ route('admin.roadmaps.index') }}">
-                                <span class="mdi mdi-map-marker-path me-2"></span>Roadmaps
+                        <li><a class="dropdown-item" href="{{ route('admin.moduls.index') }}">
+                                <span class="mdi mdi-map-marker-path me-2"></span>Moduls
                             </a></li>
-                        <li><a class="dropdown-item" href="{{ route('admin.roadmaps.tutorials.index', 1) }}">
-                                <span class="mdi mdi-book-open-page-variant me-2"></span>Tutorials
+                        <li><a class="dropdown-item" href="{{ route('admin.moduls.submoduls.index', 1) }}">
+                                <span class="mdi mdi-book-open-page-variant me-2"></span>Submoduls
                             </a></li>
                         <li><a class="dropdown-item" href="{{ route('admin.users.index') }}">
                                 <span class="mdi mdi-account-group me-2"></span>Users
@@ -80,9 +80,9 @@
                     <div class="input-group">
                         <select name="type" class="form-select form-select-sm">
                             <option value="all" {{ request('type') == 'all' ? 'selected' : '' }}>All</option>
-                            <option value="roadmaps" {{ request('type') == 'roadmaps' ? 'selected' : '' }}>Roadmaps
+                            <option value="moduls" {{ request('type') == 'moduls' ? 'selected' : '' }}>Moduls
                             </option>
-                            <option value="tutorials" {{ request('type') == 'tutorials' ? 'selected' : '' }}>Tutorials
+                            <option value="submoduls" {{ request('type') == 'submoduls' ? 'selected' : '' }}>Submoduls
                             </option>
                             <option value="users" {{ request('type') == 'users' ? 'selected' : '' }}>Users</option>
                         </select>

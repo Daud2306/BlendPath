@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('quizzes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('tutorial_id')->constrained()->onDelete('cascade');
+            $table->foreignId('submodul_id')->constrained()->onDelete('cascade');
             $table->string('judul_quiz');
             $table->integer('urutan');
             $table->integer('passing_score');

@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\User;
-use App\Models\Tutorial;
+use App\Models\Submodul;
 
 class ProgressFactory extends Factory
 {
@@ -12,7 +12,7 @@ class ProgressFactory extends Factory
     {
         return [
             'user_id' => 1,
-            'tutorial_id' => 1,
+            'submodul_id' => 1,
             'is_completed' => $this->faker->boolean(),
             'completed_at' => $this->faker->dateTimeBetween('-1 month', 'now'),
         ];
