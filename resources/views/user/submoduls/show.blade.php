@@ -3,7 +3,6 @@
 @section('title', $submodul->judul . ' - BlendPath')
 
 @section('content')
-    <!-- Hero Section -->
     <section class="submodul-hero dark-background">
         <div class="container">
             <div class="row align-items-center">
@@ -11,12 +10,12 @@
                     <nav aria-label="breadcrumb" class="mb-3">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item">
-                                <a href="{{ route('moduls.index') }}" class="breadcrumb-link">
+                                <a href="{{ route('learn.moduls.index') }}" class="breadcrumb-link">
                                     <i class="bi bi-map me-1"></i>Moduls
                                 </a>
                             </li>
                             <li class="breadcrumb-item">
-                                <a href="{{ route('moduls.show', $modul->id) }}" class="breadcrumb-link">
+                                <a href="{{ route('learn.moduls.show', $modul->id) }}" class="breadcrumb-link">
                                     <i class="bi bi-signpost-2 me-1"></i>{{ Str::limit($modul->judul, 20) }}
                                 </a>
                             </li>
@@ -40,22 +39,10 @@
                         </span>
                     </div>
                 </div>
-
-                <div class="col-lg-4 text-center" data-aos="zoom-in">
-                    @if ($modul->gambar)
-                        <img src="{{ asset('storage/' . $modul->gambar) }}" alt="{{ $modul->judul }}"
-                            class="modul-thumbnail img-fluid rounded">
-                    @else
-                        <div class="modul-thumbnail-placeholder">
-                            <i class="bi bi-signpost-2 display-1"></i>
-                        </div>
-                    @endif
-                </div>
             </div>
         </div>
     </section>
 
-    <!-- Alert Messages -->
     @if (session('error'))
         <div class="container mt-4">
             <div class="alert alert-warning alert-dismissible fade show" role="alert">
@@ -66,12 +53,10 @@
         </div>
     @endif
 
-    <!-- Submodul Content -->
     <section class="submodul-content py-5 light-background">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-10">
-                    <!-- Video Resources -->
                     @foreach ($submodul->resources ?? [] as $res)
                         @if (str_contains($res->resource, 'youtube.com/embed'))
                             <div class="video-container mb-5" data-aos="fade-up">
@@ -83,7 +68,6 @@
                         @endif
                     @endforeach
 
-                    <!-- Submodul Content -->
                     @if (!empty($submodul->konten))
                         <div class="content-card card shadow-sm mb-5" data-aos="fade-up">
                             <div class="card-body">
@@ -97,15 +81,14 @@
                         </div>
                     @endif
 
-                    <!-- Navigation Buttons -->
                     <div class="navigation-buttons d-flex justify-content-between mt-5" data-aos="fade-up">
                         @if ($prevSubmodul)
-                            <a href="{{ route('moduls.submoduls.show', ['modul' => $modul->id, 'sort_order' => $prevSubmodul->sort_order]) }}"
+                            <a href="{{ route('learn.submoduls.show', ['modul' => $modul->id, 'sort_order' => $prevSubmodul->sort_order]) }}"
                                 class="btn btn-outline-primary">
                                 <i class="bi bi-chevron-left me-2"></i>Submodul Sebelumnya
                             </a>
                         @else
-                            <a href="{{ route('moduls.show', $modul->id) }}" class="btn btn-outline-secondary">
+                            <a href="{{ route('learn.moduls.show', $modul->id) }}" class="btn btn-outline-secondary">
                                 <i class="bi bi-arrow-left me-2"></i>Kembali ke Modul
                             </a>
                         @endif
@@ -116,7 +99,7 @@
                             @endphp
 
                             @if ($isNextAccessible)
-                                <a href="{{ route('moduls.submoduls.show', ['modul' => $modul->id, 'sort_order' => $nextSubmodul->sort_order]) }}"
+                                <a href="{{ route('learn.submoduls.show', ['modul' => $modul->id, 'sort_order' => $nextSubmodul->sort_order]) }}"
                                     class="btn btn-primary">
                                     Submodul Selanjutnya <i class="bi bi-chevron-right ms-2"></i>
                                 </a>
@@ -145,7 +128,7 @@
                                         Anda sudah menyelesaikan submodul ini!
                                     </div>
                                     <form
-                                        action="{{ route('moduls.submoduls.incomplete', ['modul' => $modul->id, 'sort_order' => $submodul->sort_order]) }}"
+                                        action="{{ route('learn.submoduls.incomplete', ['modul' => $modul->id, 'sort_order' => $submodul->sort_order]) }}"
                                         method="POST">
                                         @csrf
                                         <button type="submit" class="btn btn-outline-warning">
@@ -158,32 +141,13 @@
                                         Submodul ini belum diselesaikan
                                     </div>
                                     <form
-                                        action="{{ route('moduls.submoduls.complete', ['modul' => $modul->id, 'sort_order' => $submodul->sort_order]) }}"
+                                        action="{{ route('learn.submoduls.complete', ['modul' => $modul->id, 'sort_order' => $submodul->sort_order]) }}"
                                         method="POST">
                                         @csrf
                                         <button type="submit" class="btn btn-success">
                                             <i class="bi bi-check-circle me-2"></i> Tandai Sudah Selesai
                                         </button>
                                     </form>
-                                @endif
-
-                                @if (isset($modulProgress))
-                                    <div class="modul-progress mt-4">
-                                        <div class="d-flex justify-content-between align-items-center mb-2">
-                                            <small class="text-muted">Progress Modul</small>
-                                            <small class="fw-bold text-primary">
-                                                {{ $modulProgress['progress_text'] }}
-                                                ({{ $modulProgress['percentage'] }}%)
-                                            </small>
-                                        </div>
-                                        <div class="progress" style="height: 8px;">
-                                            <div class="progress-bar" role="progressbar"
-                                                style="width: {{ $modulProgress['percentage'] }}%;"
-                                                aria-valuenow="{{ $modulProgress['percentage'] }}" aria-valuemin="0"
-                                                aria-valuemax="100">
-                                            </div>
-                                        </div>
-                                    </div>
                                 @endif
                             </div>
                         </div>
@@ -204,7 +168,7 @@
                             <div class="card-body">
                                 <div class="quizzes-list">
                                     @foreach ($submodul->quizzes as $quiz)
-                                        <a href="{{ route('moduls.submoduls.quiz.show', [
+                                        <a href="{{ route('learn.submoduls.quiz.show', [
                                             'modul' => $modul->id,
                                             'sort_order' => $submodul->sort_order,
                                         ]) }}"

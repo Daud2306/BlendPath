@@ -7,7 +7,7 @@
         <nav aria-label="breadcrumb" class="mb-3">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ url('/') }}" class="text-decoration-none">Beranda</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('moduls.index') }}" class="text-decoration-none">Moduls</a>
+                <li class="breadcrumb-item"><a href="{{ route('learn.moduls.index') }}" class="text-decoration-none">Moduls</a>
                 </li>
                 <li class="breadcrumb-item active" aria-current="page">{{ $modul->judul }}</li>
             </ol>
@@ -60,7 +60,7 @@
                                             <small class="text-muted">Durasi: {{ $submodul->durasi }}</small>
                                         @endif
                                         <div class="ms-auto">
-                                            <a href="{{ route('moduls.submoduls.show', ['modul' => $modul->id, 'sort_order' => $submodul->sort_order]) }}"
+                                            <a href="{{ route('learn.submoduls.show', ['modul' => $modul->id, 'sort_order' => $submodul->sort_order]) }}"
                                                 class="btn btn-primary btn-sm">Buka Submodul</a>
                                         </div>
                                     </div>
@@ -81,7 +81,7 @@
         </div>
 
         <div class="mt-4">
-            <a href="{{ route('moduls.index') }}" class="text-decoration-none">← Kembali ke daftar Moduls</a>
+            <a href="{{ route('learn.moduls.index') }}" class="text-decoration-none">← Kembali ke daftar Moduls</a>
         </div>
     </div>
 @endsection

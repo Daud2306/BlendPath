@@ -15,7 +15,7 @@
                         rendering Anda.
                     </p>
                     <div class="d-flex flex-wrap gap-3">
-                        <a href="{{ route('moduls.index') }}" class="btn-get-started">
+                        <a href="{{ route('learn.moduls.index') }}" class="btn-get-started">
                             <i class="bi bi-book me-2"></i>Mulai Belajar
                         </a>
                     </div>
@@ -82,16 +82,6 @@
                             <div class="card h-100 modul-card">
                                 <div class="card-body d-flex flex-column">
                                     <div class="d-flex align-items-start mb-3">
-                                        @if ($modul->gambar)
-                                            <img src="{{ asset('storage/' . $modul->gambar) }}"
-                                                alt="{{ $modul->judul }}" class="rounded me-3"
-                                                style="width: 60px; height: 60px; object-fit: cover;">
-                                        @else
-                                            <div class="rounded d-flex align-items-center justify-content-center me-3"
-                                                style="width: 60px; height: 60px; background: var(--accent-color); color: white;">
-                                                <i class="bi bi-cube"></i>
-                                            </div>
-                                        @endif
                                         <div class="flex-grow-1">
                                             <h5 class="fw-bold mb-1">{{ $modul->judul }}</h5>
                                             <span class="badge" style="background: var(--accent-color); color: white;">
@@ -101,7 +91,7 @@
                                     </div>
                                     <p class="mb-3 flex-grow-1">{{ Str::limit($modul->deskripsi, 120) }}</p>
                                     <div class="mt-auto">
-                                        <a href="{{ route('moduls.show', $modul) }}"
+                                        <a href="{{ route('learn.moduls.show', $modul) }}"
                                             class="btn btn-sm w-100 modul-btn">
                                             Lihat Kursus
                                         </a>
@@ -121,7 +111,7 @@
 
             @if ($moduls->count() > 0)
                 <div class="text-center mt-4">
-                    <a href="{{ route('moduls.index') }}" class="btn-get-started">
+                    <a href="{{ route('learn.moduls.index') }}" class="btn-get-started">
                         <i class="bi bi-grid me-2"></i>Lihat Semua Kursus
                     </a>
                 </div>
@@ -174,7 +164,7 @@
                 <p>Bergabung dengan komunitas Blender terbaik dan kembangkan skill Anda</p>
 
                 @auth
-                    <a href="{{ route('moduls.index') }}" class="btn-get-started">
+                    <a href="{{ route('learn.moduls.index') }}" class="btn-get-started">
                         <i class="bi bi-play-circle me-2"></i>Lanjutkan Belajar
                     </a>
                 @else

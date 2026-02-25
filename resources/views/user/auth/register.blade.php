@@ -9,13 +9,11 @@
             <div class="row justify-content-center">
                 <div class="col-md-8 col-lg-6">
                     <div class="auth-container">
-                        <!-- Logo di atas form (diluar card) -->
                         <a href="/" class="auth-logo">
                             <img src="{{ asset('frontend/img/logo.png') }}" alt="BlendPath Logo">
                         </a>
 
                         <div class="auth-card">
-                            <!-- Hanya subtitle, tanpa title -->
                             <p class="auth-subtitle-only">
                                 Daftar sekarang untuk memulai perjalananmu!
                             </p>

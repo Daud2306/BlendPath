@@ -30,7 +30,6 @@ class SubmodulController extends Controller
             ->where('sort_order', $sort_order)
             ->firstOrFail();
 
-        // CEK SUBMODUL SEBELUMNYA YANG BELUM SELESAI
         if (Auth::check()) {
             $previousSubmodul = Submodul::where('modul_id', $modul->id)
                 ->where('sort_order', '<', $submodul->sort_order)
@@ -51,15 +50,14 @@ class SubmodulController extends Controller
             }
         }
 
-        // Load relations dengan urutan yang benar - PERTANYAAN TERBARU DI ATAS
         $submodul->load([
             'resources',
             'tanya' => function ($query) {
-                $query->orderBy('created_at', 'desc'); // Pertanyaan terbaru di atas
+                $query->orderBy('created_at', 'desc');
             },
             'tanya.user',
             'tanya.jawabs' => function ($query) {
-                $query->orderBy('created_at', 'asc'); // Jawaban terlama di atas (chronological)
+                $query->orderBy('created_at', 'asc');
             },
             'tanya.jawabs.user',
             'tanya.resources',

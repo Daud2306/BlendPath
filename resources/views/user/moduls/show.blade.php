@@ -3,7 +3,6 @@
 @section('title', $modul->judul . ' - BlendPath')
 
 @section('content')
-    <!-- Hero Section -->
     <section class="modul-hero dark-background">
         <div class="container">
             <div class="row align-items-center">
@@ -11,7 +10,7 @@
                     <nav aria-label="breadcrumb" class="mb-3">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item">
-                                <a href="{{ route('moduls.index') }}" class="breadcrumb-link">
+                                <a href="{{ route('learn.moduls.index') }}" class="breadcrumb-link">
                                     <i class="bi bi-map me-1"></i>Moduls
                                 </a>
                             </li>
@@ -183,7 +182,7 @@
                                             </div>
 
                                             <div class="col-md-3 text-end">
-                                                <a href="{{ route('moduls.submoduls.show', ['modul' => $modul->id, 'sort_order' => $submodul->sort_order]) }}"
+                                                <a href="{{ route('learn.submoduls.show', ['modul' => $modul->id, 'sort_order' => $submodul->sort_order]) }}"
                                                     class="btn submodul-btn {{ $isCompleted ? 'btn-outline-success' : ($isNext ? 'btn-primary' : 'btn-outline-primary') }}">
                                                     @if ($isCompleted)
                                                         <i class="bi bi-arrow-repeat me-2"></i>

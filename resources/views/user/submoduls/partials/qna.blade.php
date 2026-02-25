@@ -26,7 +26,7 @@
                     <i class="bi bi-pencil-square me-2 text-primary"></i>Ajukan Pertanyaan
                 </h6>
 
-                <form id="form-ask-question" action="{{ route('tanyas.store') }}" method="POST"
+                <form id="form-ask-question" action="{{ route('learn.tanyas.store') }}" method="POST"
                     enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="submodul_id" value="{{ $submodul->id }}">
@@ -104,7 +104,7 @@
                                         </button>
                                         <ul class="dropdown-menu dropdown-menu-end">
                                             <li>
-                                                <form action="{{ route('tanyas.destroy', $tanya->id) }}" method="POST"
+                                                <form action="{{ route('learn.tanyas.destroy', $tanya->id) }}" method="POST"
                                                     class="d-inline">
                                                     @csrf @method('DELETE')
                                                     <button type="submit" class="dropdown-item text-danger"
@@ -119,12 +119,10 @@
                             @endauth
                         </div>
 
-                        <!-- Question Body -->
                         <div class="question-text">
                             {!! $tanya->pertanyaan !!}
                         </div>
 
-                        <!-- Question Images -->
                         @if ($tanya->resources->count() > 0)
                             <div class="mt-3">
                                 <div class="d-flex flex-wrap gap-2">
@@ -140,10 +138,9 @@
                         @endif
                     </div>
 
-                    <!-- Answer Form -->
                     @auth
                         <div class="answer-section">
-                            <form action="{{ route('jawabs.store') }}" method="POST" enctype="multipart/form-data"
+                            <form action="{{ route('learn.jawabs.store') }}" method="POST" enctype="multipart/form-data"
                                 class="mb-3">
                                 @csrf
                                 <input type="hidden" name="tanya_id" value="{{ $tanya->id }}">
@@ -169,7 +166,6 @@
                         </div>
                     @endauth
 
-                    <!-- Existing Answers -->
                     @if ($tanya->jawabs->count() > 0)
                         <div class="answers-list px-3 pb-3">
                             <h6 class="small fw-semibold mb-3 text-muted">
@@ -195,7 +191,7 @@
 
                                         @auth
                                             @if ($jawab->user_id == Auth::id())
-                                                <form action="{{ route('jawabs.destroy', $jawab->id) }}" method="POST"
+                                                <form action="{{ route('learn.jawabs.destroy', $jawab->id) }}" method="POST"
                                                     class="d-inline">
                                                     @csrf @method('DELETE')
                                                     <button type="submit" class="btn btn-sm btn-outline-danger border-0"
@@ -232,7 +228,6 @@
                 </div>
             @endforeach
         @else
-            <!-- Empty State -->
             <div class="empty-state">
                 <i class="bi bi-chat-square empty-state-icon"></i>
                 <h5 class="mb-2">Belum Ada Diskusi</h5>
@@ -251,7 +246,6 @@
     </div>
 </div>
 
-<!-- TinyMCE Configuration -->
 @push('tinymce-scripts')
     <script src="https://cdn.tiny.cloud/1/it9jtu12pg1wokv2pa9ifoc66gaqghavr7m7k06amjcnf97d/tinymce/8/tinymce.min.js"
         referrerpolicy="origin" crossorigin="anonymous"></script>

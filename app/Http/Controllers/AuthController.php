@@ -28,6 +28,12 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
+            $user = Auth::user();
+
+            if ($user->role === 'admin') {
+                return redirect()->route('admin.dashboard');
+            }
+
             return redirect('/');
         }
 
@@ -81,5 +87,19 @@ class AuthController extends Controller
         Auth::login($user);
 
         return redirect('/')->with('success', 'Registrasi berhasil! Selamat datang di BlendPath.');
+    }
+
+    public function home()
+    {
+        if (Auth::check()) {
+
+            if (Auth::user()->role === 'admin') {
+                return redirect()->route('admin.dashboard');
+            }
+
+            return redirect()->route('learn.moduls.index');
+        }
+
+        return view('user.index');
     }
 }
