@@ -135,10 +135,6 @@
     z-index: 1000;
 }
 
-.dropdown:hover .dropdown-menu {
-    display: block;
-}
-
 .dropdown-item {
     padding: 0.5rem 0.75rem;
     color: var(--text-primary);
@@ -236,7 +232,7 @@
         box-shadow: none;
         margin: 0.5rem 0 0 0;
         padding: 0;
-        display: block;
+        display: none;
         background: none;
     }
     

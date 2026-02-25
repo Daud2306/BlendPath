@@ -115,7 +115,7 @@
             });
         });
     </script>
-
+    <script src="{{ asset('frontend/js/navbar.js') }}"></script>
     @stack('tinymce-scripts')
 </body>
 
