@@ -6,9 +6,14 @@
 
     <nav id="navmenu" class="navmenu flex-grow-1">
         <ul class="d-flex align-items-center justify-content-end mb-0">
+
+            @guest
             <li><a href="/" class="{{ request()->is('/') ? 'active' : '' }}">Home</a></li>
-            <li><a href="/moduls" class="{{ request()->is('moduls*') ? 'active' : '' }}">Learning Path</a></li>
-            <li><a href="/about" class="{{ request()->is('about*') ? 'active' : '' }}">Tentang</a></li>
+            @endguest
+
+            @auth
+                <li><a href="/moduls" class="{{ request()->is('moduls*') ? 'active' : '' }}">Learning Path</a></li>
+            @endauth
 
             @guest
                 <li><a href="/login" class="ms-3">Login</a></li>
