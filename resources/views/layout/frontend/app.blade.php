@@ -37,13 +37,14 @@
 </head>
 
 <body>
-    <header id="header" class="header d-flex align-items-center fixed-top">
-        @if (!isset($hide_navbar) || !$hide_navbar)
+    @hasSection('hide_navbar')
+    @else
+        <header id="header" class="header d-flex align-items-center fixed-top">
             @include('layout.frontend.navbar')
-        @endif
-    </header>
+        </header>
+    @endif
 
-    <main class="main @if (!isset($hide_navbar) || !$hide_navbar) with-navbar @endif">
+    <main class="main @hasSection('hide_navbar') @else with-navbar @endif">
         @yield('content')
     </main>
 
@@ -73,7 +74,7 @@
             // Close mobile menu when clicking outside
             document.addEventListener('click', function(event) {
                 if (!event.target.closest('.navmenu') && !event.target.closest('.mobile-nav-toggle')) {
-                    navmenu.classList.remove('active');
+                    if (navmenu) navmenu.classList.remove('active');
                 }
             });
 

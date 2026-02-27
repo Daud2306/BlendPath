@@ -3,21 +3,31 @@
 @section('title', 'BlendPath - Platform Belajar Blender 3D')
 
 @section('content')
+    {{-- HERO SECTION --}}
     <section id="hero" class="hero d-flex align-items-center light-background">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-6">
                     <h1>
-                        Kuasai <span>Blender</span> dengan Mudah
+                        Belajar <span>Blender</span> dengan Terstruktur
                     </h1>
                     <p>
-                        Platform pembelajaran Blender 3D terstruktur untuk mengembangkan skill modeling, animation, dan
-                        rendering Anda.
+                        BlendPath menyediakan materi pembelajaran Blender 3D yang disusun secara bertahap — mulai dari
+                        dasar, dikerjakan sesuai urutan yang sudah disiapkan.
                     </p>
                     <div class="d-flex flex-wrap gap-3">
-                        <a href="{{ route('learn.moduls.index') }}" class="btn-get-started">
-                            <i class="bi bi-book me-2"></i>Mulai Belajar
-                        </a>
+                        @auth
+                            <a href="{{ route('learn.moduls.index') }}" class="btn-get-started">
+                                <i class="bi bi-play-circle me-2"></i>Mulai Belajar
+                            </a>
+                        @else
+                            <a href="{{ route('register') }}" class="btn-get-started">
+                                <i class="bi bi-person-plus me-2"></i>Daftar Gratis
+                            </a>
+                            <a href="{{ route('login') }}" class="btn-watch-video">
+                                <i class="bi bi-box-arrow-in-right me-2"></i>Masuk
+                            </a>
+                        @endauth
                     </div>
                 </div>
                 <div class="col-lg-6 d-none d-lg-block">
@@ -29,6 +39,7 @@
         </div>
     </section>
 
+    {{-- FEATURES SECTION --}}
     <section id="features" class="features light-background">
         <div class="container">
             <div class="section-title">
@@ -41,15 +52,16 @@
                     <div class="icon-box">
                         <i class="bi bi-diagram-3"></i>
                         <h3>Struktur Belajar Terarah</h3>
-                        <p>Modul pembelajaran yang jelas dari dasar hingga advanced</p>
+                        <p>Modul pembelajaran yang dirancang dari dasar hingga tingkat lanjut, memastikan Anda belajar
+                            dengan urutan yang tepat.</p>
                     </div>
                 </div>
 
                 <div class="col-lg-4 col-md-6 mt-4 mt-md-0">
                     <div class="icon-box">
                         <i class="bi bi-play-btn"></i>
-                        <h3>Video Submodul Lengkap</h3>
-                        <p>Konten video step-by-step dengan penjelasan (belum) detail</p>
+                        <h3>Video per Submodul</h3>
+                        <p>Setiap submodul dilengkapi video sebagai panduan. Tonton, coba sendiri, ulangi jika perlu.</p>
                     </div>
                 </div>
 
@@ -57,76 +69,71 @@
                     <div class="icon-box">
                         <i class="bi bi-chat-dots"></i>
                         <h3>Komunitas Interaktif</h3>
-                        <p>Tanya jawab dengan instruktur dan sesama learner</p>
+                        <p>Tanya jawab langsung dengan instruktur dan sesama learner untuk mendukung proses belajar Anda.
+                        </p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="moduls" class="moduls light-background">
+    {{-- ABOUT / HOW IT WORKS SECTION --}}
+    <section id="how-it-works" class="light-background" style="padding: 5rem 0; border-top: 1px solid var(--border-color);">
         <div class="container">
             <div class="section-title">
-                <h2>Learning Path</h2>
-                <div>Pilih Jalur Belajar Anda</div>
+                <h2>Bagaimana Cara Belajarnya?</h2>
+                <div>Tiga langkah sederhana untuk mulai perjalanan 3D Anda</div>
             </div>
 
-            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-                @php
-                    $moduls = App\Models\Modul::withCount('submoduls')->take(6)->get();
-                @endphp
-
-                @if ($moduls->count() > 0)
-                    @foreach ($moduls as $modul)
-                        <div class="col">
-                            <div class="card h-100 modul-card">
-                                <div class="card-body d-flex flex-column">
-                                    <div class="d-flex align-items-start mb-3">
-                                        <div class="flex-grow-1">
-                                            <h5 class="fw-bold mb-1">{{ $modul->judul }}</h5>
-                                            <span class="badge" style="background: var(--accent-color); color: white;">
-                                                {{ $modul->submoduls_count }} Submodul
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <p class="mb-3 flex-grow-1">{{ Str::limit($modul->deskripsi, 120) }}</p>
-                                    <div class="mt-auto">
-                                        <a href="{{ route('learn.moduls.show', $modul) }}"
-                                            class="btn btn-sm w-100 modul-btn">
-                                            Lihat Kursus
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
+            <div class="row g-4 text-center">
+                <div class="col-lg-4 col-md-4">
+                    <div style="padding: 2rem 1.5rem;">
+                        <div
+                            style="width: 64px; height: 64px; background: var(--text-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.25rem;">
+                            <span style="color: white; font-size: 1.5rem; font-weight: 700;">1</span>
                         </div>
-                    @endforeach
-                @else
-                    <div class="col-12 text-center py-5">
-                        <i class="bi bi-cube display-1" style="color: var(--accent-color);"></i>
-                        <h4 class="mt-3">Kursus Akan Segera Hadir</h4>
-                        <p class="text-muted">Kami sedang menyiapkan konten terbaik untuk Anda</p>
+                        <h4 style="margin-bottom: 0.75rem;">Buat Akun</h4>
+                        <p style="margin-bottom: 0;">Daftar gratis dan lengkapi profil Anda untuk memulai pengalaman belajar
+                            yang personal.</p>
                     </div>
-                @endif
-            </div>
-
-            @if ($moduls->count() > 0)
-                <div class="text-center mt-4">
-                    <a href="{{ route('learn.moduls.index') }}" class="btn-get-started">
-                        <i class="bi bi-grid me-2"></i>Lihat Semua Kursus
-                    </a>
                 </div>
-            @endif
+
+                <div class="col-lg-4 col-md-4">
+                    <div style="padding: 2rem 1.5rem;">
+                        <div
+                            style="width: 64px; height: 64px; background: var(--text-hover); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.25rem;">
+                            <span style="color: white; font-size: 1.5rem; font-weight: 700;">2</span>
+                        </div>
+                        <h4 style="margin-bottom: 0.75rem;">Kerjakan Modul</h4>
+                        <p style="margin-bottom: 0;">Modul dikerjakan berurutan — modul berikutnya baru terbuka setelah
+                            modul sebelumnya selesai.</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-4">
+                    <div style="padding: 2rem 1.5rem;">
+                        <div
+                            style="width: 64px; height: 64px; background: var(--text-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.25rem;">
+                            <span style="color: white; font-size: 1.5rem; font-weight: 700;">3</span>
+                        </div>
+                        <h4 style="margin-bottom: 0.75rem;">Tonton, Coba, Tanya</h4>
+                        <p style="margin-bottom: 0;">Pelajari submodul videonya, praktikkan sendiri, dan gunakan fitur
+                            diskusi kalau ada yang membingungkan.</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
-    <section id="stats" class="stats light-background">
+    {{-- STATS SECTION --}}
+    <section id="stats" class="stats light-background" style="border-top: 1px solid var(--border-color);">
         <div class="container">
             <div class="row">
                 <div class="col-lg-3 col-md-6">
                     <div class="stats-item">
                         <i class="bi bi-people"></i>
                         <span>{{ App\Models\User::count() }}</span>
-                        <p>Pengguna</p>
+                        <p>Pengguna Aktif</p>
                     </div>
                 </div>
 
@@ -157,11 +164,12 @@
         </div>
     </section>
 
+    {{-- CTA SECTION --}}
     <section id="cta" class="cta light-background">
         <div class="container">
             <div class="text-center">
-                <h3>Ready untuk Memulai Perjalanan 3D Anda?</h3>
-                <p>Bergabung dengan komunitas Blender terbaik dan kembangkan skill Anda</p>
+                <h3>Mulai dari mana dulu?</h3>
+                <p>Buat akun, lalu langsung buka modul pertama. Tidak ada yang perlu disiapkan sebelumnya.</p>
 
                 @auth
                     <a href="{{ route('learn.moduls.index') }}" class="btn-get-started">
@@ -173,7 +181,7 @@
                             <i class="bi bi-person-plus me-2"></i>Daftar Sekarang
                         </a>
                         <a href="{{ route('login') }}" class="btn-watch-video">
-                            <i class="bi bi-box-arrow-in-right me-2"></i>Masuk
+                            <i class="bi bi-box-arrow-in-right me-2"></i>Sudah punya akun? Masuk
                         </a>
                     </div>
                 @endauth

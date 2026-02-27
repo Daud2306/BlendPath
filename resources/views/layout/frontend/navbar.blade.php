@@ -11,10 +11,6 @@
             <li><a href="/" class="{{ request()->is('/') ? 'active' : '' }}">Home</a></li>
             @endguest
 
-            @auth
-                <li><a href="/moduls" class="{{ request()->is('moduls*') ? 'active' : '' }}">Learning Path</a></li>
-            @endauth
-
             @guest
                 <li><a href="/login" class="ms-3">Login</a></li>
                 <li><a href="/register" class="btn btn-primary ms-2">Register</a></li>
