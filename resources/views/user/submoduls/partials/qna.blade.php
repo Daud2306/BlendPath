@@ -104,8 +104,8 @@
                                         </button>
                                         <ul class="dropdown-menu dropdown-menu-end">
                                             <li>
-                                                <form action="{{ route('learn.tanyas.destroy', $tanya->id) }}" method="POST"
-                                                    class="d-inline">
+                                                <form action="{{ route('learn.tanyas.destroy', $tanya->id) }}"
+                                                    method="POST" class="d-inline">
                                                     @csrf @method('DELETE')
                                                     <button type="submit" class="dropdown-item text-danger"
                                                         onclick="return confirm('Hapus pertanyaan ini?')">
@@ -127,9 +127,8 @@
                             <div class="mt-3">
                                 <div class="d-flex flex-wrap gap-2">
                                     @foreach ($tanya->resources as $resource)
-                                        <a href="{{ asset('storage/' . $resource->resource) }}"
-                                            data-lightbox="question-{{ $tanya->id }}">
-                                            <img src="{{ asset('storage/' . $resource->resource) }}" alt="Screenshot"
+                                        <a href="{{ $resource->url }}" data-lightbox="question-{{ $tanya->id }}">
+                                            <img src="{{ $resource->url }}" alt="Screenshot"
                                                 class="img-thumbnail rounded" style="max-height: 80px;">
                                         </a>
                                     @endforeach
@@ -191,8 +190,8 @@
 
                                         @auth
                                             @if ($jawab->user_id == Auth::id())
-                                                <form action="{{ route('learn.jawabs.destroy', $jawab->id) }}" method="POST"
-                                                    class="d-inline">
+                                                <form action="{{ route('learn.jawabs.destroy', $jawab->id) }}"
+                                                    method="POST" class="d-inline">
                                                     @csrf @method('DELETE')
                                                     <button type="submit" class="btn btn-sm btn-outline-danger border-0"
                                                         onclick="return confirm('Hapus jawaban ini?')">
@@ -211,11 +210,10 @@
                                         <div class="mt-2">
                                             <div class="d-flex flex-wrap gap-1">
                                                 @foreach ($jawab->resources as $resource)
-                                                    <a href="{{ asset('storage/' . $resource->resource) }}"
+                                                    <a href="{{ $resource->url }}"
                                                         data-lightbox="answer-{{ $jawab->id }}">
-                                                        <img src="{{ asset('storage/' . $resource->resource) }}"
-                                                            alt="Screenshot Jawaban" class="img-thumbnail rounded"
-                                                            style="max-height: 60px;">
+                                                        <img src="{{ $resource->url }}" alt="Screenshot Jawaban"
+                                                            class="img-thumbnail rounded" style="max-height: 60px;">
                                                     </a>
                                                 @endforeach
                                             </div>
@@ -253,11 +251,18 @@
     <script>
         tinymce.init({
             selector: '.tinymce-question, .tinymce-answer',
-            plugins: 'link lists media code',
-            toolbar: 'undo redo | bold italic underline | bullist numlist | link media | code',
-            menubar: false,
-            branding: false
+            plugins: 'image media paste link',
+            toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | image media link',
+            images_upload_url: '/learn/tinymce/upload', // your route
+            images_upload_credentials: true,
+            automatic_uploads: true,
+            paste_data_images: true, // allow pasting images
+            images_reuse_filename: false,
+            // For media (video), allow URLs only (TinyMCE handles embed)
+            media_live_embeds: true,
+            // optionally setup file_picker_types etc
         });
+
     </script>
 
     <script>

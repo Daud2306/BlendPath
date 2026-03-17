@@ -13,24 +13,16 @@ class ProgressController extends Controller
 
     public function markAsCompleted(Modul $modul, $sort_order)
     {
-        if (!Auth::check()) {
-            return redirect()->route('login');
-        }
-
         $submodul = Submodul::where('modul_id', $modul->id)
             ->where('sort_order', $sort_order)
             ->firstOrFail();
 
-        $submodul->markAsCompleted();
+        $submodul->markAsCompleted(Auth::id());
         return redirect()->back()->with('success', 'Submodul berhasil ditandai sebagai selesai!');
     }
 
     public function markAsIncomplete(Modul $modul, $sort_order)
     {
-        if (!Auth::check()) {
-            return redirect()->route('login');
-        }
-
         $submodul = Submodul::where('modul_id', $modul->id)
             ->where('sort_order', $sort_order)
             ->firstOrFail();
@@ -48,10 +40,6 @@ class ProgressController extends Controller
 
     public function getUserOverallProgress()
     {
-        if (!Auth::check()) {
-            return 0;
-        }
-
         $totalSubmoduls = Submodul::count();
         $completedSubmoduls = Progress::where('user_id', Auth::id())
             ->where('is_completed', true)

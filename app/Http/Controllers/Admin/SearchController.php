@@ -1,13 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+
+use App\Http\Controllers\Controller;
 use App\Models\Modul;
 use App\Models\Submodul;
 use App\Models\User;
 use Illuminate\Http\Request;
 
-class AdminSearchController extends Controller
+class SearchController extends Controller
 {
     public function search(Request $request)
     {

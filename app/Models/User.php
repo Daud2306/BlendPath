@@ -75,24 +75,24 @@ class User extends Authenticatable
 
     public function getOverallProgress()
     {
-        $totalTutorials = Tutorial::count();
-        if ($totalTutorials === 0) return 0;
+        $totalSubmoduls = Submodul::count();
+        if ($totalSubmoduls === 0) return 0;
 
-        $completedTutorials = $this->progress()->where('is_completed', true)->count();
-        return round(($completedTutorials / $totalTutorials) * 100, 1);
+        $completedSubmoduls = $this->progress()->where('is_completed', true)->count();
+        return round(($completedSubmoduls / $totalSubmoduls) * 100, 1);
     }
 
-    public function getCompletedTutorialsCount()
+    public function getCompletedSubmodulsCount()
     {
         return $this->progress()->where('is_completed', true)->count();
     }
 
-    public function getEnrolledRoadmapsCount()
+    public function getEnrolledModulsCount()
     {
         return $this->progress()
-            ->join('tutorials', 'progress.tutorial_id', '=', 'tutorials.id')
-            ->distinct('tutorials.roadmap_id')
-            ->count('tutorials.roadmap_id');
+            ->join('submoduls', 'progress.submodul_id', '=', 'submoduls.id')
+            ->distinct('submoduls.modul_id')
+            ->count('submoduls.modul_id');
     }
 
     public function isActive()

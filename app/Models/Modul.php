@@ -11,7 +11,7 @@ class Modul extends Model
     use HasFactory;
 
     protected $table = 'moduls';
-    protected $fillable = ['judul', 'deskripsi', 'gambar', 'sort_order'];
+    protected $fillable = ['judul', 'deskripsi', 'sort_order'];
 
     public function submoduls()
     {

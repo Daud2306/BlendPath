@@ -30,6 +30,7 @@
     <!-- Custom CSS -->
     <link href="{{ asset('frontend/css/main.css') }}" rel="stylesheet">
     <link href="{{ asset('frontend/css/navbar.css') }}" rel="stylesheet">
+    <link href="{{ asset('frontend/css/ai-chat.css') }}" rel="stylesheet">
 
     @if (request()->is('login*') || request()->is('register*'))
         <link href="{{ asset('frontend/css/auth.css') }}" rel="stylesheet">
@@ -44,7 +45,10 @@
         </header>
     @endif
 
-    <main class="main @hasSection('hide_navbar') @else with-navbar @endif">
+    <main class="main @hasSection('hide_navbar')
+@else
+with-navbar
+@endif">
         @yield('content')
     </main>
 
@@ -60,7 +64,6 @@
     <!-- <script src="{{ asset('frontend/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script> -->
 
     <script>
-        // Mobile navigation toggle
         document.addEventListener('DOMContentLoaded', function() {
             const mobileNavToggle = document.querySelector('.mobile-nav-toggle');
             const navmenu = document.getElementById('navmenu');
@@ -71,14 +74,12 @@
                 });
             }
 
-            // Close mobile menu when clicking outside
             document.addEventListener('click', function(event) {
                 if (!event.target.closest('.navmenu') && !event.target.closest('.mobile-nav-toggle')) {
                     if (navmenu) navmenu.classList.remove('active');
                 }
             });
 
-            // Scroll top button
             const scrollTop = document.getElementById('scroll-top');
             window.addEventListener('scroll', function() {
                 if (window.pageYOffset > 300) {
@@ -96,7 +97,6 @@
                 });
             });
 
-            // Add animation to elements on scroll
             const observerOptions = {
                 threshold: 0.1,
                 rootMargin: '0px 0px -50px 0px'
@@ -110,7 +110,6 @@
                 });
             }, observerOptions);
 
-            // Observe elements you want to animate
             document.querySelectorAll('.icon-box, .modul-card').forEach(el => {
                 observer.observe(el);
             });
@@ -118,6 +117,12 @@
     </script>
     <script src="{{ asset('frontend/js/navbar.js') }}"></script>
     @stack('tinymce-scripts')
+    @auth
+        <x-ai-chat />
+    @endauth
+    @auth
+        <script src="{{ asset('frontend/js/ai-chat.js') }}"></script>
+    @endauth
 </body>
 
 </html>

@@ -13,16 +13,18 @@ return new class extends Migration
     {
         Schema::create('resources', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
-            $table->foreignId('submodul_id')->nullable()->constrained()->onDelete('cascade');
-            $table->foreignId('tanya_id')->nullable()->constrained()->onDelete('cascade');
-            $table->foreignId('jawab_id')->nullable()->constrained()->onDelete('cascade');
-            $table->string('resource', 255);
+
+            $table->morphs('resourceable');
+
+            $table->string('path');
             $table->string('type')->nullable();
             $table->string('mime_type')->nullable();
-            $table->integer('size')->nullable();
+            $table->unsignedBigInteger('size')->nullable();
             $table->string('original_name')->nullable();
-            $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
+
+            $table->foreignId('user_id')->nullable()->constrained()->cascadeOnDelete();
+
+            $table->timestamps();
         });
     }
 

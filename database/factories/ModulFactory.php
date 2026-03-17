@@ -11,7 +11,6 @@ class ModulFactory extends Factory
         return [
             'judul' => $this->faker->sentence(3),
             'deskripsi' => $this->faker->paragraph(),
-            'gambar' => null,
             'sort_order' => $this->faker->numberBetween(1, 10),
         ];
     }

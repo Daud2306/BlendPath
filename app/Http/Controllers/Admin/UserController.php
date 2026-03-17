@@ -15,7 +15,7 @@ use App\Imports\UsersImport;
 use Maatwebsite\Excel\Facades\Excel;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
-class UserManagementController extends Controller
+class UserController extends Controller
 {
     public function index()
     {

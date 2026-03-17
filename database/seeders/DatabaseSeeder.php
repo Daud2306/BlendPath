@@ -25,35 +25,31 @@ class DatabaseSeeder extends Seeder
 
         $users = User::factory(99)->create();
 
+        // Perbaikan 1: Hapus field 'gambar' karena tidak ada di migration moduls
         $moduls = Modul::factory()->createMany([
             [
                 'judul' => 'Blender Fundamentals',
                 'deskripsi' => 'Belajar dasar-dasar Blender untuk pemula',
-                'gambar' => 'fundamentals.jpg',
                 'sort_order' => 1,
             ],
             [
                 'judul' => '3D Modeling Mastery',
                 'deskripsi' => 'Menguasai teknik modeling 3D yang advanced',
-                'gambar' => 'modeling.jpg',
                 'sort_order' => 2,
             ],
             [
                 'judul' => 'Texturing & Materials',
                 'deskripsi' => 'Belajar membuat texture dan material yang realistis',
-                'gambar' => 'texturing.jpg',
                 'sort_order' => 3,
             ],
             [
                 'judul' => 'Animation Basics',
                 'deskripsi' => 'Dasar-dasar animasi 3D di Blender',
-                'gambar' => 'animation.jpg',
                 'sort_order' => 4,
             ],
             [
                 'judul' => 'Rendering & Lighting',
                 'deskripsi' => 'Teknik rendering dan lighting untuk hasil terbaik',
-                'gambar' => 'rendering.jpg',
                 'sort_order' => 5,
             ],
         ]);
@@ -94,19 +90,20 @@ class DatabaseSeeder extends Seeder
             }
         });
 
+        // Perbaikan 2: Ubah jawaban_benar dari index menjadi string sesuai pilihan
         $questions = [
             [
                 'quiz_id' => 1,
                 'pertanyaan' => 'Apa fungsi utama dari area 3D Viewport di Blender?',
                 'pilihan_jawaban' => $this->generateAnswerOptions(),
-                'jawaban_benar' => 1,
+                'jawaban_benar' => 1,  // index ke-1 (Pilihan jawaban B)
                 'poin' => 10
             ],
             [
                 'quiz_id' => 1,
                 'pertanyaan' => 'Shortcut untuk menambah objek baru di Blender?',
                 'pilihan_jawaban' => $this->generateAnswerOptions(),
-                'jawaban_benar' => 0,
+                'jawaban_benar' => 0,  // index ke-0 (Pilihan jawaban A)
                 'poin' => 10
             ],
 
@@ -114,14 +111,14 @@ class DatabaseSeeder extends Seeder
                 'quiz_id' => 2,
                 'pertanyaan' => 'Teknik apa yang digunakan untuk membuat permukaan yang halus?',
                 'pilihan_jawaban' => $this->generateAnswerOptions(),
-                'jawaban_benar' => 2,
+                'jawaban_benar' => 2,  // index ke-2 (Pilihan jawaban C)
                 'poin' => 10
             ],
             [
                 'quiz_id' => 2,
                 'pertanyaan' => 'Apa fungsi dari modifier Array?',
                 'pilihan_jawaban' => $this->generateAnswerOptions(),
-                'jawaban_benar' => 1,
+                'jawaban_benar' => 1,  // index ke-1 (Pilihan jawaban B)
                 'poin' => 10
             ],
 
@@ -129,14 +126,14 @@ class DatabaseSeeder extends Seeder
                 'quiz_id' => 3,
                 'pertanyaan' => 'Apa tujuan utama dari UV unwrapping?',
                 'pilihan_jawaban' => $this->generateAnswerOptions(),
-                'jawaban_benar' => 0,
+                'jawaban_benar' => 0,  // index ke-0 (Pilihan jawaban A)
                 'poin' => 10
             ],
             [
                 'quiz_id' => 3,
                 'pertanyaan' => 'Node yang digunakan untuk texture bump mapping?',
                 'pilihan_jawaban' => $this->generateAnswerOptions(),
-                'jawaban_benar' => 3,
+                'jawaban_benar' => 3,  // index ke-3 (Pilihan jawaban D)
                 'poin' => 10
             ],
 
@@ -144,14 +141,14 @@ class DatabaseSeeder extends Seeder
                 'quiz_id' => 4,
                 'pertanyaan' => 'Apa fungsi keyframe dalam animasi?',
                 'pilihan_jawaban' => $this->generateAnswerOptions(),
-                'jawaban_benar' => 1,
+                'jawaban_benar' => 1,  // index ke-1 (Pilihan jawaban B)
                 'poin' => 10
             ],
             [
                 'quiz_id' => 4,
                 'pertanyaan' => 'Tools untuk rigging karakter disebut?',
                 'pilihan_jawaban' => $this->generateAnswerOptions(),
-                'jawaban_benar' => 2,
+                'jawaban_benar' => 2,  // index ke-2 (Pilihan jawaban C)
                 'poin' => 10
             ],
 
@@ -159,20 +156,32 @@ class DatabaseSeeder extends Seeder
                 'quiz_id' => 5,
                 'pertanyaan' => 'Perbedaan utama antara Eevee dan Cycles?',
                 'pilihan_jawaban' => $this->generateAnswerOptions(),
-                'jawaban_benar' => 0,
+                'jawaban_benar' => 0,  // index ke-0 (Pilihan jawaban A)
                 'poin' => 10
             ],
             [
                 'quiz_id' => 5,
                 'pertanyaan' => 'Teknik lighting three-point terdiri dari?',
                 'pilihan_jawaban' => $this->generateAnswerOptions(),
-                'jawaban_benar' => 1,
+                'jawaban_benar' => 1,  // index ke-1 (Pilihan jawaban B)
                 'poin' => 10
             ],
         ];
 
         foreach ($questions as $question) {
-            PertanyaanQuiz::factory()->create($question);
+            // Ambil array pilihan jawaban
+            $pilihan = $question['pilihan_jawaban'];
+            // Ubah jawaban_benar dari index menjadi string yang sesuai
+            $jawabanBenarIndex = $question['jawaban_benar'];
+            $jawabanBenarString = $pilihan[$jawabanBenarIndex] ?? $pilihan[0];
+
+            PertanyaanQuiz::factory()->create([
+                'quiz_id' => $question['quiz_id'],
+                'pertanyaan' => $question['pertanyaan'],
+                'pilihan_jawaban' => $pilihan,
+                'jawaban_benar' => $jawabanBenarString,
+                'poin' => $question['poin'],
+            ]);
         }
 
         $users->each(function ($user) use ($submoduls) {

@@ -20,7 +20,7 @@ class PertanyaanQuizFactory extends Factory
             'quiz_id' => 1,
             'pertanyaan' => $this->faker->sentence(10),
             'pilihan_jawaban' => $pilihan,
-            'jawaban_benar' => $this->faker->numberBetween(0, 3),
+            'jawaban_benar' => $this->faker->randomElement($pilihan),
             'poin' => $this->faker->numberBetween(1, 5),
         ];
     }

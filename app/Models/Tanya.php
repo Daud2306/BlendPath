@@ -28,13 +28,18 @@ class Tanya extends Model
 
     public function resources()
     {
-        return $this->hasMany(Resource::class, 'tanya_id');
+        return $this->morphMany(Resource::class, 'resourceable');
     }
 
     protected static function booted()
     {
         static::deleting(function ($tanya) {
-            $tanya->jawabs()->delete();
+
+            foreach ($tanya->jawabs as $jawab) {
+                $jawab->resources()->delete();
+            }
+
+            $tanya->resources()->delete();
         });
     }
 }

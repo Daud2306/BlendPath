@@ -30,7 +30,7 @@ class Submodul extends Model
 
     public function resources()
     {
-        return $this->hasMany(Resource::class, 'submodul_id');
+        return $this->morphMany(Resource::class, 'resourceable');
     }
 
     public function tanya()
@@ -57,17 +57,11 @@ class Submodul extends Model
             ->exists();
     }
 
-    public function markAsCompleted($user_id = null)
+    public function markAsCompleted($userId)
     {
-        $user_id = $user_id ?? Auth::id();
-
-        if (!$user_id) {
-            return false;
-        }
-
         return Progress::updateOrCreate(
             [
-                'user_id' => $user_id,
+                'user_id' => $userId,
                 'submodul_id' => $this->id
             ],
             [
@@ -89,6 +83,4 @@ class Submodul extends Model
             ->where('submodul_id', $this->id)
             ->delete();
     }
-
-
 }

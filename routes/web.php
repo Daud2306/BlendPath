@@ -3,20 +3,29 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\File;
 
+// user
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ModulController;
 use App\Http\Controllers\SubmodulController;
 use App\Http\Controllers\TanyaController;
 use App\Http\Controllers\JawabController;
 use App\Http\Controllers\ProgressController;
-use App\Http\Controllers\QuizController;
 use App\Http\Controllers\TinyMCEController;
 
-use App\Http\Controllers\Admin\UserManagementController;
-use App\Http\Controllers\AdminSearchController;
-use App\Http\Controllers\ExportPdfController;
+// admin
+use App\Http\Controllers\Admin\ModulController      as AdminModulController;
+use App\Http\Controllers\Admin\SubmodulController   as AdminSubmodulController;
+use App\Http\Controllers\Admin\QuizController       as AdminQuizController;
+use App\Http\Controllers\Admin\TanyaController      as AdminTanyaController;
+use App\Http\Controllers\Admin\JawabController      as AdminJawabController;
+use App\Http\Controllers\Admin\UserController       as AdminUserController;
+use App\Http\Controllers\Admin\SearchController     as AdminSearchController;
+use App\Http\Controllers\Admin\ExportPdfController  as AdminExportPdfController;
+use App\Http\Controllers\Admin\DashboardController  as AdminDashboardController;
+use App\Http\Controllers\AiChatController;
 use Illuminate\Support\Facades\Auth;
 
+// route auth
 Route::get('/', [AuthController::class, 'home'])->name('home');
 
 Route::view('/about', 'user.about');
@@ -34,8 +43,11 @@ Route::post('/logout', [AuthController::class, 'logout'])
     ->middleware('auth')
     ->name('logout');
 
-//user
+Route::middleware('auth')->group(function () {
+    Route::post('/ai/chat', [AiChatController::class, 'chat'])->name('ai.chat');
+});
 
+// route user
 Route::middleware(['auth', 'role:user'])
     ->prefix('learn')
     ->name('learn.')
@@ -49,7 +61,7 @@ Route::middleware(['auth', 'role:user'])
 
         Route::get(
             'moduls/{modul}/submoduls/{sort_order}',
-            [SubmodulController::class, 'userShow']
+            [SubmodulController::class, 'show']
         )->name('submoduls.show');
 
         Route::post(
@@ -62,83 +74,73 @@ Route::middleware(['auth', 'role:user'])
             [ProgressController::class, 'markAsIncomplete']
         )->name('submoduls.incomplete');
 
-        Route::prefix('quizzes')
-            ->name('quizzes.')
-            ->group(function () {
-
-                Route::get('{quiz}/take', [QuizController::class, 'showQuiz'])
-                    ->name('take');
-
-                Route::post('{quiz}/submit', [QuizController::class, 'submit'])
-                    ->name('submit');
-
-                Route::get('{quiz}/result', [QuizController::class, 'result'])
-                    ->name('result');
-            });
+        Route::prefix('quizzes')->name('quizzes.')->group(function () {
+            Route::get('{quiz}/take',   [AdminQuizController::class, 'showQuiz'])->name('take');
+            Route::post('{quiz}/submit', [AdminQuizController::class, 'submit'])->name('submit');
+            Route::get('{quiz}/result', [AdminQuizController::class, 'result'])->name('result');
+        });
 
         Route::resource('tanyas', TanyaController::class)
-            ->only(['store', 'destroy']);
+            ->only(['store', 'edit', 'update', 'destroy']);
 
         Route::resource('jawabs', JawabController::class)
-            ->only(['store', 'update', 'destroy']);
+            ->only(['store', 'edit', 'update', 'destroy']);
 
-        Route::prefix('tinymce')->name('tinymce.')->group(function () {
-            Route::post('upload', [TinyMCEController::class, 'upload'])->name('upload');
-            Route::post('upload-video', [TinyMCEController::class, 'uploadVideo'])->name('upload.video');
-            Route::delete('media/{id}', [TinyMCEController::class, 'delete'])->name('media.delete');
+        Route::prefix('tinymce')->group(function () {
+            Route::post('upload',         [TinyMCEController::class, 'upload']);
+            Route::delete('media/{id}',   [TinyMCEController::class, 'delete']);
+            Route::get('list',            [TinyMCEController::class, 'index']);
         });
     });
 
-//admin
-
+// route admin
 Route::middleware(['auth', 'role:admin'])
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {
 
-        Route::view('dashboard', 'admin.dashboard')->name('dashboard');
+        Route::get('dashboard', [AdminDashboardController::class, 'index'])
+            ->name('dashboard');
 
         Route::get('search', [AdminSearchController::class, 'search'])
             ->name('search');
 
-        Route::resource('moduls', ModulController::class)
-            ->except(['show'])
+        Route::resource('moduls', AdminModulController::class)
             ->names('moduls');
 
-        Route::resource('moduls.submoduls', SubmodulController::class)
-            ->except(['show'])
+        Route::resource('moduls.submoduls', AdminSubmodulController::class)
             ->names('moduls.submoduls');
 
-        Route::resource(
-            'moduls.submoduls.quizzes',
-            QuizController::class
-        )->except(['index', 'show'])
+        Route::resource('moduls.submoduls.quizzes', AdminQuizController::class)
+            ->except(['index'])
             ->names('moduls.submoduls.quizzes');
 
-        Route::resource('users', UserManagementController::class)
+        Route::resource('users', AdminUserController::class)
             ->except(['show'])
             ->names('users');
 
         Route::prefix('users')->name('users.')->group(function () {
-            Route::get('export', [UserManagementController::class, 'export'])->name('export');
-            Route::post('import', [UserManagementController::class, 'import'])->name('import');
-            Route::get('template', [UserManagementController::class, 'downloadTemplate'])->name('template');
-            Route::get('export-pdf', [ExportPdfController::class, 'usersExportPdf'])->name('view-pdf');
+            Route::get('export',      [AdminUserController::class,      'export'])->name('export');
+            Route::post('import',     [AdminUserController::class,      'import'])->name('import');
+            Route::get('template',    [AdminUserController::class,      'downloadTemplate'])->name('template');
+            Route::get('export-pdf',  [AdminExportPdfController::class, 'usersExportPdf'])->name('view-pdf');
         });
 
-        Route::get('monitoring', [UserManagementController::class, 'monitoring'])
+        Route::get('monitoring', [AdminUserController::class, 'monitoring'])
             ->name('monitoring.index');
 
-        Route::resource('tanyas', TanyaController::class)
+        Route::resource('tanyas', AdminTanyaController::class)
             ->only(['index', 'destroy'])
             ->names('tanyas');
+
+        Route::resource('jawabs', AdminJawabController::class)
+            ->only(['index', 'destroy'])
+            ->names('jawabs');
     });
 
+//storage
 Route::get('/storage/{path}', function ($path) {
-
     $fullPath = storage_path('app/public/' . $path);
-
     abort_unless(File::exists($fullPath), 404);
-
     return response()->file($fullPath);
 })->where('path', '.*')->name('storage.file');
