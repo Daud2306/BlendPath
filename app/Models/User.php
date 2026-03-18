@@ -99,4 +99,9 @@ class User extends Authenticatable
     {
         return $this->updated_at && $this->updated_at->gte(now()->subDays(30));
     }
+
+    public function showcases()
+    {
+        return $this->hasMany(Showcase::class);
+    }
 }

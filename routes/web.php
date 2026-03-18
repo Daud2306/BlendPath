@@ -23,6 +23,7 @@ use App\Http\Controllers\Admin\SearchController     as AdminSearchController;
 use App\Http\Controllers\Admin\ExportPdfController  as AdminExportPdfController;
 use App\Http\Controllers\Admin\DashboardController  as AdminDashboardController;
 use App\Http\Controllers\AiChatController;
+use App\Http\Controllers\ShowcaseController;
 use Illuminate\Support\Facades\Auth;
 
 // route auth
@@ -90,6 +91,17 @@ Route::middleware(['auth', 'role:user'])
             Route::post('upload',         [TinyMCEController::class, 'upload']);
             Route::delete('media/{id}',   [TinyMCEController::class, 'delete']);
             Route::get('list',            [TinyMCEController::class, 'index']);
+        });
+
+        Route::prefix('showcase')->name('showcase.')->group(function () {
+            Route::get('/',             [ShowcaseController::class, 'index'])->name('index');
+            Route::get('/create',       [ShowcaseController::class, 'create'])->name('create');
+            Route::post('/',            [ShowcaseController::class, 'store'])->name('store');
+            Route::get('/{showcase}',   [ShowcaseController::class, 'show'])->name('show');
+            Route::delete('/{showcase}', [ShowcaseController::class, 'destroy'])->name('destroy');
+
+            Route::post('/{showcase}/komentar',       [ShowcaseController::class, 'storeKomentar'])->name('komentar.store');
+            Route::delete('/komentar/{komentar}',     [ShowcaseController::class, 'destroyKomentar'])->name('komentar.destroy');
         });
     });
 
