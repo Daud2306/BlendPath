@@ -94,9 +94,6 @@
                         @endif
 
                         @if ($nextSubmodul)
-                            @php
-                                $isNextAccessible = auth()->check() && $submodul->isCompletedByUser();
-                            @endphp
 
                             @if ($isNextAccessible)
                                 <a href="{{ route('learn.submoduls.show', ['modul' => $modul->id, 'sort_order' => $nextSubmodul->sort_order]) }}"
@@ -109,7 +106,7 @@
                                 </button>
                             @endif
                         @else
-                            <a href="{{ route('moduls.show', $modul->id) }}" class="btn btn-success">
+                            <a href="{{ route('learn.moduls.show', $modul->id) }}" class="btn btn-success">
                                 <i class="bi bi-check-circle me-2"></i>Selesai Modul
                             </a>
                         @endif

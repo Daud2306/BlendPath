@@ -41,9 +41,11 @@ class Modul extends Model
             ];
         }
 
+        $modulId = $this->id;
+
         $completedSubmoduls = Progress::where('user_id', $user_id)
-            ->whereHas('submodul', function ($query) {
-                $query->where('modul_id', $this->id);
+            ->whereHas('submodul', function ($query) use ($modulId) {
+                $query->where('modul_id', $modulId);
             })
             ->where('is_completed', true)
             ->count();

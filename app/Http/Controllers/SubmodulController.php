@@ -39,11 +39,10 @@ class SubmodulController extends Controller
                 ->first();
 
             if ($previousSubmodul && $submodul->sort_order > 1) {
-                return redirect()
-                    ->route('moduls.submoduls.show', [
-                        'modul' => $modul->id,
-                        'sort_order' => $previousSubmodul->sort_order
-                    ])
+                return redirect()->route('learn.submoduls.show', [
+                    'modul' => $modul->id,
+                    'sort_order' => $previousSubmodul->sort_order
+                ])
                     ->with('error', 'Silakan selesaikan submodul sebelumnya terlebih dahulu: ' . $previousSubmodul->judul);
             }
         }
@@ -74,12 +73,15 @@ class SubmodulController extends Controller
             ->orderBy('sort_order', 'asc')
             ->first();
 
+        $isNextAccessible = Auth::check() && $submodul->isCompletedByUser();
+
         return view('user.submoduls.show', compact(
             'modul',
             'submodul',
             'prevSubmodul',
             'nextSubmodul',
-            'modulProgress'
+            'modulProgress',
+            'isNextAccessible'
         ));
     }
 

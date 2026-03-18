@@ -1,5 +1,7 @@
 {{-- qna.blade.php --}}
-<link href="{{ asset('frontend/css/qna.css') }}" rel="stylesheet">
+@push('styles')
+    <link href="{{ asset('frontend/css/qna.css') }}" rel="stylesheet">
+@endpush
 
 <div class="qna-section" id="qna-section">
     <!-- Header -->
@@ -262,7 +264,6 @@
             media_live_embeds: true,
             // optionally setup file_picker_types etc
         });
-
     </script>
 
     <script>

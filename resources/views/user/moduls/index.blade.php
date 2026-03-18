@@ -17,7 +17,7 @@
                 <div class="col-lg-4 text-lg-end">
                     <div class="modul-stats">
                         <div class="stat-item">
-                            <span class="stat-number">{{ $moduls->count() }}</span>
+                            <span class="stat-number">{{ $moduls->total() }}</span>
                             <span class="stat-label">Moduls Tersedia</span>
                         </div>
                     </div>
@@ -28,7 +28,7 @@
 
     <section class="moduls-section">
         <div class="container">
-            @if ($moduls->count() === 0)
+            @if ($moduls->total() === 0)
                 <div class="empty-state">
                     <i class="bi bi-map display-1"></i>
                     <h3>Belum ada modul tersedia</h3>
@@ -62,7 +62,7 @@
                                             <span class="progress-percentage">{{ $progress['percentage'] }}%</span>
                                         </div>
                                         <div class="modul-progress">
-                                            <div class="progress-bar" style="width: {{ $progress['percentage'] }}%;">
+                                            <div class="modul-progress-fill" style="width: {{ $progress['percentage'] }}%">
                                             </div>
                                         </div>
                                     </div>
