@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('progress', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('submodul_id')->constrained()->onDelete('cascade');
             $table->boolean('is_completed')->default(false);
             $table->timestamp('completed_at')->nullable();
             $table->unique(['user_id', 'submodul_id']);
+            $table->timestamps();
         });
     }
 

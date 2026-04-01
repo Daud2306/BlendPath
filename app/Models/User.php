@@ -63,9 +63,9 @@ class User extends Authenticatable
         return $this->hasMany(Jawab::class);
     }
 
-    public function responQuizzes()
+    public function quizAttempts()
     {
-        return $this->hasMany(ResponQuiz::class);
+        return $this->hasMany(QuizAttempt::class);
     }
 
     public function isAdmin()

@@ -10,26 +10,15 @@ use Illuminate\Http\Request;
 
 class SubmodulController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index(Modul $modul)
-    {
-        $submoduls = Submodul::where('modul_id', $modul->id)
-            ->orderBy('sort_order')
-            ->paginate(12);
-
-        return view('user.submoduls.index', compact('modul', 'submoduls'));
-    }
-
-    public function show(Modul $modul, $sort_order)
+    public function show(Modul $modul, int $sort_order)
     {
         $submodul = Submodul::where('modul_id', $modul->id)
             ->where('sort_order', $sort_order)
             ->firstOrFail();
 
-        if (Auth::check()) {
-            $previousSubmodul = Submodul::where('modul_id', $modul->id)
+        // Gate: submodul sebelumnya harus sudah selesai
+        if (Auth::check() && $submodul->sort_order > 1) {
+            $previousIncomplete = Submodul::where('modul_id', $modul->id)
                 ->where('sort_order', '<', $submodul->sort_order)
                 ->whereDoesntHave('progress', function ($query) {
                     $query->where('user_id', Auth::id())
@@ -38,30 +27,30 @@ class SubmodulController extends Controller
                 ->orderBy('sort_order', 'desc')
                 ->first();
 
-            if ($previousSubmodul && $submodul->sort_order > 1) {
-                return redirect()->route('learn.submoduls.show', [
-                    'modul' => $modul->id,
-                    'sort_order' => $previousSubmodul->sort_order
-                ])
-                    ->with('error', 'Silakan selesaikan submodul sebelumnya terlebih dahulu: ' . $previousSubmodul->judul);
+            if ($previousIncomplete) {
+                return redirect()
+                    ->route('learn.submoduls.show', [
+                        'modul'      => $modul->id,
+                        'sort_order' => $previousIncomplete->sort_order,
+                    ])
+                    ->with('error', 'Selesaikan submodul sebelumnya: ' . $previousIncomplete->judul);
             }
         }
 
         $submodul->load([
             'resources',
-            'tanya' => function ($query) {
-                $query->orderBy('created_at', 'desc');
-            },
+            'tanya'             => fn($q) => $q->orderBy('created_at', 'desc'),
             'tanya.user',
-            'tanya.jawabs' => function ($query) {
-                $query->orderBy('created_at', 'asc');
-            },
+            'tanya.jawabs'      => fn($q) => $q->orderBy('created_at', 'asc'),
             'tanya.jawabs.user',
             'tanya.resources',
-            'tanya.jawabs.resources'
+            'tanya.jawabs.resources',
+            // ← tambahan: quiz dan mini project untuk ditampilkan di halaman user
+            'quiz.questions',
+            'miniProjects.resources',
         ]);
 
-        $modulProgress = $modul->getUserProgress();
+        $modulProgress = $modul->getUserProgress(Auth::id());
 
         $prevSubmodul = Submodul::where('modul_id', $modul->id)
             ->where('sort_order', '<', $submodul->sort_order)
@@ -73,7 +62,15 @@ class SubmodulController extends Controller
             ->orderBy('sort_order', 'asc')
             ->first();
 
-        $isNextAccessible = Auth::check() && $submodul->isCompletedByUser();
+        $isCurrentCompleted = Auth::check() && $submodul->isCompletedByUser(Auth::id());
+        $isLastSubmodul     = $submodul->isLastInModul();
+
+        // Quiz di submodul ini (hasOne)
+        $quiz      = $submodul->quiz;
+        $quizLulus = $quiz ? $quiz->isPassedByUser(Auth::id()) : false;
+
+        // "Next" accessible: submodul selesai, dan jika ada quiz harus lulus dulu
+        $isNextAccessible = $isCurrentCompleted && (!$quiz || $quizLulus);
 
         return view('user.submoduls.show', compact(
             'modul',
@@ -81,29 +78,11 @@ class SubmodulController extends Controller
             'prevSubmodul',
             'nextSubmodul',
             'modulProgress',
-            'isNextAccessible'
+            'isNextAccessible',
+            'isCurrentCompleted',
+            'isLastSubmodul',
+            'quiz',
+            'quizLulus',
         ));
-    }
-
-    public function complete(Modul $modul, $sort_order)
-    {
-        $submodul = Submodul::where('modul_id', $modul->id)
-            ->where('sort_order', $sort_order)
-            ->firstOrFail();
-
-        $submodul->markAsCompleted(Auth::id());
-
-        return back()->with('success', 'Submodul berhasil ditandai sebagai selesai!');
-    }
-
-    public function incomplete(Modul $modul, $sort_order)
-    {
-        $submodul = Submodul::where('modul_id', $modul->id)
-            ->where('sort_order', $sort_order)
-            ->firstOrFail();
-
-        $submodul->markAsIncomplete();
-
-        return back()->with('success', 'Submodul berhasil ditandai sebagai belum selesai.');
     }
 }

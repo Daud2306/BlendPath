@@ -6,26 +6,22 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema::create('moduls', function (Blueprint $table) {
+        Schema::create('mini_projects', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('submodul_id')->constrained()->onDelete('cascade');
             $table->string('judul');
             $table->text('deskripsi');
-            $table->string('gambar')->nullable();
-            $table->integer('sort_order')->default(1);
+            $table->text('passing_criteria')->nullable();
+            $table->integer('sort_order')->default(0);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('moduls');
+        Schema::dropIfExists('mini_projects');
     }
 };

@@ -11,12 +11,17 @@ class Submodul extends Model
     use HasFactory;
 
     protected $table = 'submoduls';
+
     protected $fillable = [
         'modul_id',
         'judul',
         'konten',
         'sort_order',
     ];
+
+    // -------------------------------------------------------------------------
+    // Relasi
+    // -------------------------------------------------------------------------
 
     public function modul()
     {
@@ -38,49 +43,62 @@ class Submodul extends Model
         return $this->hasMany(Tanya::class);
     }
 
-    public function quizzes()
+    /**
+     * Setiap submodul bisa punya satu quiz (opsional)
+     */
+    public function quiz()
     {
-        return $this->hasMany(Quiz::class);
+        return $this->hasOne(Quiz::class);
     }
 
-    public function isCompletedByUser($user_id = null)
+    /**
+     * Setiap submodul bisa punya banyak mini project (opsional)
+     */
+    public function miniProjects()
     {
-        $user_id = $user_id ?? Auth::id();
+        return $this->hasMany(MiniProject::class)->orderBy('sort_order');
+    }
 
-        if (!$user_id) {
-            return false;
-        }
+    // -------------------------------------------------------------------------
+    // Helper — progress
+    // -------------------------------------------------------------------------
+
+    public function isCompletedByUser(int $userId = null): bool
+    {
+        $userId = $userId ?? Auth::id();
+        if (!$userId) return false;
 
         return $this->progress()
-            ->where('user_id', $user_id)
+            ->where('user_id', $userId)
             ->where('is_completed', true)
             ->exists();
     }
 
-    public function markAsCompleted($userId)
+    public function markAsCompleted(int $userId): Progress
     {
         return Progress::updateOrCreate(
-            [
-                'user_id' => $userId,
-                'submodul_id' => $this->id
-            ],
-            [
-                'is_completed' => true,
-                'completed_at' => now()
-            ]
+            ['user_id' => $userId, 'submodul_id' => $this->id],
+            ['is_completed' => true, 'completed_at' => now()]
         );
     }
 
-    public function markAsIncomplete($user_id = null)
+    public function markAsIncomplete(int $userId = null): bool
     {
-        $user_id = $user_id ?? Auth::id();
+        $userId = $userId ?? Auth::id();
+        if (!$userId) return false;
 
-        if (!$user_id) {
-            return false;
-        }
-
-        return Progress::where('user_id', $user_id)
+        return (bool) Progress::where('user_id', $userId)
             ->where('submodul_id', $this->id)
             ->delete();
+    }
+
+    // -------------------------------------------------------------------------
+    // Helper — posisi dalam modul
+    // -------------------------------------------------------------------------
+
+    public function isLastInModul(): bool
+    {
+        $maxOrder = static::where('modul_id', $this->modul_id)->max('sort_order');
+        return $this->sort_order === $maxOrder;
     }
 }

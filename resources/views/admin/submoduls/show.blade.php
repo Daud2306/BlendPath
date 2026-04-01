@@ -12,16 +12,12 @@
         font-size: 0.9rem;
         line-height: 1.8;
         color: var(--text-primary);
-        max-height: 360px;
+        max-height: 400px;
         overflow-y: auto;
     }
-
     .konten-preview::-webkit-scrollbar { width: 4px; }
-    .konten-preview::-webkit-scrollbar-track { background: transparent; }
     .konten-preview::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 2px; }
-
     .konten-preview img { max-width: 100%; border-radius: var(--radius); }
-    .konten-preview h1, .konten-preview h2, .konten-preview h3 { margin-top: 1rem; }
 
     .quiz-item {
         border: 1px solid var(--border-color);
@@ -30,11 +26,7 @@
         overflow: hidden;
         transition: var(--transition);
     }
-
-    .quiz-item:hover {
-        border-color: var(--accent);
-        box-shadow: var(--shadow-hover);
-    }
+    .quiz-item:hover { border-color: var(--accent); box-shadow: var(--shadow-hover); }
 
     .quiz-header {
         padding: 1rem 1.25rem;
@@ -45,28 +37,18 @@
         cursor: pointer;
         user-select: none;
     }
-
     .quiz-body {
         border-top: 1px solid var(--border-color);
         padding: 1rem 1.25rem;
         background: var(--bg-primary);
     }
-
     .pertanyaan-item {
         padding: 0.75rem 0;
         border-bottom: 1px solid var(--border-color);
         font-size: 0.875rem;
     }
-
     .pertanyaan-item:last-child { border-bottom: none; }
-
-    .pilihan-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 0.4rem;
-        margin-top: 0.5rem;
-    }
-
+    .pilihan-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem; margin-top: 0.5rem; }
     .pilihan-item {
         padding: 0.4rem 0.75rem;
         border-radius: 6px;
@@ -77,17 +59,14 @@
         align-items: center;
         gap: 0.5rem;
     }
-
     .pilihan-item.correct {
         background: #e6f9ed;
         border-color: #c3e6cb;
         color: var(--success);
         font-weight: 600;
     }
-
     .pilihan-label {
-        width: 20px;
-        height: 20px;
+        width: 20px; height: 20px;
         border-radius: 50%;
         background: var(--border-color);
         color: var(--text-primary);
@@ -98,19 +77,19 @@
         justify-content: center;
         flex-shrink: 0;
     }
+    .pilihan-item.correct .pilihan-label { background: var(--success); color: white; }
 
-    .pilihan-item.correct .pilihan-label {
-        background: var(--success);
-        color: white;
+    .project-card {
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius);
+        background: var(--bg-card);
+        padding: 1rem 1.25rem;
+        transition: var(--transition);
     }
+    .project-card:hover { border-color: var(--success); box-shadow: var(--shadow-hover); }
 
-    .diskusi-item {
-        padding: 1rem 0;
-        border-bottom: 1px solid var(--border-color);
-    }
-
+    .diskusi-item { padding: 1rem 0; border-bottom: 1px solid var(--border-color); }
     .diskusi-item:last-child { border-bottom: none; }
-
     .jawab-item {
         margin-top: 0.75rem;
         padding: 0.75rem;
@@ -134,17 +113,8 @@
         transition: var(--transition);
         text-decoration: none;
     }
-
-    .nav-submodul-btn:hover {
-        border-color: var(--accent);
-        color: var(--accent);
-        background: var(--accent-light);
-    }
-
-    .nav-submodul-btn.disabled {
-        opacity: 0.4;
-        pointer-events: none;
-    }
+    .nav-submodul-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
+    .nav-submodul-btn.disabled { opacity: 0.4; pointer-events: none; }
 </style>
 @endpush
 
@@ -163,12 +133,12 @@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb mb-0">
                 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.moduls.index') }}">Modul</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.course.builder') }}">Course Builder</a></li>
                 <li class="breadcrumb-item"><a href="{{ route('admin.moduls.submoduls.index', $modul) }}">{{ Str::limit($modul->judul, 20) }}</a></li>
                 <li class="breadcrumb-item active">{{ Str::limit($submodul->judul, 20) }}</li>
             </ol>
         </nav>
-        <a href="{{ route('admin.moduls.submoduls.edit', [$modul, $submodul]) }}" class="btn-primary-admin ms-2">
+        <a href="{{ route('admin.moduls.submoduls.edit', [$modul, $submodul]) }}" class="btn-admin primary ms-2">
             <i class="fas fa-edit"></i> Edit Submodul
         </a>
     </div>
@@ -185,12 +155,10 @@
             </div>
         </a>
     @else
-        <span class="nav-submodul-btn disabled">
-            <i class="fas fa-arrow-left"></i> Tidak ada
-        </span>
+        <span class="nav-submodul-btn disabled"><i class="fas fa-arrow-left"></i> Tidak ada</span>
     @endif
 
-    <a href="{{ route('admin.moduls.submoduls.index', $modul) }}" class="btn-outline-admin">
+    <a href="{{ route('admin.moduls.submoduls.index', $modul) }}" class="btn-admin secondary">
         <i class="fas fa-list"></i> Semua Submodul
     </a>
 
@@ -203,63 +171,59 @@
             <i class="fas fa-arrow-right"></i>
         </a>
     @else
-        <span class="nav-submodul-btn disabled" style="text-align:right;">
-            Tidak ada <i class="fas fa-arrow-right"></i>
-        </span>
+        <span class="nav-submodul-btn disabled" style="text-align:right;">Tidak ada <i class="fas fa-arrow-right"></i></span>
     @endif
 </div>
 
 <div class="row g-3">
 
-    {{-- LEFT: Konten + Quiz + Diskusi --}}
+    {{-- LEFT: Konten + Quiz + Mini Project + Diskusi --}}
     <div class="col-lg-8 d-flex flex-column gap-3">
 
         {{-- Konten --}}
         <div class="admin-card">
-            <div class="card-header">
-                <h5 class="card-title">
+            <div class="admin-card-header">
+                <span class="admin-card-title">
                     <i class="fas fa-file-alt me-2" style="color:var(--accent);"></i>Konten
-                </h5>
-                <a href="{{ route('admin.moduls.submoduls.edit', [$modul, $submodul]) }}"
-                   class="btn-outline-admin">
+                </span>
+                <a href="{{ route('admin.moduls.submoduls.edit', [$modul, $submodul]) }}" class="btn-admin secondary sm">
                     <i class="fas fa-edit"></i> Edit
                 </a>
             </div>
-            <div class="card-body">
+            <div class="admin-card-body">
                 @if($submodul->konten)
                     <div class="konten-preview">{!! $submodul->konten !!}</div>
                 @else
                     <div class="empty-state" style="padding:2rem;">
                         <i class="fas fa-file-alt"></i>
-                        <p>Belum ada konten</p>
+                        <p>Belum ada konten. <a href="{{ route('admin.moduls.submoduls.edit', [$modul, $submodul]) }}" style="color:var(--accent);">Tambah sekarang</a></p>
                     </div>
                 @endif
             </div>
         </div>
 
-        {{-- Resources --}}
+        {{-- Resources (video_link + images) --}}
         @if($submodul->resources && $submodul->resources->count() > 0)
         <div class="admin-card">
-            <div class="card-header">
-                <h5 class="card-title">
-                    <i class="fas fa-paperclip me-2" style="color:var(--accent);"></i>
-                    Media / Resource
-                </h5>
-                <span style="font-size:0.8rem;color:#adb5bd;">{{ $submodul->resources->count() }} file</span>
+            <div class="admin-card-header">
+                <span class="admin-card-title">
+                    <i class="fas fa-paperclip me-2" style="color:var(--accent);"></i>Media / Resource
+                </span>
+                <span style="font-size:0.8rem;color:#adb5bd;">{{ $submodul->resources->count() }} item</span>
             </div>
-            <div class="card-body">
+            <div class="admin-card-body">
                 <div class="row g-2">
                     @foreach($submodul->resources as $resource)
                     <div class="col-sm-6 col-md-4">
                         @if($resource->type === 'video_link')
-                            <div style="border:1px solid var(--border-color);border-radius:var(--radius);padding:0.75rem;background:var(--bg-primary);">
-                                <div style="font-size:0.75rem;color:#adb5bd;margin-bottom:0.3rem;">
-                                    <i class="fas fa-link me-1"></i>Video Link
+                            <div style="border:1px solid var(--border-color);border-radius:var(--radius);overflow:hidden;">
+                                <div style="aspect-ratio:16/9;background:#000;">
+                                    <iframe src="{{ $resource->path }}" width="100%" height="100%"
+                                            frameborder="0" allowfullscreen style="display:block;"></iframe>
                                 </div>
-                                <a href="{{ $resource->path }}" target="_blank"
-                                   style="font-size:0.8rem;color:var(--accent);word-break:break-all;">
-                                    {{ Str::limit($resource->path, 45) }}
-                                </a>
+                                <div style="padding:0.5rem;font-size:0.75rem;color:#adb5bd;border-top:1px solid var(--border-color);">
+                                    <i class="fab fa-youtube me-1"></i>Video Embed
+                                </div>
                             </div>
                         @else
                             <div style="border:1px solid var(--border-color);border-radius:var(--radius);overflow:hidden;">
@@ -284,32 +248,33 @@
         </div>
         @endif
 
-        {{-- Quiz --}}
+        {{-- Quiz — sekarang hasOne, bukan hasMany --}}
         <div class="admin-card">
-            <div class="card-header">
-                <h5 class="card-title">
-                    <i class="fas fa-question-circle me-2" style="color:var(--accent);"></i>
-                    Quiz
-                    @if($submodul->quizzes->count() > 0)
+            <div class="admin-card-header">
+                <span class="admin-card-title">
+                    <i class="fas fa-question-circle me-2" style="color:var(--accent);"></i>Quiz
+                    @if($submodul->quiz)
                         <span style="background:var(--accent-light);color:var(--accent);font-size:0.75rem;padding:0.2rem 0.6rem;border-radius:20px;margin-left:0.5rem;">
-                            {{ $submodul->quizzes->count() }}
+                            1
                         </span>
                     @endif
-                </h5>
-                <a href="{{ route('admin.moduls.submoduls.quizzes.create', [$modul, $submodul]) }}"
-                   class="btn-outline-admin">
-                    <i class="fas fa-plus"></i> Tambah Quiz
-                </a>
+                </span>
+                @if(!$submodul->quiz)
+                    <a href="{{ route('admin.moduls.submoduls.quiz.create', [$modul, $submodul]) }}"
+                       class="btn-admin secondary sm">
+                        <i class="fas fa-plus"></i> Tambah Quiz
+                    </a>
+                @endif
             </div>
-            <div class="card-body p-0">
-                @if($submodul->quizzes->isEmpty())
+            <div class="admin-card-body p-0">
+                @if(!$submodul->quiz)
                     <div class="empty-state">
                         <i class="fas fa-question-circle"></i>
                         <p>Belum ada quiz untuk submodul ini.</p>
                     </div>
                 @else
-                    <div class="p-3 d-flex flex-column gap-3">
-                        @foreach($submodul->quizzes as $quiz)
+                    @php $quiz = $submodul->quiz; @endphp
+                    <div class="p-3">
                         <div class="quiz-item">
                             <div class="quiz-header" data-bs-toggle="collapse" data-bs-target="#quiz-{{ $quiz->id }}">
                                 <div>
@@ -317,23 +282,25 @@
                                         {{ $quiz->judul_quiz }}
                                     </div>
                                     <div style="font-size:0.78rem;color:#adb5bd;margin-top:3px;">
-                                        {{ $quiz->pertanyaan->count() }} soal &bull;
-                                        Passing score: {{ $quiz->passing_score }}% &bull;
-                                        Urutan: {{ $quiz->urutan }}
+                                        {{ $quiz->questions->count() }} soal &bull;
+                                        Passing score: {{ $quiz->passing_score }}%
+                                        @if($quiz->deskripsi)
+                                            &bull; {{ Str::limit($quiz->deskripsi, 40) }}
+                                        @endif
                                     </div>
                                 </div>
                                 <div class="d-flex align-items-center gap-2">
-                                    <a href="{{ route('admin.moduls.submoduls.quizzes.edit', [$modul, $submodul, $quiz]) }}"
-                                       class="btn-outline-admin" onclick="event.stopPropagation()">
+                                    <a href="{{ route('admin.moduls.submoduls.quiz.edit', [$modul, $submodul, $quiz]) }}"
+                                       class="btn-admin secondary sm" onclick="event.stopPropagation()">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                    <form action="{{ route('admin.moduls.submoduls.quizzes.destroy', [$modul, $submodul, $quiz]) }}"
+                                    <form action="{{ route('admin.moduls.submoduls.quiz.destroy', [$modul, $submodul, $quiz]) }}"
                                           method="POST"
-                                          onsubmit="return confirm('Hapus quiz ini?')"
+                                          onsubmit="return confirm('Hapus quiz ini? Semua soal dan riwayat attempt akan ikut terhapus.')"
                                           onclick="event.stopPropagation()">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn-danger-admin">
+                                        <button type="submit" class="btn-admin danger sm">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </form>
@@ -343,11 +310,16 @@
 
                             <div id="quiz-{{ $quiz->id }}" class="collapse">
                                 <div class="quiz-body">
-                                    @foreach($quiz->pertanyaan as $no => $soal)
+                                    @forelse($quiz->questions as $no => $soal)
                                     <div class="pertanyaan-item">
                                         <div style="font-weight:600;font-size:0.875rem;margin-bottom:0.4rem;">
                                             {{ $no + 1 }}. {{ $soal->pertanyaan }}
                                         </div>
+                                        @if($soal->gambar_soal)
+                                            <img src="{{ asset('storage/' . $soal->gambar_soal) }}"
+                                                 alt="Gambar soal"
+                                                 style="max-height:120px;border-radius:6px;margin-bottom:0.4rem;">
+                                        @endif
                                         <div class="pilihan-grid">
                                             @foreach($soal->pilihan_jawaban as $key => $value)
                                             <div class="pilihan-item {{ strtoupper($key) === strtoupper($soal->jawaban_benar) ? 'correct' : '' }}">
@@ -363,8 +335,77 @@
                                             Poin: {{ $soal->poin }}
                                         </div>
                                     </div>
-                                    @endforeach
+                                    @empty
+                                        <p style="font-size:0.875rem;color:#adb5bd;margin:0;">Belum ada soal. <a href="{{ route('admin.moduls.submoduls.quiz.edit', [$modul, $submodul, $quiz]) }}" style="color:var(--accent);">Tambah soal</a></p>
+                                    @endforelse
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+            </div>
+        </div>
+
+        {{-- Mini Project --}}
+        <div class="admin-card">
+            <div class="admin-card-header">
+                <span class="admin-card-title">
+                    <i class="fas fa-project-diagram me-2" style="color:var(--success);"></i>Mini Project
+                    @if($submodul->miniProjects->count() > 0)
+                        <span style="background:#e6f9ed;color:var(--success);font-size:0.75rem;padding:0.2rem 0.6rem;border-radius:20px;margin-left:0.5rem;">
+                            {{ $submodul->miniProjects->count() }}
+                        </span>
+                    @endif
+                </span>
+                {{-- Tombol tambah mini project — diarahkan ke Course Builder karena belum ada halaman create tersendiri --}}
+                <a href="{{ route('admin.course.builder') }}" class="btn-admin secondary sm">
+                    <i class="fas fa-cubes"></i> Kelola di Builder
+                </a>
+            </div>
+            <div class="admin-card-body p-0">
+                @if($submodul->miniProjects->isEmpty())
+                    <div class="empty-state">
+                        <i class="fas fa-project-diagram"></i>
+                        <p>Belum ada mini project. Tambahkan lewat <a href="{{ route('admin.course.builder') }}" style="color:var(--accent);">Course Builder</a>.</p>
+                    </div>
+                @else
+                    <div class="p-3 d-flex flex-column gap-2">
+                        @foreach($submodul->miniProjects as $project)
+                        <div class="project-card">
+                            <div class="d-flex align-items-start justify-content-between gap-2">
+                                <div>
+                                    <div style="font-weight:600;font-size:0.9rem;color:var(--text-primary);margin-bottom:0.25rem;">
+                                        <i class="fas fa-flag me-1" style="color:var(--success);font-size:0.8rem;"></i>
+                                        {{ $project->judul }}
+                                    </div>
+                                    <div style="font-size:0.82rem;color:#adb5bd;line-height:1.5;">
+                                        {{ Str::limit($project->deskripsi, 120) }}
+                                    </div>
+                                    @if($project->passing_criteria)
+                                        <div style="margin-top:0.5rem;font-size:0.78rem;background:var(--bg-primary);border:1px solid var(--border-color);border-radius:6px;padding:0.4rem 0.6rem;color:var(--text-primary);">
+                                            <strong>Kriteria:</strong> {{ Str::limit($project->passing_criteria, 80) }}
+                                        </div>
+                                    @endif
+                                    {{-- Gambar referensi dari resources --}}
+                                    @php $projectImages = $project->resources->where('type', 'image'); @endphp
+                                    @if($projectImages->isNotEmpty())
+                                        <div class="d-flex gap-1 mt-2 flex-wrap">
+                                            @foreach($projectImages->take(3) as $img)
+                                                <img src="{{ asset('storage/' . $img->path) }}"
+                                                     alt="Referensi"
+                                                     style="width:56px;height:56px;object-fit:cover;border-radius:6px;border:1px solid var(--border-color);">
+                                            @endforeach
+                                            @if($projectImages->count() > 3)
+                                                <div style="width:56px;height:56px;border-radius:6px;background:var(--bg-primary);border:1px solid var(--border-color);display:flex;align-items:center;justify-content:center;font-size:0.75rem;color:#adb5bd;">
+                                                    +{{ $projectImages->count() - 3 }}
+                                                </div>
+                                            @endif
+                                        </div>
+                                    @endif
+                                </div>
+                                <span style="font-size:0.75rem;color:#adb5bd;white-space:nowrap;">
+                                    Urutan {{ $project->sort_order }}
+                                </span>
                             </div>
                         </div>
                         @endforeach
@@ -375,21 +416,20 @@
 
         {{-- Diskusi --}}
         <div class="admin-card">
-            <div class="card-header">
-                <h5 class="card-title">
-                    <i class="fas fa-comments me-2" style="color:var(--accent);"></i>
-                    Diskusi
+            <div class="admin-card-header">
+                <span class="admin-card-title">
+                    <i class="fas fa-comments me-2" style="color:var(--accent);"></i>Diskusi
                     @if($submodul->tanya->count() > 0)
                         <span style="background:var(--accent-light);color:var(--accent);font-size:0.75rem;padding:0.2rem 0.6rem;border-radius:20px;margin-left:0.5rem;">
                             {{ $submodul->tanya->count() }}
                         </span>
                     @endif
-                </h5>
-                <a href="{{ route('admin.tanyas.index') }}" class="btn-outline-admin">
+                </span>
+                <a href="{{ route('admin.tanyas.index') }}" class="btn-admin secondary sm">
                     <i class="fas fa-external-link-alt"></i> Kelola Semua
                 </a>
             </div>
-            <div class="card-body">
+            <div class="admin-card-body">
                 @if($submodul->tanya->isEmpty())
                     <div class="empty-state" style="padding:2rem;">
                         <i class="fas fa-comments"></i>
@@ -415,7 +455,7 @@
                                           onsubmit="return confirm('Hapus pertanyaan ini?')">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn-danger-admin" style="padding:0.25rem 0.6rem;font-size:0.75rem;">
+                                        <button type="submit" class="btn-admin danger sm" style="padding:0.25rem 0.6rem;font-size:0.75rem;">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </form>
@@ -424,7 +464,6 @@
                                     {{ $tanya->pertanyaan }}
                                 </p>
 
-                                {{-- Jawaban --}}
                                 @if($tanya->jawabs->isNotEmpty())
                                     @foreach($tanya->jawabs as $jawab)
                                     <div class="jawab-item">
@@ -441,14 +480,12 @@
                                                   onsubmit="return confirm('Hapus jawaban ini?')">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn-danger-admin" style="padding:0.2rem 0.5rem;font-size:0.7rem;">
+                                                <button type="submit" class="btn-admin danger sm" style="padding:0.2rem 0.5rem;font-size:0.7rem;">
                                                     <i class="fas fa-trash"></i>
                                                 </button>
                                             </form>
                                         </div>
-                                        <div style="font-size:0.85rem;color:var(--text-primary);">
-                                            {{ $jawab->jawaban }}
-                                        </div>
+                                        <div style="font-size:0.85rem;color:var(--text-primary);">{{ $jawab->jawaban }}</div>
                                     </div>
                                     @endforeach
                                 @endif
@@ -467,13 +504,13 @@
 
         {{-- Info Card --}}
         <div class="admin-card">
-            <div class="card-header">
-                <h5 class="card-title">
+            <div class="admin-card-header">
+                <span class="admin-card-title">
                     <i class="fas fa-info-circle me-2" style="color:var(--accent);"></i>Informasi
-                </h5>
+                </span>
             </div>
-            <div class="card-body">
-                <dl style="font-size:0.875rem;">
+            <div class="admin-card-body">
+                <dl style="font-size:0.875rem;margin:0;">
                     <dt style="color:#adb5bd;font-size:0.75rem;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:0.25rem;">Judul</dt>
                     <dd style="color:var(--text-primary);font-weight:500;margin-bottom:1rem;">{{ $submodul->judul }}</dd>
 
@@ -492,39 +529,41 @@
                     </dd>
 
                     <dt style="color:#adb5bd;font-size:0.75rem;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:0.25rem;">Dibuat</dt>
-                    <dd style="color:var(--text-primary);margin-bottom:1rem;">
-                        {{ $submodul->created_at->format('d M Y, H:i') }}
-                    </dd>
+                    <dd style="color:var(--text-primary);margin-bottom:1rem;">{{ $submodul->created_at->format('d M Y, H:i') }}</dd>
 
                     <dt style="color:#adb5bd;font-size:0.75rem;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:0.25rem;">Diperbarui</dt>
-                    <dd style="color:var(--text-primary);margin-bottom:0;">
-                        {{ $submodul->updated_at->diffForHumans() }}
-                    </dd>
+                    <dd style="color:var(--text-primary);margin-bottom:0;">{{ $submodul->updated_at->diffForHumans() }}</dd>
                 </dl>
             </div>
         </div>
 
         {{-- Quick Stats --}}
         <div class="admin-card">
-            <div class="card-header">
-                <h5 class="card-title">
+            <div class="admin-card-header">
+                <span class="admin-card-title">
                     <i class="fas fa-chart-bar me-2" style="color:var(--accent);"></i>Statistik
-                </h5>
+                </span>
             </div>
-            <div class="card-body d-flex flex-column gap-3">
+            <div class="admin-card-body d-flex flex-column gap-3">
                 <div class="d-flex align-items-center justify-content-between">
                     <div style="font-size:0.875rem;color:var(--text-primary);">
                         <i class="fas fa-question-circle me-2" style="color:var(--accent);"></i>Quiz
                     </div>
-                    <span style="font-weight:700;color:var(--text-primary);">{{ $submodul->quizzes->count() }}</span>
+                    <span style="font-weight:700;color:var(--text-primary);">{{ $submodul->quiz ? 1 : 0 }}</span>
                 </div>
                 <div class="d-flex align-items-center justify-content-between">
                     <div style="font-size:0.875rem;color:var(--text-primary);">
                         <i class="fas fa-list-ol me-2" style="color:var(--accent);"></i>Total Soal
                     </div>
                     <span style="font-weight:700;color:var(--text-primary);">
-                        {{ $submodul->quizzes->sum(fn($q) => $q->pertanyaan->count()) }}
+                        {{ $submodul->quiz ? $submodul->quiz->questions->count() : 0 }}
                     </span>
+                </div>
+                <div class="d-flex align-items-center justify-content-between">
+                    <div style="font-size:0.875rem;color:var(--text-primary);">
+                        <i class="fas fa-project-diagram me-2" style="color:var(--success);"></i>Mini Project
+                    </div>
+                    <span style="font-weight:700;color:var(--text-primary);">{{ $submodul->miniProjects->count() }}</span>
                 </div>
                 <div class="d-flex align-items-center justify-content-between">
                     <div style="font-size:0.875rem;color:var(--text-primary);">
@@ -551,24 +590,40 @@
 
         {{-- Aksi Cepat --}}
         <div class="admin-card">
-            <div class="card-header">
-                <h5 class="card-title">
+            <div class="admin-card-header">
+                <span class="admin-card-title">
                     <i class="fas fa-bolt me-2" style="color:var(--accent);"></i>Aksi
-                </h5>
+                </span>
             </div>
-            <div class="card-body d-flex flex-column gap-2">
-                <a href="{{ route('admin.moduls.submoduls.edit', [$modul, $submodul]) }}" class="btn-primary-admin w-100 justify-content-center">
-                    <i class="fas fa-edit"></i> Edit Submodul
+            <div class="admin-card-body d-flex flex-column gap-2">
+                <a href="{{ route('admin.moduls.submoduls.edit', [$modul, $submodul]) }}"
+                   class="btn-admin primary w-100 justify-content-center">
+                    <i class="fas fa-edit"></i> Edit Konten
                 </a>
-                <a href="{{ route('admin.moduls.submoduls.quizzes.create', [$modul, $submodul]) }}" class="btn-outline-admin w-100 justify-content-center">
-                    <i class="fas fa-plus"></i> Tambah Quiz
+
+                @if(!$submodul->quiz)
+                    <a href="{{ route('admin.moduls.submoduls.quiz.create', [$modul, $submodul]) }}"
+                       class="btn-admin secondary w-100 justify-content-center">
+                        <i class="fas fa-plus"></i> Tambah Quiz
+                    </a>
+                @else
+                    <a href="{{ route('admin.moduls.submoduls.quiz.edit', [$modul, $submodul, $submodul->quiz]) }}"
+                       class="btn-admin secondary w-100 justify-content-center">
+                        <i class="fas fa-edit"></i> Edit Quiz
+                    </a>
+                @endif
+
+                <a href="{{ route('admin.course.builder') }}"
+                   class="btn-admin secondary w-100 justify-content-center">
+                    <i class="fas fa-cubes"></i> Course Builder
                 </a>
+
                 <form action="{{ route('admin.moduls.submoduls.destroy', [$modul, $submodul]) }}"
                       method="POST"
                       onsubmit="return confirm('Hapus submodul \'{{ addslashes($submodul->judul) }}\'? Semua data terkait akan terhapus.')">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="btn-danger-admin w-100 justify-content-center">
+                    <button type="submit" class="btn-admin danger w-100 justify-content-center">
                         <i class="fas fa-trash"></i> Hapus Submodul
                     </button>
                 </form>

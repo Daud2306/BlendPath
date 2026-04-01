@@ -3,16 +3,20 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\File;
 
-// user
+// ─── User Controllers ────────────────────────────────────────────────────────
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ModulController;
 use App\Http\Controllers\SubmodulController;
+use App\Http\Controllers\QuizController;
 use App\Http\Controllers\TanyaController;
 use App\Http\Controllers\JawabController;
 use App\Http\Controllers\ProgressController;
 use App\Http\Controllers\TinyMCEController;
+use App\Http\Controllers\AiChatController;
+use App\Http\Controllers\ShowcaseController;
+use App\Http\Controllers\ProfileController;
 
-// admin
+// ─── Admin Controllers ───────────────────────────────────────────────────────
 use App\Http\Controllers\Admin\ModulController      as AdminModulController;
 use App\Http\Controllers\Admin\SubmodulController   as AdminSubmodulController;
 use App\Http\Controllers\Admin\QuizController       as AdminQuizController;
@@ -22,21 +26,21 @@ use App\Http\Controllers\Admin\UserController       as AdminUserController;
 use App\Http\Controllers\Admin\SearchController     as AdminSearchController;
 use App\Http\Controllers\Admin\ExportPdfController  as AdminExportPdfController;
 use App\Http\Controllers\Admin\DashboardController  as AdminDashboardController;
-use App\Http\Controllers\AiChatController;
-use App\Http\Controllers\ShowcaseController;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Admin\ShowcaseController   as AdminShowcaseController;
 
-// route auth
+// =============================================================================
+// Auth
+// =============================================================================
+
 Route::get('/', [AuthController::class, 'home'])->name('home');
-
 Route::view('/about', 'user.about');
 
 Route::middleware('guest')->group(function () {
     Route::controller(AuthController::class)->group(function () {
-        Route::get('/register', 'showRegisterForm')->name('register');
+        Route::get('/register',  'showRegisterForm')->name('register');
         Route::post('/register', 'register')->name('register.process');
-        Route::get('/login', 'showLoginForm')->name('login');
-        Route::post('/login', 'login')->name('login.process');
+        Route::get('/login',     'showLoginForm')->name('login');
+        Route::post('/login',    'login')->name('login.process');
     });
 });
 
@@ -48,23 +52,36 @@ Route::middleware('auth')->group(function () {
     Route::post('/ai/chat', [AiChatController::class, 'chat'])->name('ai.chat');
 });
 
-// route user
+Route::middleware(['auth'])
+    ->prefix('profile')
+    ->name('profile.')
+    ->group(function () {
+        Route::get('/',      [ProfileController::class, 'show'])->name('show');
+        Route::get('/edit',  [ProfileController::class, 'edit'])->name('edit');
+        Route::patch('/',    [ProfileController::class, 'update'])->name('update');
+        Route::delete('/',   [ProfileController::class, 'destroy'])->name('destroy');
+    });
+
+// =============================================================================
+// User — /learn
+// =============================================================================
+
 Route::middleware(['auth', 'role:user'])
     ->prefix('learn')
     ->name('learn.')
     ->group(function () {
 
-        Route::get('moduls', [ModulController::class, 'index'])
-            ->name('moduls.index');
+        // Modul
+        Route::get('moduls',          [ModulController::class, 'index'])->name('moduls.index');
+        Route::get('moduls/{modul}',   [ModulController::class, 'show'])->name('moduls.show');
 
-        Route::get('moduls/{modul}', [ModulController::class, 'show'])
-            ->name('moduls.show');
-
+        // Submodul
         Route::get(
             'moduls/{modul}/submoduls/{sort_order}',
             [SubmodulController::class, 'show']
         )->name('submoduls.show');
 
+        // Progress
         Route::post(
             'moduls/{modul}/submoduls/{sort_order}/complete',
             [ProgressController::class, 'markAsCompleted']
@@ -75,82 +92,101 @@ Route::middleware(['auth', 'role:user'])
             [ProgressController::class, 'markAsIncomplete']
         )->name('submoduls.incomplete');
 
-        Route::prefix('quizzes')->name('quizzes.')->group(function () {
-            Route::get('{quiz}/take',   [AdminQuizController::class, 'showQuiz'])->name('take');
-            Route::post('{quiz}/submit', [AdminQuizController::class, 'submit'])->name('submit');
-            Route::get('{quiz}/result', [AdminQuizController::class, 'result'])->name('result');
+        // Quiz
+        Route::prefix('moduls/{modul}/submoduls/{submodul}')->name('quizzes.')->group(function () {
+            Route::get('quiz/{quiz}',                  [QuizController::class, 'take'])->name('take');
+            Route::post('quiz/{quiz}/submit',          [QuizController::class, 'submit'])->name('submit');
+            Route::get('quiz/{quiz}/result/{attempt}', [QuizController::class, 'result'])->name('result');
         });
 
-        Route::resource('tanyas', TanyaController::class)
-            ->only(['store', 'edit', 'update', 'destroy']);
+        // Tanya & Jawab
+        Route::resource('tanyas', TanyaController::class)->only(['store', 'edit', 'update', 'destroy']);
+        Route::resource('jawabs', JawabController::class)->only(['store', 'edit', 'update', 'destroy']);
 
-        Route::resource('jawabs', JawabController::class)
-            ->only(['store', 'edit', 'update', 'destroy']);
-
+        // TinyMCE
         Route::prefix('tinymce')->group(function () {
-            Route::post('upload',         [TinyMCEController::class, 'upload']);
-            Route::delete('media/{id}',   [TinyMCEController::class, 'delete']);
-            Route::get('list',            [TinyMCEController::class, 'index']);
+            Route::post('upload',       [TinyMCEController::class, 'upload']);
+            Route::delete('media/{id}', [TinyMCEController::class, 'delete']);
+            Route::get('list',          [TinyMCEController::class, 'index']);
         });
 
+        // Showcase (user)
         Route::prefix('showcase')->name('showcase.')->group(function () {
-            Route::get('/',             [ShowcaseController::class, 'index'])->name('index');
-            Route::get('/create',       [ShowcaseController::class, 'create'])->name('create');
-            Route::post('/',            [ShowcaseController::class, 'store'])->name('store');
-            Route::get('/{showcase}',   [ShowcaseController::class, 'show'])->name('show');
+            Route::get('/',              [ShowcaseController::class, 'index'])->name('index');
+            Route::get('/create',        [ShowcaseController::class, 'create'])->name('create');
+            Route::post('/',             [ShowcaseController::class, 'store'])->name('store');
+            Route::get('/{showcase}',    [ShowcaseController::class, 'show'])->name('show');
             Route::delete('/{showcase}', [ShowcaseController::class, 'destroy'])->name('destroy');
 
-            Route::post('/{showcase}/komentar',       [ShowcaseController::class, 'storeKomentar'])->name('komentar.store');
-            Route::delete('/komentar/{komentar}',     [ShowcaseController::class, 'destroyKomentar'])->name('komentar.destroy');
+            Route::post('/{showcase}/komentar',   [ShowcaseController::class, 'storeKomentar'])->name('komentar.store');
+            Route::delete('/komentar/{komentar}', [ShowcaseController::class, 'destroyKomentar'])->name('komentar.destroy');
         });
     });
 
-// route admin
+// =============================================================================
+// Admin — /admin
+// =============================================================================
+
 Route::middleware(['auth', 'role:admin'])
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {
 
-        Route::get('dashboard', [AdminDashboardController::class, 'index'])
-            ->name('dashboard');
+        Route::get('dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+        Route::get('search',    [AdminSearchController::class,    'search'])->name('search');
 
-        Route::get('search', [AdminSearchController::class, 'search'])
-            ->name('search');
+        // Modul
+        Route::resource('moduls', AdminModulController::class)->names('moduls');
 
-        Route::resource('moduls', AdminModulController::class)
-            ->names('moduls');
+        // Submodul
+        Route::resource('moduls.submoduls', AdminSubmodulController::class)->names('moduls.submoduls');
 
-        Route::resource('moduls.submoduls', AdminSubmodulController::class)
-            ->names('moduls.submoduls');
-
-        Route::resource('moduls.submoduls.quizzes', AdminQuizController::class)
+        // Quiz
+        Route::resource('moduls.submoduls.quiz', AdminQuizController::class)
             ->except(['index'])
-            ->names('moduls.submoduls.quizzes');
+            ->parameter('quiz', 'quiz')
+            ->names('moduls.submoduls.quiz');
 
-        Route::resource('users', AdminUserController::class)
-            ->except(['show'])
-            ->names('users');
-
+        // Users
+        Route::resource('users', AdminUserController::class)->except(['show'])->names('users');
         Route::prefix('users')->name('users.')->group(function () {
-            Route::get('export',      [AdminUserController::class,      'export'])->name('export');
-            Route::post('import',     [AdminUserController::class,      'import'])->name('import');
-            Route::get('template',    [AdminUserController::class,      'downloadTemplate'])->name('template');
-            Route::get('export-pdf',  [AdminExportPdfController::class, 'usersExportPdf'])->name('view-pdf');
+            Route::get('export',     [AdminUserController::class,      'export'])->name('export');
+            Route::post('import',    [AdminUserController::class,      'import'])->name('import');
+            Route::get('template',   [AdminUserController::class,      'downloadTemplate'])->name('template');
+            Route::get('export-pdf', [AdminExportPdfController::class, 'usersExportPdf'])->name('view-pdf');
         });
 
-        Route::get('monitoring', [AdminUserController::class, 'monitoring'])
-            ->name('monitoring.index');
+        Route::get('monitoring', [AdminUserController::class, 'monitoring'])->name('monitoring.index');
 
-        Route::resource('tanyas', AdminTanyaController::class)
-            ->only(['index', 'destroy'])
-            ->names('tanyas');
+        // Tanya & Jawab
+        Route::resource('tanyas', AdminTanyaController::class)->only(['index', 'destroy'])->names('tanyas');
+        Route::resource('jawabs', AdminJawabController::class)->only(['index', 'destroy'])->names('jawabs');
 
-        Route::resource('jawabs', AdminJawabController::class)
-            ->only(['index', 'destroy'])
-            ->names('jawabs');
+        // Showcase (admin — moderasi)
+        Route::prefix('showcase')->name('showcase.')->group(function () {
+            Route::get('/',              [AdminShowcaseController::class, 'index'])->name('index');
+            Route::get('/{showcase}',    [AdminShowcaseController::class, 'show'])->name('show');
+            Route::delete('/{showcase}', [AdminShowcaseController::class, 'destroy'])->name('destroy');
+            Route::delete('/komentar/{komentar}', [AdminShowcaseController::class, 'destroyKomentar'])->name('komentar.destroy');
+        });
+
+        // Course Builder
+        Route::get('course-builder', [AdminModulController::class, 'builder'])->name('course.builder');
+        Route::post('course-builder/reorder',                    [AdminModulController::class, 'reorder'])->name('course.builder.reorder');
+        Route::post('course-builder/submodul/store',             [AdminModulController::class, 'builderStoreSubmodul'])->name('course.builder.submodul.store');
+        Route::delete('course-builder/submodul/{submodul}',      [AdminModulController::class, 'builderDestroySubmodul'])->name('course.builder.submodul.destroy');
+        Route::post('course-builder/quiz/store',                 [AdminModulController::class, 'builderStoreQuiz'])->name('course.builder.quiz.store');
+        Route::delete('course-builder/quiz/{quiz}',              [AdminModulController::class, 'builderDestroyQuiz'])->name('course.builder.quiz.destroy');
+        Route::post('course-builder/project/store',              [AdminModulController::class, 'builderStoreMiniProject'])->name('course.builder.project.store');
+        Route::delete('course-builder/project/{miniProject}',    [AdminModulController::class, 'builderDestroyMiniProject'])->name('course.builder.project.destroy');
+        Route::post('course-builder/submodul-video',             [AdminModulController::class, 'storeSubmodulVideo'])->name('course.builder.submodul.video');
+        Route::delete('course-builder/resource/{resource}',      [AdminModulController::class, 'deleteResource'])->name('course.builder.resource.destroy');
     });
 
-//storage
+// =============================================================================
+// Storage
+// =============================================================================
+
 Route::get('/storage/{path}', function ($path) {
     $fullPath = storage_path('app/public/' . $path);
     abort_unless(File::exists($fullPath), 404);
