@@ -109,6 +109,15 @@
                                         </a>
                                     </span>
                                 </div>
+
+                                <div class="text-center my-3">
+                                    <span class="text-muted small">atau</span>
+                                </div>
+
+                                <a href="{{ route('auth.google.redirect') }}" class="auth-btn google-btn">
+                                    <i class="bi bi-google me-2"></i>
+                                    Masuk dengan Google
+                                </a>
                             </form>
                         </div>
                     </div>

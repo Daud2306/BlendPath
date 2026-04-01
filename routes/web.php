@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\File;
 
 // ─── User Controllers ────────────────────────────────────────────────────────
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\ModulController;
 use App\Http\Controllers\SubmodulController;
 use App\Http\Controllers\QuizController;
@@ -43,6 +44,12 @@ Route::middleware('guest')->group(function () {
         Route::post('/login',    'login')->name('login.process');
     });
 });
+
+Route::get('/auth/google', [GoogleController::class, 'redirect'])
+    ->name('auth.google.redirect');
+
+Route::get('/auth/google/callback', [GoogleController::class, 'callback'])
+    ->name('auth.google.callback');
 
 Route::post('/logout', [AuthController::class, 'logout'])
     ->middleware('auth')

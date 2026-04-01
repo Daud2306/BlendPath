@@ -19,18 +19,21 @@ class AuthController extends Controller
         $credentials = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required'],
-        ], [
-            'email.required' => 'Email wajib diisi',
-            'email.email' => 'Format email tidak valid',
-            'password.required' => 'Password wajib diisi',
         ]);
+
+        $user = User::where('email', $credentials['email'])->first();
+
+        // akun google tidak boleh login password
+        if ($user && is_null($user->password)) {
+            return back()->withErrors([
+                'email' => 'Gunakan Login dengan Google.',
+            ])->onlyInput('email');
+        }
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            $user = Auth::user();
-
-            if ($user->role === 'admin') {
+            if (Auth::user()->role === 'admin') {
                 return redirect()->route('admin.dashboard');
             }
 
@@ -38,8 +41,8 @@ class AuthController extends Controller
         }
 
         return back()->withErrors([
-            'email' => 'Email atau password yang Anda masukkan salah.',
-        ])->onlyInput('email');
+            'email' => 'Email atau password salah.',
+        ]);
     }
 
     public function logout(Request $request)
