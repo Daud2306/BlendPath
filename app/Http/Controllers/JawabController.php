@@ -2,24 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Tanya;
 use App\Models\Jawab;
 use App\Models\Resource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
-use HTMLPurifier;
-use HTMLPurifier_Config;
 
 
 class JawabController extends Controller
 {
     public function store(Request $request)
     {
-        if (!Auth::check()) {
-            return redirect()->route('login')->with('error', 'Silakan login terlebih dahulu.');
-        }
-
         $request->validate([
             'tanya_id' => 'required|exists:tanyas,id',
             'jawaban' => 'required',
@@ -38,8 +30,11 @@ class JawabController extends Controller
                     $path = $gambar->store('resources', 'public');
 
                     Resource::create([
-                        'jawab_id' => $jawab->id,
-                        'resource' => $path
+                        'user_id'          => Auth::id(),
+                        'path'             => $path,
+                        'type'             => 'image',
+                        'resourceable_id'  => $jawab->id,
+                        'resourceable_type' => Jawab::class,
                     ]);
                 }
             }
@@ -48,59 +43,32 @@ class JawabController extends Controller
         return redirect()->back()->with('success', 'Jawaban berhasil dikirim!');
     }
 
+    public function edit(Jawab $jawab)
+    {
+        $this->authorize('update', $jawab);
+        return view('jawabs.edit', compact('jawab'));
+    }
+
+    public function update(Request $request, Jawab $jawab)
+    {
+        $this->authorize('update', $jawab);
+
+        $request->validate([
+            'jawaban' => 'required|min:5',
+        ]);
+
+        $jawab->update([
+            'jawaban' => $request->jawaban,
+        ]);
+
+        return redirect()->back()->with('success', 'Jawaban berhasil diperbarui!');
+    }
+
     public function destroy(Jawab $jawab)
     {
-        if (!Auth::check()) {
-            return redirect()->route('login');
-        }
-
-        if ($jawab->user_id !== Auth::id() && Auth::user()->role !== 'admin') {
-            return redirect()->back()->with('error', 'Akses ditolak.');
-        }
+        $this->authorize('delete', $jawab);
 
         $jawab->delete();
         return redirect()->back()->with('success', 'Jawaban berhasil dihapus!');
-    }
-
-    private function containsMedia($html)
-    {
-        return (strpos($html, '<img') !== false) ||
-            (strpos($html, '<video') !== false) ||
-            (strpos($html, '<iframe') !== false);
-    }
-
-    /**
-     * Track media usage dalam konten
-     */
-    private function trackMediaUsage($html, $contentId, $contentType)
-    {
-        // Ekstrak semua media URLs dari HTML
-        preg_match_all('/src="([^"]+)"/', $html, $matches);
-
-        foreach ($matches[1] as $url) {
-            // Cari resource berdasarkan URL
-            $path = $this->extractPathFromUrl($url);
-            if ($path) {
-                // Update resource record untuk tracking
-                Resource::where('resource', 'like', '%' . $path . '%')
-                    ->update([
-                        'used_in_content_id' => $contentId,
-                        'used_in_content_type' => $contentType
-                    ]);
-            }
-        }
-    }
-
-    /**
-     * Ekstrak path dari URL
-     */
-    private function extractPathFromUrl($url)
-    {
-        $parsed = parse_url($url);
-        if (isset($parsed['path'])) {
-            // Hilangkan /storage/ dari path
-            return str_replace('/storage/', '', $parsed['path']);
-        }
-        return null;
     }
 }

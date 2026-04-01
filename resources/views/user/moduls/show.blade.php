@@ -31,7 +31,7 @@
                     <div class="modul-stats" data-aos="fade-up" data-aos-delay="200">
                         <div class="stat-item">
                             <i class="bi bi-play-circle"></i>
-                            <span class="stat-number">{{ $submoduls->count() }}</span>
+                            <span class="stat-number">{{ $submoduls->total() }}</span>
                             <span class="stat-label">Submodul</span>
                         </div>
                         <div class="stat-item">
@@ -56,7 +56,7 @@
         </div>
     </section>
 
-    <!-- Progress Section -->
+    {{-- Progress --}}
     <section class="progress-section py-4 border-bottom">
         <div class="container">
             <div class="row justify-content-center">
@@ -66,20 +66,21 @@
                             <h4 class="progress-title">
                                 <i class="bi bi-graph-up me-2"></i>Progress Belajar
                             </h4>
-                            <span
-                                class="progress-percentage {{ $progress['percentage'] == 100 ? 'text-success' : 'text-primary' }}">
+                            <span class="progress-percentage {{ $progress['percentage'] == 100 ? 'text-success' : 'text-primary' }}">
                                 {{ $progress['progress_text'] }} ({{ $progress['percentage'] }}%)
                             </span>
                         </div>
 
                         <div class="progress modul-progress-bar">
-                            <div class="progress-bar 
-                            @if ($progress['percentage'] == 100) bg-success
-                            @elseif($progress['percentage'] > 50) bg-primary
-                            @elseif($progress['percentage'] > 0) bg-warning
-                            @else bg-secondary @endif"
-                                role="progressbar" style="width: {{ $progress['percentage'] }}%;"
-                                aria-valuenow="{{ $progress['percentage'] }}" aria-valuemin="0" aria-valuemax="100">
+                            <div class="progress-bar
+                                @if ($progress['percentage'] == 100) bg-success
+                                @elseif($progress['percentage'] > 50) bg-primary
+                                @elseif($progress['percentage'] > 0) bg-warning
+                                @else bg-secondary @endif"
+                                role="progressbar"
+                                style="width: {{ $progress['percentage'] }}%;"
+                                aria-valuenow="{{ $progress['percentage'] }}"
+                                aria-valuemin="0" aria-valuemax="100">
                             </div>
                         </div>
 
@@ -95,7 +96,7 @@
         </div>
     </section>
 
-    <!-- Submoduls Section -->
+    {{-- Daftar Submodul --}}
     <section class="submoduls-section py-5">
         <div class="container">
             <div class="row">
@@ -118,22 +119,25 @@
                             @foreach ($submoduls as $submodul)
                                 @php
                                     $isCompleted = $submodul->isCompletedByUser();
-                                    $isNext =
-                                        !$isCompleted &&
+                                    $isNext = !$isCompleted &&
                                         ($loop->first || $submoduls[$loop->index - 1]->isCompletedByUser());
                                 @endphp
 
-                                <div class="submodul-card card mb-4 {{ $isCompleted ? 'completed' : '' }} {{ $isNext ? 'next-submodul' : '' }}"
+                                <div class="submodul-card card mb-4
+                                    {{ $isCompleted ? 'completed' : '' }}
+                                    {{ $isNext ? 'next-submodul' : '' }}"
                                     data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 }}">
                                     <div class="card-body">
                                         <div class="row align-items-center">
+
+                                            {{-- Nomor urut --}}
                                             <div class="col-md-1 text-center">
                                                 <div class="submodul-order">
                                                     @if ($isCompleted)
                                                         <span class="order-badge completed">
                                                             <i class="bi bi-check-lg"></i>
                                                         </span>
-                                                    @elseif($isNext)
+                                                    @elseif ($isNext)
                                                         <span class="order-badge next">
                                                             {{ $submodul->sort_order }}
                                                         </span>
@@ -145,12 +149,13 @@
                                                 </div>
                                             </div>
 
+                                            {{-- Info submodul --}}
                                             <div class="col-md-8">
                                                 <div class="submodul-info">
                                                     <h5 class="submodul-title {{ $isCompleted ? 'completed' : '' }}">
                                                         @if ($isCompleted)
                                                             <i class="bi bi-check-circle-fill text-success me-2"></i>
-                                                        @elseif($isNext)
+                                                        @elseif ($isNext)
                                                             <i class="bi bi-play-circle-fill text-primary me-2"></i>
                                                         @else
                                                             <i class="bi bi-circle text-muted me-2"></i>
@@ -158,11 +163,12 @@
                                                         {{ $submodul->judul }}
                                                     </h5>
 
+                                                    {{-- ← FIX: kolom yang benar adalah 'konten', bukan 'deskripsi' --}}
                                                     <p class="submodul-description">
-                                                        {{ Str::limit(strip_tags($submodul->deskripsi), 120) }}
+                                                        {{ Str::limit(strip_tags($submodul->konten), 120) }}
                                                     </p>
 
-                                                    <div class="submodul-meta">
+                                                    <div class="submodul-meta d-flex flex-wrap gap-2 align-items-center">
                                                         <span class="meta-item">
                                                             <i class="bi bi-calendar3 me-1"></i>
                                                             {{ $submodul->created_at->format('d M Y') }}
@@ -171,40 +177,57 @@
                                                             <i class="bi bi-chat-dots me-1"></i>
                                                             {{ $submodul->tanya->count() }} diskusi
                                                         </span>
+
+                                                        {{-- Badge Quiz --}}
+                                                        @if ($submodul->quiz)
+                                                            <span class="badge bg-primary bg-opacity-10 text-primary">
+                                                                <i class="bi bi-question-circle me-1"></i>Quiz
+                                                            </span>
+                                                        @endif
+
+                                                        {{-- Badge Mini Project --}}
+                                                        @if ($submodul->miniProjects->count() > 0)
+                                                            <span class="badge bg-success bg-opacity-10 text-success">
+                                                                <i class="bi bi-flag me-1"></i>
+                                                                {{ $submodul->miniProjects->count() }} Mini Project
+                                                            </span>
+                                                        @endif
+
                                                         @if ($isCompleted)
                                                             <span class="meta-item completed">
-                                                                <i class="bi bi-check-lg me-1"></i>
-                                                                Selesai
+                                                                <i class="bi bi-check-lg me-1"></i>Selesai
                                                             </span>
                                                         @endif
                                                     </div>
                                                 </div>
                                             </div>
 
+                                            {{-- Tombol aksi --}}
                                             <div class="col-md-3 text-end">
                                                 <a href="{{ route('learn.submoduls.show', ['modul' => $modul->id, 'sort_order' => $submodul->sort_order]) }}"
-                                                    class="btn submodul-btn {{ $isCompleted ? 'btn-outline-success' : ($isNext ? 'btn-primary' : 'btn-outline-primary') }}">
+                                                    class="btn submodul-btn
+                                                    {{ $isCompleted ? 'btn-outline-success' : ($isNext ? 'btn-primary' : 'btn-outline-secondary') }}">
                                                     @if ($isCompleted)
-                                                        <i class="bi bi-arrow-repeat me-2"></i>
-                                                        Review
-                                                    @elseif($isNext)
-                                                        <i class="bi bi-play-fill me-2"></i>
-                                                        Lanjutkan
+                                                        <i class="bi bi-arrow-repeat me-2"></i>Review
+                                                    @elseif ($isNext)
+                                                        <i class="bi bi-play-fill me-2"></i>Lanjutkan
                                                     @else
-                                                        <i class="bi bi-lock me-2"></i>
-                                                        Kunci
+                                                        <i class="bi bi-lock me-2"></i>Terkunci
                                                     @endif
                                                 </a>
                                             </div>
+
                                         </div>
                                     </div>
                                 </div>
                             @endforeach
                         </div>
 
-                        <div class="mt-5">
-                            {{ $submoduls->links() }}
-                        </div>
+                        @if ($submoduls->hasPages())
+                            <div class="mt-5">
+                                {{ $submoduls->links() }}
+                            </div>
+                        @endif
                     @endif
                 </div>
             </div>

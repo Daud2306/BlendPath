@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Resource extends Model
 {
@@ -13,17 +14,24 @@ class Resource extends Model
 
     protected $fillable = [
         'user_id',
-        'submodul_id',
-        'tanya_id',
-        'jawab_id',
-        'resource',
+        'resourceable_id',
+        'resourceable_type',
+        'path',
         'type',
         'mime_type',
         'size',
         'original_name',
-        'used_in_content_id',
-        'used_in_content_type'
     ];
+
+    public function resourceable()
+    {
+        return $this->morphTo();
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function scopeTinyMceMedia($query)
     {
@@ -37,31 +45,27 @@ class Resource extends Model
 
     public function getUrlAttribute()
     {
-        return asset('storage/' . $this->resource);
+        if (str_starts_with($this->path, 'http')) {
+            return $this->path;
+        }
+        return asset('storage/' . $this->path);
     }
 
     public function getExtensionAttribute()
     {
-        return pathinfo($this->resource, PATHINFO_EXTENSION);
+        return pathinfo($this->path, PATHINFO_EXTENSION);
     }
 
-    public function user()
+    protected static function booted()
     {
-        return $this->belongsTo(User::class);
-    }
+        static::deleting(function ($resource) {
+            if (
+                !str_starts_with($resource->path, 'http')
+                && Storage::disk('public')->exists($resource->path)
+            ) {
 
-    public function tanya()
-    {
-        return $this->belongsTo(Tanya::class);
-    }
-
-    public function jawab()
-    {
-        return $this->belongsTo(Jawab::class);
-    }
-
-    public function submodul()
-    {
-        return $this->belongsTo(Submodul::class);
+                Storage::disk('public')->delete($resource->path);
+            }
+        });
     }
 }

@@ -24,7 +24,7 @@ class Jawab extends Model
 
     public function resources()
     {
-        return $this->hasMany(Resource::class, 'jawab_id');
+        return $this->morphMany(Resource::class, 'resourceable');
     }
 
     protected static function booted()

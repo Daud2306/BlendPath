@@ -1,0 +1,154 @@
+/* =============================================================================
+   Course Builder — builder.css
+   public/admins/css/builder.css
+   ============================================================================= */
+
+/* ── Kartu Modul ─────────────────────────────────────────────────────────── */
+.module-card {
+    margin-bottom: 16px;
+}
+
+.module-body-collapsed {
+    display: none;
+}
+
+/* ── Daftar Submodul ─────────────────────────────────────────────────────── */
+.submodule-list {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+.submodule-item {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    transition: box-shadow 0.2s, border-color 0.2s;
+}
+
+.submodule-item:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    border-color: var(--accent);
+}
+
+.submodule-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.submodule-title {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    flex: 1;
+    min-width: 0;
+}
+
+/* ── Konten Submodul (quiz + project) ────────────────────────────────────── */
+.submodule-content {
+    margin-top: 12px;
+    padding-left: 32px;
+    border-left: 2px solid var(--border-color);
+}
+
+/* ── Kartu Quiz & Mini Project ───────────────────────────────────────────── */
+.quiz-card,
+.project-card {
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: border-color 0.15s ease;
+}
+
+.quiz-card:hover    { border-color: var(--accent); }
+.project-card:hover { border-color: var(--success, #28a745); }
+
+/* ── Badge tipe ──────────────────────────────────────────────────────────── */
+.type-badge {
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    white-space: nowrap;
+    font-weight: 500;
+}
+
+.type-badge.quiz    { background: var(--accent-light); color: var(--accent); }
+.type-badge.project { background: #e6f9ed; color: var(--success, #28a745); }
+
+/* ── Tombol ikon kecil ───────────────────────────────────────────────────── */
+.btn-icon {
+    background: none;
+    border: none;
+    color: #adb5bd;
+    cursor: pointer;
+    transition: color 0.15s, background 0.15s;
+    padding: 4px 6px;
+    border-radius: 4px;
+    line-height: 1;
+}
+
+.btn-icon:hover {
+    color: var(--accent);
+    background: var(--accent-light);
+}
+
+.btn-icon.danger:hover {
+    color: var(--danger, #dc3545);
+    background: #ffeaea;
+}
+
+/* ── Drag & drop ─────────────────────────────────────────────────────────── */
+.drag-handle {
+    cursor: grab;
+    color: #adb5bd;
+}
+
+.drag-handle:active {
+    cursor: grabbing;
+}
+
+.sortable-ghost {
+    opacity: 0.4;
+    background: var(--accent-light);
+}
+
+/* ── State kosong ────────────────────────────────────────────────────────── */
+.empty-builder {
+    text-align: center;
+    padding: 3rem 2rem;
+    color: #adb5bd;
+    border: 2px dashed var(--border-color);
+    border-radius: var(--radius);
+}
+
+.empty-builder i {
+    font-size: 2.5rem;
+    margin-bottom: 0.75rem;
+    display: block;
+}
+
+/* ── Indikator perubahan belum disimpan ──────────────────────────────────── */
+#unsavedBadge {
+    display: none;
+    align-items: center;
+    gap: 0.4rem;
+    background: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffc107;
+    font-size: 0.78rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+}
+
+body.has-changes #unsavedBadge {
+    display: inline-flex;
+}

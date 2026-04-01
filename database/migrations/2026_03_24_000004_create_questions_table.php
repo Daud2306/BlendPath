@@ -6,27 +6,24 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema::create('respon_quizzes', function (Blueprint $table) {
+        Schema::create('questions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('quiz_id')->constrained()->onDelete('cascade');
-            $table->integer('total_poin')->default(0);
-            $table->boolean('lulus')->default(false);
+            $table->text('pertanyaan');
+            $table->string('gambar_soal')->nullable();
+            $table->json('pilihan_jawaban');
+            $table->string('jawaban_benar');
+            $table->integer('poin')->default(10);
+            $table->integer('urutan')->default(0);
             $table->timestamps();
             $table->softDeletes();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('respon_quizzes');
+        Schema::dropIfExists('questions');
     }
 };

@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('submoduls', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
             $table->foreignId('modul_id')->constrained()->onDelete('cascade');
             $table->string('judul');
             $table->text('konten');
             $table->integer('sort_order')->default(0);
+            $table->timestamps();
         });
     }
 

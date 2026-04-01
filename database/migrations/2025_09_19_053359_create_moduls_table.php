@@ -13,10 +13,11 @@ return new class extends Migration
     {
         Schema::create('moduls', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
             $table->string('judul');
             $table->text('deskripsi');
+            $table->string('gambar')->nullable();
             $table->integer('sort_order')->default(1);
+            $table->timestamps();
         });
     }
 

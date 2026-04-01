@@ -1,88 +1,186 @@
 @extends('layout.admin.app')
 
-@section('title', 'Moduls - Demo')
+@section('title', 'Kelola Modul')
 
 @section('content')
-    <div class="container py-4">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1 class="h3 mb-0">Manajemen Moduls</h1>
-            <div>
-                <a href="{{ route('admin.moduls.create') }}" class="btn btn-success">+ Buat Modul</a>
-            </div>
-        </div>
 
-        @if (session('success'))
-            <div class="alert alert-success" role="alert">{{ session('success') }}</div>
-        @endif
-        @if ($moduls->count() === 0)
-            <div class="alert alert-info">Belum ada modul. Buat modul baru untuk memulai.</div>
-        @endif
+{{-- Page Header --}}
+<div class="page-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+    <div>
+        <h1 class="page-title">Kelola Modul</h1>
+        <p class="page-subtitle mb-0">Daftar semua modul pembelajaran Blender 3D</p>
+    </div>
+    <div class="d-flex align-items-center gap-2 flex-wrap">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+                <li class="breadcrumb-item active">Modul</li>
+            </ol>
+        </nav>
+        <a href="{{ route('admin.course.builder') }}" class="btn-outline-admin ms-2">
+            <i class="fas fa-cubes"></i> Course Builder
+        </a>
+        <a href="{{ route('admin.moduls.create') }}" class="btn-admin primary">
+            <i class="fas fa-plus"></i> Tambah Modul
+        </a>
+    </div>
+</div>
 
-        
-        <div class="card border-0 shadow-sm">
-            <div class="card-body p-0">
-                <div class="table-responsive">
-                    <table class="table table-hover mb-0 align-middle">
-                        <thead class="table-light">
-                            <tr>
-                                <th style="width:80px;">Gambar</th>
-                                <th>Judul & Deskripsi</th>
-                                <th style="width:100px;">Urutan</th>
-                                <th style="width:170px;">Tanggal / ID</th>
-                                <th style="width:260px;">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($moduls as $modul)
-                                <tr>
-                                    <td>
-                                        @if ($modul->gambar)
-                                            <img src="{{ asset('storage/' . $modul->gambar) }}"
-                                                alt="{{ $modul->judul }}"
-                                                style="width:72px; height:48px; object-fit:cover; border-radius:4px;">
-                                        @else
-                                            <div class="bg-light d-flex align-items-center justify-content-center"
-                                                style="width:72px; height:48px; border-radius:4px; color:#888;">
-                                                No Img
-                                            </div>
-                                        @endif
-                                    </td>
-                                    <td>
-                                        <div class="fw-semibold">{{ $modul->judul }}</div>
-                                        <div class="text-muted small">{!! \Illuminate\Support\Str::limit(strip_tags($modul->deskripsi), 100) !!}</div>
-                                    </td>
-                                    <td>{{ $modul->sort_order }}</td>
-                                    <td>
-                                        <div class="small text-muted">
-                                            {{ $modul->created_at ? $modul->created_at->format('d M Y') : '-' }}</div>
-                                        <div class="small text-muted">ID: {{ $modul->id }}</div>
-                                    </td>
-                                    <td>
-                                  
-                                        <a href="{{ route('moduls.show', $modul) }}" target="_blank"
-                                            class="btn btn-sm btn-outline-primary">Lihat</a>
-
-                                        <a href="{{ route('admin.moduls.edit', $modul) }}"
-                                            class="btn btn-sm btn-warning">Edit</a>
-
-                                        <form action="{{ route('admin.moduls.destroy', $modul) }}" method="POST"
-                                            class="d-inline-block" style="vertical-align:middle;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
-                                        </form>
-                                        <a href="{{ url('admin/moduls/' . $modul->id . '/submoduls') }}"
-                                            class="btn btn-sm btn-info">Submoduls</a>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-                <div class="p-3 border-top bg-white">
-                    {{ $moduls->links() }}
-                </div>
+{{-- Stats row --}}
+<div class="row g-3 mb-4">
+    <div class="col-sm-4">
+        <div class="stat-card">
+            <div class="stat-icon blue"><i class="fas fa-layer-group"></i></div>
+            <div class="stat-info">
+                <div class="stat-value">{{ $moduls->total() }}</div>
+                <div class="stat-label">Total Modul</div>
             </div>
         </div>
     </div>
+    <div class="col-sm-4">
+        <div class="stat-card">
+            <div class="stat-icon green"><i class="fas fa-book-open"></i></div>
+            <div class="stat-info">
+                <div class="stat-value">{{ \App\Models\Submodul::count() }}</div>
+                <div class="stat-label">Total Submodul</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="stat-card">
+            <div class="stat-icon orange"><i class="fas fa-sort-numeric-up"></i></div>
+            <div class="stat-info">
+                <div class="stat-value">{{ $moduls->max('sort_order') ?? 0 }}</div>
+                <div class="stat-label">Urutan Tertinggi</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{-- Info banner --}}
+<div style="background:var(--accent-light);border:1px solid var(--accent);border-radius:var(--radius);padding:0.75rem 1rem;margin-bottom:1.25rem;display:flex;align-items:center;gap:0.75rem;font-size:0.875rem;color:var(--accent);">
+    <i class="fas fa-info-circle" style="flex-shrink:0;"></i>
+    <span>
+        Untuk mengatur urutan modul & submodul, menambah quiz, dan mini project, gunakan
+        <a href="{{ route('admin.course.builder') }}" style="color:var(--accent);font-weight:600;text-decoration:underline;">Course Builder</a>.
+    </span>
+</div>
+
+{{-- Table Card --}}
+<div class="admin-card">
+    <div class="admin-card-header">
+        <span class="admin-card-title">
+            <i class="fas fa-layer-group me-2" style="color:var(--accent);"></i>
+            Daftar Modul
+        </span>
+        <span style="font-size:0.8rem;color:#adb5bd;">
+            {{ $moduls->total() }} modul ditemukan
+        </span>
+    </div>
+
+    <div class="admin-card-body p-0">
+        @if($moduls->isEmpty())
+            <div class="empty-state">
+                <i class="fas fa-layer-group"></i>
+                <p>Belum ada modul. <a href="{{ route('admin.moduls.create') }}" style="color:var(--accent);">Tambah sekarang</a></p>
+            </div>
+        @else
+        <div class="table-responsive">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th style="width:50px;">#</th>
+                        <th>Modul</th>
+                        <th style="width:120px;">Urutan</th>
+                        <th style="width:120px;">Submodul</th>
+                        <th style="width:140px;">Dibuat</th>
+                        <th style="width:180px;">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($moduls as $modul)
+                    <tr>
+                        <td style="color:#adb5bd;font-size:0.8rem;">
+                            {{ ($moduls->currentPage() - 1) * $moduls->perPage() + $loop->iteration }}
+                        </td>
+                        <td>
+                            <div class="d-flex align-items-center gap-3">
+                                @if($modul->gambar)
+                                    <img src="{{ asset('storage/' . $modul->gambar) }}"
+                                         alt="{{ $modul->judul }}"
+                                         style="width:44px;height:44px;object-fit:cover;border-radius:var(--radius);border:1px solid var(--border-color);flex-shrink:0;">
+                                @else
+                                    <div style="width:44px;height:44px;border-radius:var(--radius);background:var(--accent-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                                        <i class="fas fa-cube" style="color:var(--accent);font-size:1.1rem;"></i>
+                                    </div>
+                                @endif
+                                <div>
+                                    <div style="font-weight:600;font-size:0.9rem;color:var(--text-primary);">
+                                        {{ $modul->judul }}
+                                    </div>
+                                    <div style="font-size:0.78rem;color:#adb5bd;margin-top:2px;">
+                                        {{ Str::limit($modul->deskripsi, 60) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <span style="display:inline-flex;align-items:center;gap:0.4rem;background:var(--bg-primary);padding:0.3rem 0.75rem;border-radius:20px;font-size:0.8rem;font-weight:600;border:1px solid var(--border-color);">
+                                <i class="fas fa-sort-numeric-up" style="color:var(--accent);font-size:0.7rem;"></i>
+                                {{ $modul->sort_order }}
+                            </span>
+                        </td>
+                        <td>
+                            <a href="{{ route('admin.moduls.submoduls.index', $modul) }}"
+                               style="display:inline-flex;align-items:center;gap:0.4rem;color:var(--accent);font-size:0.875rem;font-weight:500;">
+                                <i class="fas fa-book-open" style="font-size:0.8rem;"></i>
+                                {{ $modul->submoduls()->count() }} submodul
+                            </a>
+                        </td>
+                        <td style="color:#adb5bd;font-size:0.8rem;">
+                            {{ $modul->created_at->format('d M Y') }}
+                        </td>
+                        <td>
+                            <div class="d-flex align-items-center gap-2">
+                                {{-- Course Builder shortcut --}}
+                                <a href="{{ route('admin.course.builder') }}"
+                                   class="btn-admin secondary sm" title="Atur di Course Builder">
+                                    <i class="fas fa-cubes"></i>
+                                </a>
+                                {{-- Edit --}}
+                                <a href="{{ route('admin.moduls.edit', $modul) }}"
+                                   class="btn-admin secondary sm" title="Edit Modul">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                {{-- Hapus --}}
+                                <form action="{{ route('admin.moduls.destroy', $modul) }}"
+                                      method="POST"
+                                      onsubmit="return confirm('Hapus modul \'{{ addslashes($modul->judul) }}\'? Semua submodul di dalamnya juga akan terhapus.')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn-admin danger sm" title="Hapus">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+
+        @if($moduls->hasPages())
+        <div class="d-flex justify-content-between align-items-center px-3 py-3"
+             style="border-top:1px solid var(--border-color);">
+            <div style="font-size:0.8rem;color:#adb5bd;">
+                Menampilkan {{ $moduls->firstItem() }}–{{ $moduls->lastItem() }} dari {{ $moduls->total() }} modul
+            </div>
+            {{ $moduls->links('pagination::bootstrap-5') }}
+        </div>
+        @endif
+        @endif
+    </div>
+</div>
+
 @endsection

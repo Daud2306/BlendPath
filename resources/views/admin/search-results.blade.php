@@ -1,4 +1,4 @@
-@extends('layout.admin.app')
+{{-- @extends('layout.admin.app')
 
 @section('title', 'Search Results - BlendPath Admin')
 
@@ -168,4 +168,4 @@
             </div>
         @endif
     </div>
-@endsection
+@endsection --}}
