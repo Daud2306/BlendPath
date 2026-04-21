@@ -1,22 +1,24 @@
-@extends('layout.frontend.app')
+@extends('layout.user.app')
 @section('title', $showcase->judul . ' — BlendPath')
 
 @push('styles')
-    <link href="{{ asset('frontend/css/showcase.css') }}" rel="stylesheet">
+    <link href="{{ asset('user/css/showcase.css') }}" rel="stylesheet">
     <style>
         .media-single {
             border-radius: 12px;
             overflow: hidden;
             background: #111;
-            max-height: 520px;
+            max-width: 100%;
         }
 
         .media-single img,
         .media-single video {
             width: 100%;
+            max-width: 100%;
             max-height: 520px;
             object-fit: contain;
             display: block;
+            margin: 0 auto;
         }
 
         .media-thumb {

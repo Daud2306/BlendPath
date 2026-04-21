@@ -1,7 +1,7 @@
 <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
 
     <a href="/" class="logo d-flex align-items-center me-4">
-        <img src="{{ asset('frontend/img/logo.png') }}" alt="BlendPath Logo">
+        <img src="{{ asset('user/img/logo.png') }}" alt="BlendPath Logo">
     </a>
 
     <nav id="navmenu" class="navmenu flex-grow-1">
@@ -24,12 +24,12 @@
                             Modul
                         </a>
                     </li>
-                    <li>
+                    {{-- <li>
                         <a href="{{ route('learn.showcase.index') }}"
                             class="{{ request()->is('learn/showcase*') ? 'active' : '' }}">
                             Galeri Karya
                         </a>
-                    </li>
+                    </li> --}}
 
                     <li class="dropdown ms-3">
                         <a href="#" class="d-flex align-items-center">

@@ -29,6 +29,7 @@ use App\Http\Controllers\Admin\ExportPdfController  as AdminExportPdfController;
 use App\Http\Controllers\Admin\DashboardController  as AdminDashboardController;
 use App\Http\Controllers\Admin\ShowcaseController   as AdminShowcaseController;
 use App\Http\Controllers\Admin\DiskusiController    as AdminDiskusiController;
+use App\Http\Controllers\MiniProjectController;
 
 // =============================================================================
 // Auth
@@ -107,6 +108,9 @@ Route::middleware(['auth', 'role:user'])
             Route::get('quiz/{quiz}/result/{attempt}', [QuizController::class, 'result'])->name('result');
         });
 
+        Route::post('mini-projects/{miniProject}/submit', [MiniProjectController::class, 'store'])->name('mini_projects.submit');
+        Route::delete('mini-projects/{miniProject}/resubmit', [MiniProjectController::class, 'resubmit'])->name('mini_projects.resubmit');
+
         // Tanya & Jawab
         Route::resource('tanyas', TanyaController::class)->only(['store', 'edit', 'update', 'destroy']);
         Route::resource('jawabs', JawabController::class)->only(['store', 'edit', 'update', 'destroy']);
@@ -154,6 +158,9 @@ Route::middleware(['auth', 'role:admin'])
             ->except(['index'])
             ->parameter('quiz', 'quiz')
             ->names('moduls.submoduls.quiz');
+
+        Route::put('mini-projects/submission/{submission}', [App\Http\Controllers\Admin\MiniProjectController::class, 'updateStatus'])
+            ->name('mini_projects.update_status');
 
         // Users
         Route::resource('users', AdminUserController::class)->except(['show'])->names('users');

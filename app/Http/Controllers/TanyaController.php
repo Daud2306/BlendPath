@@ -46,7 +46,7 @@ class TanyaController extends Controller
 
         return redirect()->back()
             ->with('success', 'Pertanyaan berhasil dikirim!')
-            ->with('scroll_to', 'qna-section');
+            ->with('scroll_to', 'discuss-section');
     }
 
     public function edit($id)

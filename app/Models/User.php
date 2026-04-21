@@ -106,4 +106,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Showcase::class);
     }
+
+    public function miniProjectSubmissions()
+    {
+        return $this->hasMany(MiniProjectSubmission::class);
+    }
 }

@@ -4,11 +4,6 @@
 
 @section('content')
 
-{{-- Breadcrumb --}}
-<nav class="admin-breadcrumb">
-    <div class="breadcrumb-item active">Dashboard</div>
-</nav>
-
 {{-- Page Header --}}
 <div class="page-header">
     <div>

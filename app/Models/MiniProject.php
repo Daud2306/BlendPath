@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class MiniProject extends Model
@@ -55,5 +56,16 @@ class MiniProject extends Model
     public function hasImage(): bool
     {
         return $this->resources()->where('type', 'image')->exists();
+    }
+
+    public function submissions()
+    {
+        return $this->hasMany(MiniProjectSubmission::class);
+    }
+
+    public function userSubmission($userId = null)
+    {
+        $userId = $userId ?? Auth::id();
+        return $this->submissions()->where('user_id', $userId)->first();
     }
 }

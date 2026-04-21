@@ -36,11 +36,11 @@
                                 <textarea class="form-control" name="deskripsi" rows="4">{{ old('deskripsi', $modul->deskripsi) }}</textarea>
                             </div>
 
-                            <div class="mb-3">
+                            {{-- <div class="mb-3">
                                 <label class="form-label">Sort Order</label>
                                 <input type="number" class="form-control" name="sort_order"
                                     value="{{ old('sort_order', $modul->sort_order) }}">
-                            </div>
+                            </div> --}}
                         </div>
 
                         <div class="col-md-4">

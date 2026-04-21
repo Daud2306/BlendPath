@@ -1,4 +1,4 @@
-@extends('layout.frontend.app')
+@extends('layout.user.app')
 
 @section('title', $submodul->judul . ' - BlendPath')
 
@@ -105,11 +105,20 @@
 
                     @include('user.submoduls.partials.quiz')
 
-                    @include('user.submoduls.partials.qna')
+                    @include('user.submoduls.partials.discuss')
 
                 </div>
             </div>
         </div>
     </section>
 
+    @push('scripts')
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                document.querySelectorAll('.submodul-text img').forEach(img => {
+                    img.classList.add('img-lightbox');
+                });
+            });
+        </script>
+    @endpush
 @endsection

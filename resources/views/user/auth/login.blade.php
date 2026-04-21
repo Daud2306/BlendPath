@@ -1,4 +1,4 @@
-@extends('layout.frontend.app')
+@extends('layout.user.app')
 
 @section('title', 'Login - BlendPath')
 @section('hide_navbar', true)
@@ -10,7 +10,7 @@
                 <div class="col-md-8 col-lg-6">
                     <div class="auth-container">
                         <a href="/" class="auth-logo">
-                            <img src="{{ asset('frontend/img/logo.png') }}" alt="BlendPath Logo">
+                            <img src="{{ asset('user/img/logo.png') }}" alt="BlendPath Logo">
                         </a>
 
                         <div class="auth-card">
