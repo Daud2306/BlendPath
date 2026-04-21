@@ -3,8 +3,10 @@
 .env
 .env.backup
 .env.production
+.generate.bat
 .phpactor.json
 .phpunit.result.cache
+.structure.txt
 /.fleet
 /.idea
 /.nova

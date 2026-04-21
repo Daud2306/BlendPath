@@ -20,7 +20,7 @@
                             <div class="card-header bg-light d-flex justify-content-between align-items-center">
                                 <h6 class="mb-0">{{ $quiz->judul_quiz }}</h6>
                                 <div>
-                                    <span class="badge bg-secondary">#{{ $quiz->urutan }}</span>
+                                    <span class="badge bg-secondary">#{{ $quiz->sort_order }}</span>
                                 </div>
                             </div>
                             <div class="card-body">
@@ -34,14 +34,14 @@
                                 <div class="mb-2">
                                     <small class="text-muted">Pertanyaan:</small>
                                     <div>
-                                        <span class="badge bg-primary">{{ $quiz->pertanyaan->count() }} soal</span>
+                                        <span class="badge bg-primary">{{ $quiz->questions->count() }} soal</span>
                                     </div>
                                 </div>
 
                                 <div class="mb-3">
                                     <small class="text-muted">Total Poin:</small>
                                     <div>
-                                        <span class="badge bg-success">{{ $quiz->pertanyaan->sum('poin') }} poin</span>
+                                        <span class="badge bg-success">{{ $quiz->questions->sum('poin') }} poin</span>
                                     </div>
                                 </div>
 
@@ -49,8 +49,8 @@
                                     <small class="text-muted">Tingkat Kesulitan:</small>
                                     <div class="progress" style="height: 8px;">
                                         @php
-                                            $totalPoin = $quiz->pertanyaan->sum('poin');
-                                            $avgPoin = $quiz->pertanyaan->avg('poin');
+                                            $totalPoin = $quiz->questions->sum('poin');
+                                            $avgPoin = $quiz->questions->avg('poin');
                                             $difficulty = min(100, ($avgPoin / 3) * 100); // Asumsi poin max 3
                                         @endphp
                                         <div class="progress-bar bg-{{ $difficulty > 70 ? 'danger' : ($difficulty > 40 ? 'warning' : 'success') }}"
@@ -104,12 +104,12 @@
                     </div>
                     <div class="col-md-3">
                         <h4 class="text-success mb-0">
-                            {{ $submodul->quizzes->sum(function ($quiz) {return $quiz->pertanyaan->count();}) }}</h4>
+                            {{ $submodul->quizzes->sum(function ($quiz) {return $quiz->questions->count();}) }}</h4>
                         <small class="text-muted">Total Soal</small>
                     </div>
                     <div class="col-md-3">
                         <h4 class="text-info mb-0">
-                            {{ $submodul->quizzes->sum(function ($quiz) {return $quiz->pertanyaan->sum('poin');}) }}
+                            {{ $submodul->quizzes->sum(function ($quiz) {return $quiz->questions->sum('poin');}) }}
                         </h4>
                         <small class="text-muted">Total Poin</small>
                     </div>

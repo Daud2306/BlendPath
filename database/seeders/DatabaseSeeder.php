@@ -527,7 +527,6 @@ class DatabaseSeeder extends Seeder
                         Question::create([
                             'quiz_id'         => $quiz->id,
                             'pertanyaan'      => $soal['pertanyaan'],
-                            'gambar_soal'     => null,
                             'pilihan_jawaban' => $soal['pilihan'],
                             'jawaban_benar'   => $soal['jawaban_benar'],
                             'poin'            => $soal['poin'],

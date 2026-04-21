@@ -75,6 +75,10 @@
                                         </div>
                                     @enderror
                                 </div>
+                                <label>
+                                    <input type="checkbox" name="remember">
+                                    Remember Me
+                                </label>
 
                                 <button type="submit" class="auth-btn mt-3">
                                     <i class="bi bi-box-arrow-in-right me-2"></i>Masuk
@@ -87,6 +91,15 @@
                                         </a>
                                     </span>
                                 </div>
+
+                                <div class="text-center my-3">
+                                    <span class="text-muted small">atau</span>
+                                </div>
+
+                                <a href="{{ route('auth.google.redirect') }}" class="auth-btn google-btn">
+                                    <i class="bi bi-google me-2"></i>
+                                    Masuk dengan Google
+                                </a>
                             </form>
                         </div>
                     </div>

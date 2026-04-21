@@ -45,8 +45,7 @@ class SubmodulController extends Controller
             'tanya.jawabs.user',
             'tanya.resources',
             'tanya.jawabs.resources',
-            // ← tambahan: quiz dan mini project untuk ditampilkan di halaman user
-            'quiz.questions',
+            'quizzes.questions',
             'miniProjects.resources',
         ]);
 
@@ -63,14 +62,11 @@ class SubmodulController extends Controller
             ->first();
 
         $isCurrentCompleted = Auth::check() && $submodul->isCompletedByUser(Auth::id());
-        $isLastSubmodul     = $submodul->isLastInModul();
-
-        // Quiz di submodul ini (hasOne)
-        $quiz      = $submodul->quiz;
-        $quizLulus = $quiz ? $quiz->isPassedByUser(Auth::id()) : false;
-
-        // "Next" accessible: submodul selesai, dan jika ada quiz harus lulus dulu
-        $isNextAccessible = $isCurrentCompleted && (!$quiz || $quizLulus);
+        $quizzes = $submodul->quizzes;
+        $allQuizzesPassed = $quizzes->isNotEmpty() && $quizzes->every(fn($q) => $q->isPassedByUser(Auth::id()));
+        $quizRequirementPassed = $quizzes->isEmpty() || $allQuizzesPassed;
+        $isLastSubmodul = $submodul->isLastInModul();
+        $isNextAccessible = $isCurrentCompleted && $quizRequirementPassed;
 
         return view('user.submoduls.show', compact(
             'modul',
@@ -81,8 +77,8 @@ class SubmodulController extends Controller
             'isNextAccessible',
             'isCurrentCompleted',
             'isLastSubmodul',
-            'quiz',
-            'quizLulus',
+            'quizzes',
+            'quizRequirementPassed',
         ));
     }
 }

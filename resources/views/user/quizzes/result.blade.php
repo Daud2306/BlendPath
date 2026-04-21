@@ -6,14 +6,11 @@
             <div class="col-md-8">
                 <nav aria-label="breadcrumb" class="mb-4">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{ route('moduls.index') }}">Moduls</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('moduls.show', $modul) }}">{{ $modul->nama }}</a>
+                        <li class="breadcrumb-item"><a href="{{ route('learn.moduls.index') }}">Moduls</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('learn.moduls.show', $modul) }}">{{ $modul->judul }}</a>
                         </li>
                         <li class="breadcrumb-item"><a
-                                href="{{ route('moduls.submoduls.show', ['modul' => $modul->id, 'sort_order' => $submodul->sort_order]) }}">{{ $submodul->judul }}</a>
-                        </li>
-                        <li class="breadcrumb-item"><a
-                                href="{{ route('moduls.submoduls.quiz.show', ['modul' => $modul->id, 'sort_order' => $submodul->sort_order]) }}">Quizzes</a>
+                                href="{{ route('learn.submoduls.show', ['modul' => $modul->id, 'sort_order' => $submodul->sort_order]) }}">{{ $submodul->judul }}</a>
                         </li>
                         <li class="breadcrumb-item active">Hasil Quiz</li>
                     </ol>
@@ -77,18 +74,11 @@
                         </div>
 
                         <div class="d-grid gap-2 d-md-flex justify-content-center mt-4">
-                            <a href="{{ route('moduls.submoduls.quiz.show', [
-                                'modul' => $modul->id,
-                                'sort_order' => $submodul->sort_order,
-                            ]) }}"
+                            <a href="{{ route('learn.submoduls.show', ['modul' => $modul->id, 'sort_order' => $submodul->sort_order]) }}"
                                 class="btn btn-primary me-md-2">
-                                <i class="fas fa-list me-1"></i>Kembali ke Daftar Quiz
+                                <i class="fas fa-arrow-left me-1"></i>Kembali ke Submodul
                             </a>
-                            <a href="{{ route('moduls.submoduls.quiz.take', [
-                                'modul' => $modul->id,
-                                'sort_order' => $submodul->sort_order,
-                                'quiz' => $quiz->id,
-                            ]) }}"
+                            <a href="{{ route('learn.quizzes.take', ['modul' => $modul->id, 'submodul' => $submodul->id, 'quiz' => $quiz->id]) }}"
                                 class="btn btn-outline-primary">
                                 <i class="fas fa-redo me-1"></i>Ulangi Quiz
                             </a>

@@ -6,14 +6,11 @@
             <div class="col-12">
                 <nav aria-label="breadcrumb" class="mb-4">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{ route('moduls.index') }}">Moduls</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('moduls.show', $modul) }}">{{ $modul->nama }}</a>
+                        <li class="breadcrumb-item"><a href="{{ route('learn.moduls.index') }}">Moduls</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('learn.moduls.show', $modul) }}">{{ $modul->judul }}</a>
                         </li>
                         <li class="breadcrumb-item"><a
-                                href="{{ route('moduls.submoduls.show', ['modul' => $modul->id, 'sort_order' => $submodul->sort_order]) }}">{{ $submodul->judul }}</a>
-                        </li>
-                        <li class="breadcrumb-item"><a
-                                href="{{ route('moduls.submoduls.quiz.show', ['modul' => $modul->id, 'sort_order' => $submodul->sort_order]) }}">Quizzes</a>
+                                href="{{ route('learn.submoduls.show', ['modul' => $modul->id, 'sort_order' => $submodul->sort_order]) }}">{{ $submodul->judul }}</a>
                         </li>
                         <li class="breadcrumb-item active">{{ $quiz->judul_quiz }}</li>
                     </ol>
@@ -26,11 +23,11 @@
                         </h4>
                     </div>
                     <div class="card-body">
-                        @if ($userRespon)
+                        @if ($latestAttempt)
                             <div class="alert alert-info">
                                 <i class="fas fa-info-circle me-2"></i>
                                 Anda sudah mengerjakan quiz ini sebelumnya. Poin:
-                                <strong>{{ $userRespon->total_poin }}</strong>
+                                <strong>{{ $latestAttempt->total_poin }}</strong>
                             </div>
                         @endif
 
@@ -42,15 +39,12 @@
                         </div>
 
                         <form
-                            action="{{ route('moduls.submoduls.quiz.submit', [
-                                'modul' => $modul->id,
-                                'sort_order' => $submodul->sort_order,
-                            ]) }}"
+                            action="{{ route('learn.quizzes.submit', ['modul' => $modul->id, 'submodul' => $submodul->id, 'quiz' => $quiz->id]) }}"
                             method="POST">
                             @csrf
                             <input type="hidden" name="quiz_id" value="{{ $quiz->id }}">
 
-                            @foreach ($quiz->pertanyaan as $index => $pertanyaan)
+                            @foreach ($quiz->questions as $index => $pertanyaan)
                                 <div class="card mb-4">
                                     <div class="card-header bg-light">
                                         <h5 class="mb-0">Pertanyaan #{{ $index + 1 }}</h5>
@@ -79,13 +73,8 @@
                             @endforeach
 
                             <div class="d-flex justify-content-between mt-4">
-                                <a href="{{ route('moduls.submoduls.quiz.show', [
-                                    'modul' => $modul->id,
-                                    'sort_order' => $submodul->sort_order,
-                                ]) }}"
-                                    class="btn btn-secondary">
-                                    <i class="fas fa-arrow-left me-1"></i>Kembali
-                                </a>
+                                <a href="{{ route('learn.submoduls.show', ['modul' => $modul->id, 'sort_order' => $submodul->sort_order]) }}"
+                                    class="btn btn-secondary">Kembali</a>
                                 <button type="submit" class="btn btn-success">
                                     <i class="fas fa-paper-plane me-1"></i>Submit Jawaban
                                 </button>

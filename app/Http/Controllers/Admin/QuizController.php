@@ -7,27 +7,18 @@ use App\Models\Quiz;
 use App\Models\Modul;
 use App\Models\Submodul;
 use App\Models\Question;
+use App\Models\Resource;
 use App\Services\QuizService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class QuizController extends Controller
 {
     public function __construct(protected QuizService $quizService) {}
 
-    // -------------------------------------------------------------------------
-    // Quiz — sekarang terikat ke Submodul (bukan Modul)
-    // -------------------------------------------------------------------------
-
     public function create(Modul $modul, Submodul $submodul)
     {
         $this->authorizeSubmodul($modul, $submodul);
-
-        // Satu submodul hanya boleh punya satu quiz
-        if ($submodul->quiz()->exists()) {
-            return redirect()
-                ->route('admin.moduls.submoduls.show', [$modul, $submodul])
-                ->with('error', 'Submodul ini sudah punya quiz. Edit quiz yang ada.');
-        }
 
         return view('admin.quizzes.create', compact('modul', 'submodul'));
     }
@@ -42,34 +33,35 @@ class QuizController extends Controller
             'passing_score'   => 'required|integer|min:0|max:100',
             'pertanyaan'      => 'required|array|min:1',
             'pertanyaan.*'    => 'required|string',
-            'gambar_soal'     => 'nullable|array',
-            'gambar_soal.*'   => 'nullable|image|max:2048',
+            'gambar.*'        => 'nullable|image|max:2048',
             'pilihan_a.*'     => 'required|string',
             'pilihan_b.*'     => 'required|string',
             'pilihan_c.*'     => 'required|string',
             'pilihan_d.*'     => 'required|string',
             'jawaban_benar.*' => 'required|in:A,B,C,D',
-            'poin.*'          => 'required|integer|min:1',
+            'poin.*'          => 'nullable',
+        ], [
+            'gambar.*.max' => 'Ukuran gambar maksimal 2MB. File yang Anda upload melebihi batas.',
+            'gambar.*.image' => 'File harus berupa gambar (jpg, png, dll).',
         ]);
 
+        // Urutan otomatis (max sort_order + 1)
+        $maxOrder = Quiz::where('submodul_id', $submodul->id)->max('sort_order') ?? 0;
         $quiz = Quiz::create([
             'submodul_id'   => $submodul->id,
             'judul_quiz'    => $request->judul_quiz,
             'deskripsi'     => $request->deskripsi,
             'passing_score' => $request->passing_score,
+            'sort_order'    => $maxOrder + 1,
         ]);
 
-        foreach ($request->pertanyaan as $index => $pertanyaan) {
-            $gambarPath = null;
-            if ($request->hasFile("gambar_soal.{$index}")) {
-                $gambarPath = $request->file("gambar_soal.{$index}")
-                    ->store('quiz-images', 'public');
-            }
+        $jumlahSoal = count($request->pertanyaan);
+        $poinPerSoal = round(100 / $jumlahSoal, 2); // desimal 2 angka
 
-            Question::create([
+        foreach ($request->pertanyaan as $index => $pertanyaan) {
+            $question = Question::create([
                 'quiz_id'         => $quiz->id,
                 'pertanyaan'      => $pertanyaan,
-                'gambar_soal'     => $gambarPath,
                 'pilihan_jawaban' => [
                     'A' => $request->pilihan_a[$index],
                     'B' => $request->pilihan_b[$index],
@@ -77,13 +69,24 @@ class QuizController extends Controller
                     'D' => $request->pilihan_d[$index],
                 ],
                 'jawaban_benar'   => $request->jawaban_benar[$index],
-                'poin'            => $request->poin[$index],
+                'poin'            => $poinPerSoal, // poin otomatis
                 'urutan'          => $index + 1,
             ]);
+
+            if ($request->hasFile("gambar.{$index}")) {
+                $file = $request->file("gambar.{$index}");
+                $path = $file->store('quiz-images', 'public');
+                $question->resources()->create([
+                    'path'          => $path,
+                    'type'          => 'image',
+                    'mime_type'     => $file->getMimeType(),
+                    'size'          => $file->getSize(),
+                    'original_name' => $file->getClientOriginalName(),
+                ]);
+            }
         }
 
-        return redirect()
-            ->route('admin.moduls.submoduls.show', [$modul, $submodul])
+        return redirect()->route('admin.moduls.submoduls.show', [$modul, $submodul])
             ->with('success', 'Quiz berhasil dibuat!');
     }
 
@@ -107,13 +110,16 @@ class QuizController extends Controller
             'passing_score'   => 'required|integer|min:0|max:100',
             'pertanyaan'      => 'required|array|min:1',
             'pertanyaan.*'    => 'required|string',
-            'gambar_soal.*'   => 'nullable|image|max:2048',
+            'gambar.*'        => 'nullable|image|max:2048',
             'pilihan_a.*'     => 'required|string',
             'pilihan_b.*'     => 'required|string',
             'pilihan_c.*'     => 'required|string',
             'pilihan_d.*'     => 'required|string',
             'jawaban_benar.*' => 'required|in:A,B,C,D',
             'poin.*'          => 'required|integer|min:1',
+        ], [
+            'gambar.*.max' => 'Ukuran gambar maksimal 2MB. File yang Anda upload melebihi batas.',
+            'gambar.*.image' => 'File harus berupa gambar (jpg, png, dll).',
         ]);
 
         $quiz->update([
@@ -122,20 +128,22 @@ class QuizController extends Controller
             'passing_score' => $request->passing_score,
         ]);
 
-        // Hapus soal lama, buat ulang
-        $quiz->questions()->delete();
-
-        foreach ($request->pertanyaan as $index => $pertanyaan) {
-            $gambarPath = null;
-            if ($request->hasFile("gambar_soal.{$index}")) {
-                $gambarPath = $request->file("gambar_soal.{$index}")
-                    ->store('quiz-images', 'public');
+        // Hapus soal lama dan resource-nya
+        foreach ($quiz->questions as $oldQuestion) {
+            foreach ($oldQuestion->resources as $res) {
+                if ($res->path && !str_starts_with($res->path, 'http')) {
+                    Storage::disk('public')->delete($res->path);
+                }
+                $res->delete();
             }
+            $oldQuestion->delete();
+        }
 
-            Question::create([
+        // Buat soal baru
+        foreach ($request->pertanyaan as $index => $pertanyaan) {
+            $question = Question::create([
                 'quiz_id'         => $quiz->id,
                 'pertanyaan'      => $pertanyaan,
-                'gambar_soal'     => $gambarPath,
                 'pilihan_jawaban' => [
                     'A' => $request->pilihan_a[$index],
                     'B' => $request->pilihan_b[$index],
@@ -146,6 +154,18 @@ class QuizController extends Controller
                 'poin'            => $request->poin[$index],
                 'urutan'          => $index + 1,
             ]);
+
+            if ($request->hasFile("gambar.{$index}")) {
+                $file = $request->file("gambar.{$index}");
+                $path = $file->store('quiz-images', 'public');
+                $question->resources()->create([
+                    'path'          => $path,
+                    'type'          => 'image',
+                    'mime_type'     => $file->getMimeType(),
+                    'size'          => $file->getSize(),
+                    'original_name' => $file->getClientOriginalName(),
+                ]);
+            }
         }
 
         return redirect()

@@ -83,7 +83,8 @@ class SubmodulController extends Controller
             'tanya.jawabs.user',
             'tanya.resources',
             'tanya.jawabs.resources',
-            'quizzes.pertanyaan'
+            'quizzes.questions',
+            'miniProjects',
         ]);
 
         $prevSubmodul = Submodul::where('modul_id', $modul->id)

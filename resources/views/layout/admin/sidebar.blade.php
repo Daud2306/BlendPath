@@ -43,14 +43,9 @@
             <i class="fas fa-images"></i> Showcase
         </a>
 
-        <a href="{{ route('admin.tanyas.index') }}"
-            class="sidebar-nav-item {{ request()->routeIs('admin.tanyas.*') ? 'active' : '' }}">
+        <a href="{{ route('admin.diskusi.index') }}"
+            class="sidebar-nav-item {{ request()->routeIs('admin.diskusi.*') ? 'active' : '' }}">
             <i class="fas fa-comment-dots"></i> Diskusi
-        </a>
-
-        <a href="{{ route('admin.jawabs.index') }}"
-            class="sidebar-nav-item {{ request()->routeIs('admin.jawabs.*') ? 'active' : '' }}">
-            <i class="fas fa-reply"></i> Jawaban
         </a>
 
         <div class="sidebar-section-label">Pengguna</div>

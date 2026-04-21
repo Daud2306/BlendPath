@@ -39,9 +39,9 @@
                             <i class="bi bi-calendar3 me-1"></i>
                             {{ $submodul->created_at->format('d M Y') }}
                         </span>
-                        @if ($submodul->quiz)
+                        @if ($submodul->quizzes->count() > 0)
                             <span class="meta-item">
-                                <i class="bi bi-question-circle me-1"></i>Ada Quiz
+                                <i class="bi bi-question-circle me-1"></i>{{ $submodul->quizzes->count() }} Quiz
                             </span>
                         @endif
                         @if ($submodul->miniProjects->count() > 0)

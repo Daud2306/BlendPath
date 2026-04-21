@@ -117,6 +117,7 @@ with-navbar
     </script>
     <script src="{{ asset('frontend/js/navbar.js') }}"></script>
     @stack('tinymce-scripts')
+    @stack('scripts')
     @auth
         <x-ai-chat />
     @endauth
