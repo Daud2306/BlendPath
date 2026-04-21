@@ -100,11 +100,11 @@ class ModulController extends Controller
     {
         $moduls = Modul::with([
             'submoduls',
-            'submoduls.quiz.questions',
+            'submoduls.quizzes.questions',
             'submoduls.miniProjects',
         ])
-        ->orderBy('sort_order')
-        ->get();
+            ->orderBy('sort_order')
+            ->get();
 
         $modulesData = $moduls->map(function ($modul) {
             return [
@@ -114,17 +114,20 @@ class ModulController extends Controller
                     return [
                         'id'           => $sub->id,
                         'title'        => $sub->judul,
-                        'quiz'         => $sub->quiz ? [
-                            'id'        => $sub->quiz->id,
-                            'title'     => $sub->quiz->judul_quiz,
-                            'questions' => $sub->quiz->questions->map(fn($q) => [
-                                'id'      => $q->id,
-                                'text'    => $q->pertanyaan,
-                                'options' => $q->pilihan_jawaban,
-                                'correct' => $q->jawaban_benar,
-                                'poin'    => $q->poin,
-                            ])->values(),
-                        ] : null,
+                        'quizzes'      => $sub->quizzes->map(function ($quiz) {
+                            return [
+                                'id'              => $quiz->id,
+                                'title'           => $quiz->judul_quiz,
+                                'questions_count' => $quiz->questions->count(),
+                                'questions'       => $quiz->questions->map(fn($q) => [
+                                    'id'      => $q->id,
+                                    'text'    => $q->pertanyaan,
+                                    'options' => $q->pilihan_jawaban,
+                                    'correct' => $q->jawaban_benar,
+                                    'poin'    => $q->poin,
+                                ])->values(),
+                            ];
+                        })->values(),
                         'miniProjects' => $sub->miniProjects->map(fn($p) => [
                             'id'               => $p->id,
                             'title'            => $p->judul,

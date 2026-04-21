@@ -13,7 +13,6 @@ class Question extends Model
     protected $fillable = [
         'quiz_id',
         'pertanyaan',
-        'gambar_soal',
         'pilihan_jawaban',
         'jawaban_benar',
         'poin',
@@ -57,9 +56,14 @@ class Question extends Model
         return $this->pilihan_jawaban[strtoupper($key)] ?? null;
     }
 
-    /** Apakah soal ini punya gambar */
-    public function hasGambar(): bool
+    public function resources()
     {
-        return !empty($this->gambar_soal);
+        return $this->morphMany(Resource::class, 'resourceable');
+    }
+
+    // Helper untuk mengambil gambar pertama (opsional)
+    public function getFirstImageAttribute()
+    {
+        return $this->resources()->where('type', 'image')->first();
     }
 }

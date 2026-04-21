@@ -6,9 +6,18 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Services\AuthService;
 
 class AuthController extends Controller
 {
+
+    private $authService;
+
+    public function __construct(AuthService $authService)
+    {
+        $this->authService = $authService;
+    }
+
     public function showLoginForm()
     {
         return view('user.auth.login');
@@ -21,37 +30,27 @@ class AuthController extends Controller
             'password' => ['required'],
         ]);
 
-        $user = User::where('email', $credentials['email'])->first();
+        try {
+            $user = $this->authService->login(
+                $credentials,
+                $request->boolean('remember')
+            );
 
-        // akun google tidak boleh login password
-        if ($user && is_null($user->password)) {
-            return back()->withErrors([
-                'email' => 'Gunakan Login dengan Google.',
-            ])->onlyInput('email');
-        }
-
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
-
-            if (Auth::user()->role === 'admin') {
+            if ($user->role === 'admin') {
                 return redirect()->route('admin.dashboard');
             }
 
             return redirect('/');
+        } catch (\Exception $e) {
+            return back()->withErrors([
+                'email' => $e->getMessage(),
+            ])->onlyInput('email');
         }
-
-        return back()->withErrors([
-            'email' => 'Email atau password salah.',
-        ]);
     }
 
-    public function logout(Request $request)
+    public function logout()
     {
-        Auth::logout();
-
-        $request->session()->invalidate();
-
-        $request->session()->regenerateToken();
+        $this->authService->logout();
 
         return redirect('/');
     }
@@ -63,33 +62,16 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
-        $data = $request->validate(
-            [
-                'name' => ['required', 'string', 'max:255'],
-                'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-                'password' => ['required', 'string'],
-            ],
-            [
-                'name.required' => 'Nama wajib diisi',
-                'name.string' => 'Nama harus berupa teks',
-                'name.max' => 'Nama maksimal 255 karakter',
-                'email.required' => 'Email wajib diisi',
-                'email.email' => 'Email tidak valid',
-                'email.unique' => 'Email sudah terdaftar',
-                'email.max' => 'Email maksimal 255 karakter',
-                'password.required' => 'Password wajib diisi',
-            ]
-        );
-
-        $user = User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password'])
+        $data = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'unique:users'],
+            'password' => ['required', 'string'],
         ]);
 
-        Auth::login($user);
+        $this->authService->register($data);
 
-        return redirect('/')->with('success', 'Registrasi berhasil! Selamat datang di BlendPath.');
+        return redirect('/')
+            ->with('success', 'Registrasi berhasil!');
     }
 
     public function home()

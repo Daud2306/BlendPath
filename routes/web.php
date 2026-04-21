@@ -28,6 +28,7 @@ use App\Http\Controllers\Admin\SearchController     as AdminSearchController;
 use App\Http\Controllers\Admin\ExportPdfController  as AdminExportPdfController;
 use App\Http\Controllers\Admin\DashboardController  as AdminDashboardController;
 use App\Http\Controllers\Admin\ShowcaseController   as AdminShowcaseController;
+use App\Http\Controllers\Admin\DiskusiController    as AdminDiskusiController;
 
 // =============================================================================
 // Auth
@@ -165,9 +166,17 @@ Route::middleware(['auth', 'role:admin'])
 
         Route::get('monitoring', [AdminUserController::class, 'monitoring'])->name('monitoring.index');
 
-        // Tanya & Jawab
+        // Tanya & Jawab (lama — dipertahankan untuk kompatibilitas)
         Route::resource('tanyas', AdminTanyaController::class)->only(['index', 'destroy'])->names('tanyas');
         Route::resource('jawabs', AdminJawabController::class)->only(['index', 'destroy'])->names('jawabs');
+
+        // Diskusi — halaman baru: thread view (tanya + jawab dalam satu halaman)
+        Route::prefix('diskusi')->name('diskusi.')->group(function () {
+            Route::get('/',               [AdminDiskusiController::class, 'index'])->name('index');
+            Route::get('/{tanya}',        [AdminDiskusiController::class, 'show'])->name('show');
+            Route::delete('/tanya/{tanya}', [AdminDiskusiController::class, 'destroyTanya'])->name('tanya.destroy');
+            Route::delete('/jawab/{jawab}', [AdminDiskusiController::class, 'destroyJawab'])->name('jawab.destroy');
+        });
 
         // Showcase (admin — moderasi)
         Route::prefix('showcase')->name('showcase.')->group(function () {

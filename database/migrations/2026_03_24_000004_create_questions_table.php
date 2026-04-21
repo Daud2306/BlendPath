@@ -12,10 +12,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('quiz_id')->constrained()->onDelete('cascade');
             $table->text('pertanyaan');
-            $table->string('gambar_soal')->nullable();
             $table->json('pilihan_jawaban');
             $table->string('jawaban_benar');
-            $table->integer('poin')->default(10);
+            $table->decimal('poin', 5, 2)->default(0); // ← ubah jadi decimal
             $table->integer('urutan')->default(0);
             $table->timestamps();
             $table->softDeletes();

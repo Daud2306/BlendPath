@@ -9,12 +9,12 @@
 /* ============================================================
    STATE
    ============================================================ */
-let modulesData    = window.builderConfig.modulesData;
+let modulesData = window.builderConfig.modulesData;
 let collapsedModules = new Set();
-let hasChanges     = false;
+let hasChanges = false;
 let currentProjectContext = null;
 
-const routes    = window.builderConfig.routes;
+const routes = window.builderConfig.routes;
 const csrfToken = window.builderConfig.csrfToken;
 
 let moduleSortable, subSortables = [];
@@ -102,34 +102,48 @@ function renderSubmodule(mod, sub, modIdx, subIdx) {
            </span>`
         : '';
 
-    const quizSection = sub.quiz
-        ? `<div class="quiz-card">
-               <div class="d-flex align-items-center gap-2 flex-wrap">
-                   <span style="font-size:0.85rem;font-weight:600;color:var(--text-primary);">
-                       <i class="fas fa-question-circle me-1" style="color:var(--accent);"></i>
-                       ${escapeHtml(sub.quiz.title)}
-                   </span>
-                   <span class="type-badge quiz">${sub.quiz.questions.length} soal</span>
-               </div>
-               <div class="d-flex gap-1">
-                   <a href="/admin/moduls/${mod.id}/submoduls/${sub.id}/quiz/${sub.quiz.id}/edit"
-                      class="btn-icon" title="Edit Quiz" style="font-size:0.8rem;">
-                       <i class="fas fa-edit"></i>
-                   </a>
-                   <button class="btn-icon danger btn-delete-quiz"
-                           data-quiz-id="${sub.quiz.id}"
-                           data-module-index="${modIdx}" data-submodule-index="${subIdx}"
-                           title="Hapus Quiz">
-                       <i class="fas fa-trash-alt"></i>
-                   </button>
-               </div>
-           </div>`
-        : `<button class="btn-icon add-quiz-btn"
-                   style="font-size:0.8rem;color:var(--accent);"
-                   data-module-index="${modIdx}" data-submodule-index="${subIdx}"
-                   data-submodul-id="${sub.id}" data-modul-id="${mod.id}">
-               <i class="fas fa-plus"></i> Tambah Quiz
-           </button>`;
+    // builder.js
+
+    // 1. Buat kontainer untuk daftar quiz
+    let quizzesHtml = '';
+
+    if (sub.quizzes && sub.quizzes.length > 0) {
+        sub.quizzes.forEach((quiz) => {
+            quizzesHtml += `
+            <div class="quiz-card mb-2">
+                <div class="d-flex align-items-center gap-2 flex-wrap">
+                    <span style="font-size:0.85rem;font-weight:600;color:var(--text-primary);">
+                        <i class="fas fa-question-circle me-1" style="color:var(--accent);"></i>
+                        ${escapeHtml(quiz.title)}
+                    </span>
+                    <span class="type-badge quiz">${quiz.questions_count ?? 0} soal</span>
+                </div>
+                <div class="d-flex gap-1">
+                    <a href="/admin/moduls/${mod.id}/submoduls/${sub.id}/quizzes/${quiz.id}/edit"
+                       class="btn-icon" title="Edit Quiz" style="font-size:0.8rem;">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                    <button class="btn-icon danger btn-delete-quiz"
+                            data-quiz-id="${quiz.id}"
+                            data-module-index="${modIdx}" data-submodule-index="${subIdx}"
+                            title="Hapus Quiz">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </div>
+            </div>`;
+        });
+    }
+
+    const quizSection = `
+    <div class="quizzes-container">
+        ${quizzesHtml}
+        <button class="btn-icon add-quiz-btn mt-1"
+                style="font-size:0.8rem;color:var(--accent);"
+                data-module-index="${modIdx}" data-submodule-index="${subIdx}"
+                data-submodul-id="${sub.id}" data-modul-id="${mod.id}">
+            <i class="fas fa-plus"></i> Tambah Quiz
+        </button>
+    </div>`;
 
     const projectsSection = sub.miniProjects.map((p, pIdx) => `
         <div class="project-card">
@@ -229,7 +243,7 @@ function attachEventListeners() {
     // Tambah Quiz → redirect ke halaman create
     document.querySelectorAll('.add-quiz-btn').forEach(btn => {
         btn.addEventListener('click', () => {
-            const modulId    = btn.getAttribute('data-modul-id');
+            const modulId = btn.getAttribute('data-modul-id');
             const submodulId = btn.getAttribute('data-submodul-id');
             window.location.href = `/admin/moduls/${modulId}/submoduls/${submodulId}/quiz/create`;
         });
@@ -240,7 +254,7 @@ function attachEventListeners() {
         btn.addEventListener('click', () => {
             const modIdx = parseInt(btn.getAttribute('data-module-index'));
             const subIdx = parseInt(btn.getAttribute('data-submodule-index'));
-            const subId  = btn.getAttribute('data-submodul-id');
+            const subId = btn.getAttribute('data-submodul-id');
             openProjectModal(null, modIdx, subIdx, subId);
         });
     });
@@ -248,10 +262,10 @@ function attachEventListeners() {
     // Hapus Submodul
     document.querySelectorAll('.btn-delete-submodul').forEach(btn => {
         btn.addEventListener('click', async () => {
-            const subId  = btn.getAttribute('data-submodul-id');
+            const subId = btn.getAttribute('data-submodul-id');
             const modIdx = parseInt(btn.getAttribute('data-module-index'));
             const subIdx = parseInt(btn.getAttribute('data-submodule-index'));
-            const title  = modulesData[modIdx].submodules[subIdx].title;
+            const title = modulesData[modIdx].submodules[subIdx].title;
 
             if (!confirm(`Hapus submodul "${title}"? Semua konten, quiz, dan mini project di dalamnya akan ikut terhapus.`)) return;
 
@@ -310,9 +324,9 @@ function attachEventListeners() {
     document.querySelectorAll('.btn-delete-project').forEach(btn => {
         btn.addEventListener('click', async () => {
             const projectId = btn.getAttribute('data-project-id');
-            const modIdx    = parseInt(btn.getAttribute('data-module-index'));
-            const subIdx    = parseInt(btn.getAttribute('data-submodule-index'));
-            const pIdx      = parseInt(btn.getAttribute('data-project-index'));
+            const modIdx = parseInt(btn.getAttribute('data-module-index'));
+            const subIdx = parseInt(btn.getAttribute('data-submodule-index'));
+            const pIdx = parseInt(btn.getAttribute('data-project-index'));
 
             if (!confirm('Hapus mini project ini?')) return;
 
@@ -373,12 +387,12 @@ function syncOrderFromDOM() {
     const newModules = [];
     document.querySelectorAll('#modulesContainer .module-card').forEach(modEl => {
         const moduleId = parseInt(modEl.getAttribute('data-module-id'));
-        const origMod  = modulesData.find(m => m.id === moduleId);
+        const origMod = modulesData.find(m => m.id === moduleId);
         if (!origMod) return;
 
         const newSubs = [];
         modEl.querySelectorAll('.submodule-item').forEach(subEl => {
-            const subId   = parseInt(subEl.getAttribute('data-submodule-id'));
+            const subId = parseInt(subEl.getAttribute('data-submodule-id'));
             const origSub = origMod.submodules.find(s => s.id === subId);
             if (origSub) newSubs.push(origSub);
         });
@@ -396,10 +410,10 @@ document.getElementById('saveOrderBtn').addEventListener('click', async function
     this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menyimpan...';
 
     const payload = modulesData.map((mod, modIdx) => ({
-        id:    mod.id,
+        id: mod.id,
         order: modIdx + 1,
         submodules: mod.submodules.map((sub, subIdx) => ({
-            id:    sub.id,
+            id: sub.id,
             order: subIdx + 1,
         })),
     }));
@@ -419,16 +433,16 @@ document.getElementById('saveOrderBtn').addEventListener('click', async function
             this.innerHTML = '<i class="fas fa-check"></i> Tersimpan!';
             setTimeout(() => {
                 this.innerHTML = '<i class="fas fa-save"></i> Simpan Urutan';
-                this.disabled  = false;
+                this.disabled = false;
             }, 2000);
         } else {
             alert(data.message ?? 'Gagal menyimpan urutan.');
-            this.disabled  = false;
+            this.disabled = false;
             this.innerHTML = '<i class="fas fa-save"></i> Simpan Urutan';
         }
     } catch {
         alert('Terjadi kesalahan saat menyimpan.');
-        this.disabled  = false;
+        this.disabled = false;
         this.innerHTML = '<i class="fas fa-save"></i> Simpan Urutan';
     }
 });
@@ -438,8 +452,8 @@ document.getElementById('saveOrderBtn').addEventListener('click', async function
    ============================================================ */
 function openProjectModal(project, modIdx, subIdx, subId) {
     currentProjectContext = { modIdx, subIdx, subId, project };
-    document.getElementById('projectJudulInput').value    = project?.title            ?? '';
-    document.getElementById('projectDeskInput').value     = project?.description      ?? '';
+    document.getElementById('projectJudulInput').value = project?.title ?? '';
+    document.getElementById('projectDeskInput').value = project?.description ?? '';
     document.getElementById('projectCriteriaInput').value = project?.passing_criteria ?? '';
     new bootstrap.Modal(document.getElementById('projectModal')).show();
 }
@@ -448,9 +462,9 @@ document.getElementById('saveProjectBtn')?.addEventListener('click', async funct
     if (!currentProjectContext) return;
     const { modIdx, subIdx, subId } = currentProjectContext;
 
-    const judul    = document.getElementById('projectJudulInput').value.trim();
+    const judul = document.getElementById('projectJudulInput').value.trim();
     const deskripsi = document.getElementById('projectDeskInput').value.trim();
-    const criteria  = document.getElementById('projectCriteriaInput').value.trim();
+    const criteria = document.getElementById('projectCriteriaInput').value.trim();
 
     if (!judul) { alert('Judul wajib diisi.'); return; }
 
@@ -474,9 +488,9 @@ document.getElementById('saveProjectBtn')?.addEventListener('click', async funct
         const data = await res.json();
         if (data.success) {
             modulesData[modIdx].submodules[subIdx].miniProjects.push({
-                id:               data.project.id,
-                title:            data.project.judul,
-                description:      data.project.deskripsi,
+                id: data.project.id,
+                title: data.project.judul,
+                description: data.project.deskripsi,
                 passing_criteria: data.project.passing_criteria,
             });
             bootstrap.Modal.getInstance(document.getElementById('projectModal')).hide();
@@ -487,7 +501,7 @@ document.getElementById('saveProjectBtn')?.addEventListener('click', async funct
     } catch {
         alert('Terjadi kesalahan.');
     } finally {
-        this.disabled  = false;
+        this.disabled = false;
         this.innerHTML = 'Simpan Project';
     }
 });

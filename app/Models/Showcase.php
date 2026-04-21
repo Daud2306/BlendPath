@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -26,11 +27,13 @@ class Showcase extends Model
         return $this->hasMany(ShowcaseKomentar::class);
     }
 
-    // Auto delete resources saat showcase dihapus
     protected static function booted()
     {
         static::deleting(function ($showcase) {
-            $showcase->resources()->each(fn($r) => $r->delete());
+            foreach ($showcase->resources as $resource) {
+                Storage::disk('public')->delete($resource->path);
+                $resource->delete();
+            }
         });
     }
 }

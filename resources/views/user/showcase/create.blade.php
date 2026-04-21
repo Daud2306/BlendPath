@@ -25,10 +25,8 @@
             @endif
 
             <div class="ask-question-card">
-                <form action="{{ route('learn.showcase.store') }}"
-                      method="POST"
-                      enctype="multipart/form-data"
-                      class="question-form">
+                <form action="{{ route('learn.showcase.store') }}" method="POST" enctype="multipart/form-data"
+                    class="question-form">
                     @csrf
 
                     {{-- Judul --}}
@@ -36,13 +34,8 @@
                         <label class="form-label">
                             Judul Karya <span class="text-danger">*</span>
                         </label>
-                        <input
-                            type="text"
-                            name="judul"
-                            class="form-control @error('judul') is-invalid @enderror"
-                            placeholder="Contoh: Low-poly Forest Scene"
-                            value="{{ old('judul') }}"
-                            required>
+                        <input type="text" name="judul" class="form-control @error('judul') is-invalid @enderror"
+                            placeholder="Contoh: Low-poly Forest Scene" value="{{ old('judul') }}" required>
                         @error('judul')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -51,10 +44,7 @@
                     {{-- Deskripsi --}}
                     <div class="mb-3">
                         <label class="form-label">Deskripsi</label>
-                        <textarea
-                            name="deskripsi"
-                            class="form-control"
-                            rows="3"
+                        <textarea name="deskripsi" class="form-control" rows="3"
                             placeholder="Ceritakan proses pembuatan, software version, render engine, dll...">{{ old('deskripsi') }}</textarea>
                     </div>
 
@@ -71,13 +61,8 @@
                             <small>JPG, PNG, GIF, WEBP, MP4, MOV</small>
                         </div>
 
-                        <input
-                            type="file"
-                            id="showcase-media-input"
-                            name="media[]"
-                            accept="image/*,video/mp4,video/quicktime"
-                            multiple
-                            style="display:none">
+                        <input type="file" id="showcase-media-input" name="media[]"
+                            accept="image/*,video/mp4,video/quicktime" multiple style="display:none">
 
                         <div id="showcase-preview-container" class="row g-2 showcase-preview-grid"></div>
                     </div>
@@ -86,8 +71,7 @@
                         <button type="submit" class="modul-btn" style="width:auto">
                             <i class="bi bi-upload me-1"></i> Upload Karya
                         </button>
-                        <a href="{{ route('learn.showcase.index') }}"
-                           class="btn btn-outline-secondary">
+                        <a href="{{ route('learn.showcase.index') }}" class="btn btn-outline-secondary">
                             Batal
                         </a>
                     </div>

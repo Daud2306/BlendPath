@@ -43,12 +43,9 @@ class Submodul extends Model
         return $this->hasMany(Tanya::class);
     }
 
-    /**
-     * Setiap submodul bisa punya satu quiz (opsional)
-     */
-    public function quiz()
+    public function quizzes()
     {
-        return $this->hasOne(Quiz::class);
+        return $this->hasMany(Quiz::class)->orderBy('sort_order');
     }
 
     /**

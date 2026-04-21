@@ -62,7 +62,7 @@ class QuizService
                 'jumlah_benar' => $jumlahBenar,
                 'persentase'   => $persentase,
                 'lulus'        => $lulus,
-                'selesai_at'   => now(),
+                'completed_at'   => now(),
             ]);
 
             foreach ($answerData as $data) {

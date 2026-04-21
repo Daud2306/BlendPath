@@ -11,6 +11,7 @@ return new class extends Migration
         Schema::create('quizzes', function (Blueprint $table) {
             $table->id();
             $table->foreignId('submodul_id')->constrained()->onDelete('cascade');
+            $table->unsignedInteger('sort_order')->default(0);
             $table->string('judul_quiz');
             $table->string('deskripsi')->nullable();
             $table->integer('passing_score')->default(70);

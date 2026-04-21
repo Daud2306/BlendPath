@@ -1,0 +1,417 @@
+ 
+===== APP ===== 
+ Volume in drive C has no label.
+ Volume Serial Number is 148A-A9FC
+
+ Directory of C:\laragon\www\BlendPath\app
+
+24/03/2026  15:18    <DIR>          .
+24/03/2026  15:18    <DIR>          ..
+03/11/2025  12:12    <DIR>          Exports
+14/10/2025  16:30    <DIR>          Http
+03/11/2025  12:13    <DIR>          Imports
+01/04/2026  00:03    <DIR>          Models
+03/03/2026  10:31    <DIR>          Policies
+30/08/2025  00:40    <DIR>          Providers
+04/04/2026  12:25    <DIR>          Services
+03/03/2026  18:33    <DIR>          Traits
+               0 File(s)              0 bytes
+
+ Directory of C:\laragon\www\BlendPath\app\Exports
+
+03/11/2025  12:12    <DIR>          .
+03/11/2025  12:12    <DIR>          ..
+18/11/2025  00:29             1.838 UsersExport.php
+               1 File(s)          1.838 bytes
+
+ Directory of C:\laragon\www\BlendPath\app\Http
+
+14/10/2025  16:30    <DIR>          .
+14/10/2025  16:30    <DIR>          ..
+01/04/2026  10:50    <DIR>          Controllers
+23/02/2026  13:20    <DIR>          Middleware
+               0 File(s)              0 bytes
+
+ Directory of C:\laragon\www\BlendPath\app\Http\Controllers
+
+01/04/2026  10:50    <DIR>          .
+01/04/2026  10:50    <DIR>          ..
+03/04/2026  14:52    <DIR>          Admin
+17/03/2026  15:37             5.917 AiChatController.php
+01/04/2026  10:50    <DIR>          Auth
+04/04/2026  12:38             2.057 AuthController.php
+03/03/2026  12:29               157 Controller.php
+03/03/2026  22:40             2.067 JawabController.php
+28/03/2026  19:08             2.099 ModulController.php
+28/03/2026  12:27               966 ProfileController.php
+23/03/2026  14:29             1.678 ProgressController.php
+23/03/2026  14:29             3.152 QuizController.php
+03/03/2026  20:25             1.977 ResourceController.php
+04/04/2026  21:02             3.080 ShowcaseController.php
+28/03/2026  16:27             3.110 SubmodulController.php
+03/03/2026  21:11             2.462 TanyaController.php
+03/03/2026  20:02             2.084 TinyMCEController.php
+              13 File(s)         30.806 bytes
+
+ Directory of C:\laragon\www\BlendPath\app\Http\Controllers\Admin
+
+03/04/2026  14:52    <DIR>          .
+03/04/2026  14:52    <DIR>          ..
+04/03/2026  03:56               941 DashboardController.php
+03/04/2026  07:52             1.939 DiskusiController.php
+03/03/2026  23:24               494 ExportPdfController.php
+03/03/2026  22:37               590 JawabController.php
+25/03/2026  10:29             9.695 ModulController.php
+20/04/2026  14:04             6.942 QuizController.php
+03/03/2026  23:24             1.936 SearchController.php
+31/03/2026  16:54             1.197 ShowcaseController.php
+03/03/2026  19:50             4.952 SubmodulController.php
+03/03/2026  14:11               696 TanyaController.php
+27/03/2026  17:31             6.047 UserController.php
+              11 File(s)         35.429 bytes
+
+ Directory of C:\laragon\www\BlendPath\app\Http\Controllers\Auth
+
+01/04/2026  10:50    <DIR>          .
+01/04/2026  10:50    <DIR>          ..
+04/04/2026  12:39               626 GoogleController.php
+               1 File(s)            626 bytes
+
+ Directory of C:\laragon\www\BlendPath\app\Http\Middleware
+
+23/02/2026  13:20    <DIR>          .
+23/02/2026  13:20    <DIR>          ..
+23/02/2026  14:43               400 RoleMiddleware.php
+               1 File(s)            400 bytes
+
+ Directory of C:\laragon\www\BlendPath\app\Imports
+
+03/11/2025  12:13    <DIR>          .
+03/11/2025  12:13    <DIR>          ..
+18/11/2025  00:53             2.749 UsersImport.php
+               1 File(s)          2.749 bytes
+
+ Directory of C:\laragon\www\BlendPath\app\Models
+
+01/04/2026  00:03    <DIR>          .
+01/04/2026  00:03    <DIR>          ..
+23/03/2026  14:29               833 AttemptAnswer.php
+02/03/2026  23:05               709 Jawab.php
+25/03/2026  18:12             1.506 MiniProject.php
+25/03/2026  18:12             2.968 Modul.php
+25/01/2026  11:06               556 Progress.php
+23/03/2026  14:29             1.751 Question.php
+25/03/2026  06:51             1.778 Quiz.php
+23/03/2026  14:29             1.683 QuizAttempt.php
+03/03/2026  18:56             1.535 Resource.php
+04/04/2026  21:02               866 Showcase.php
+31/03/2026  16:54               358 ShowcaseKomentar.php
+20/04/2026  22:15             2.631 Submodul.php
+02/03/2026  23:04               919 Tanya.php
+03/04/2026  23:04             2.428 User.php
+              14 File(s)         20.521 bytes
+
+ Directory of C:\laragon\www\BlendPath\app\Policies
+
+03/03/2026  10:31    <DIR>          .
+03/03/2026  10:31    <DIR>          ..
+03/03/2026  11:51               409 JawabPolicy.php
+03/03/2026  11:51               409 TanyaPolicy.php
+               2 File(s)            818 bytes
+
+ Directory of C:\laragon\www\BlendPath\app\Providers
+
+30/08/2025  00:40    <DIR>          .
+30/08/2025  00:40    <DIR>          ..
+03/03/2026  12:33               604 AppServiceProvider.php
+               1 File(s)            604 bytes
+
+ Directory of C:\laragon\www\BlendPath\app\Services
+
+04/04/2026  12:25    <DIR>          .
+04/04/2026  12:25    <DIR>          ..
+04/04/2026  12:32             2.904 AuthService.php
+25/03/2026  16:36             5.529 QuizService.php
+               2 File(s)          8.433 bytes
+
+ Directory of C:\laragon\www\BlendPath\app\Traits
+
+03/03/2026  18:33    <DIR>          .
+03/03/2026  18:33    <DIR>          ..
+03/03/2026  18:35             1.185 HandlesMediaFromHtml.php
+               1 File(s)          1.185 bytes
+
+     Total Files Listed:
+              48 File(s)        103.409 bytes
+              38 Dir(s)  10.498.138.112 bytes free
+ 
+===== MIGRATIONS ===== 
+ Volume in drive C has no label.
+ Volume Serial Number is 148A-A9FC
+
+ Directory of C:\laragon\www\BlendPath\database\migrations
+
+25/03/2026  15:07    <DIR>          .
+25/03/2026  15:07    <DIR>          ..
+23/09/2025  11:12               849 0001_01_01_000001_create_cache_table.php
+23/09/2025  11:12             1.812 0001_01_01_000002_create_jobs_table.php
+04/04/2026  11:50             1.669 2025_09_19_045527_create_users_table.php
+27/03/2026  15:56               710 2025_09_19_053359_create_moduls_table.php
+27/03/2026  15:07               742 2025_09_19_053507_create_submoduls_table.php
+25/01/2026  14:04               729 2025_09_19_053528_create_tanyas_table.php
+02/03/2026  23:07               723 2025_09_19_053529_create_jawabs_table.php
+03/03/2026  20:23               925 2025_09_19_053529_create_resources_table.php
+27/03/2026  15:08               869 2025_09_19_053546_create_progress_table.php
+18/03/2026  13:47               699 2026_03_18_064425_create_showcases_table.php
+18/03/2026  13:48               747 2026_03_18_064533_create_showcase_komentars_table.php
+25/03/2026  15:04               712 2026_03_24_000003_create_quizzes_table.php
+24/03/2026  08:39               844 2026_03_24_000004_create_questions_table.php
+25/03/2026  21:43               985 2026_03_24_000005_create_quiz_attempts_table.php
+24/03/2026  08:39               785 2026_03_24_000006_create_attempt_answers_table.php
+25/03/2026  06:51               759 2026_03_26_000002_create_mini_projects_table.php
+              16 File(s)         14.559 bytes
+
+     Total Files Listed:
+              16 File(s)         14.559 bytes
+               2 Dir(s)  10.498.138.112 bytes free
+ 
+===== ALL VIEWS ===== 
+ Volume in drive C has no label.
+ Volume Serial Number is 148A-A9FC
+
+ Directory of C:\laragon\www\BlendPath\resources\views
+
+28/03/2026  12:30    <DIR>          .
+28/03/2026  12:30    <DIR>          ..
+03/04/2026  14:52    <DIR>          admin
+17/03/2026  12:07    <DIR>          components
+23/10/2025  11:27    <DIR>          errors
+18/09/2025  11:05    <DIR>          layout
+28/03/2026  12:30    <DIR>          profile
+28/03/2026  12:29    <DIR>          user
+08/09/2025  13:19            82.568 welcome.blade.php
+               1 File(s)         82.568 bytes
+
+ Directory of C:\laragon\www\BlendPath\resources\views\admin
+
+03/04/2026  14:52    <DIR>          .
+03/04/2026  14:52    <DIR>          ..
+11/03/2026  02:41            10.134 dashboard.blade.php
+03/04/2026  14:53    <DIR>          diskusi
+17/11/2025  15:48    <DIR>          exports
+27/03/2026  15:54    <DIR>          moduls
+14/10/2025  16:30    <DIR>          monitoring
+20/04/2026  13:45    <DIR>          quizzes
+11/03/2026  09:34             8.672 search-results.blade.php
+01/04/2026  00:04    <DIR>          showcase
+25/03/2026  17:31    <DIR>          submoduls
+17/11/2025  15:48    <DIR>          users
+               2 File(s)         18.806 bytes
+
+ Directory of C:\laragon\www\BlendPath\resources\views\admin\diskusi
+
+03/04/2026  14:53    <DIR>          .
+03/04/2026  14:53    <DIR>          ..
+03/04/2026  07:52             9.550 index.blade.php
+19/04/2026  13:49            14.079 show.blade.php
+               2 File(s)         23.629 bytes
+
+ Directory of C:\laragon\www\BlendPath\resources\views\admin\exports
+
+17/11/2025  15:48    <DIR>          .
+17/11/2025  15:48    <DIR>          ..
+17/11/2025  15:57               875 users_pdf.blade.php
+               1 File(s)            875 bytes
+
+ Directory of C:\laragon\www\BlendPath\resources\views\admin\moduls
+
+27/03/2026  15:54    <DIR>          .
+27/03/2026  15:54    <DIR>          ..
+27/03/2026  15:54    <DIR>          builder
+27/03/2026  08:16             2.495 builder.blade.php
+25/01/2026  11:12             3.539 create.blade.php
+25/01/2026  11:12             3.793 edit.blade.php
+25/03/2026  10:29             9.077 index.blade.php
+               4 File(s)         18.904 bytes
+
+ Directory of C:\laragon\www\BlendPath\resources\views\admin\moduls\builder
+
+27/03/2026  15:54    <DIR>          .
+27/03/2026  15:54    <DIR>          ..
+27/03/2026  08:16               769 _header.blade.php
+27/03/2026  08:16             2.127 _modal-project.blade.php
+               2 File(s)          2.896 bytes
+
+ Directory of C:\laragon\www\BlendPath\resources\views\admin\monitoring
+
+14/10/2025  16:30    <DIR>          .
+14/10/2025  16:30    <DIR>          ..
+25/01/2026  11:18            12.375 index.blade.php
+               1 File(s)         12.375 bytes
+
+ Directory of C:\laragon\www\BlendPath\resources\views\admin\quizzes
+
+20/04/2026  13:45    <DIR>          .
+20/04/2026  13:45    <DIR>          ..
+19/04/2026  14:05            10.835 create.blade.php
+25/01/2026  11:18            19.871 edit.blade.php
+25/01/2026  11:18             7.345 show.blade.php
+               3 File(s)         38.051 bytes
+
+ Directory of C:\laragon\www\BlendPath\resources\views\admin\showcase
+
+01/04/2026  00:04    <DIR>          .
+01/04/2026  00:04    <DIR>          ..
+31/03/2026  16:54             8.508 index.blade.php
+31/03/2026  16:54            10.511 show.blade.php
+               2 File(s)         19.019 bytes
+
+ Directory of C:\laragon\www\BlendPath\resources\views\admin\submoduls
+
+25/03/2026  17:31    <DIR>          .
+25/03/2026  17:31    <DIR>          ..
+25/01/2026  11:18             2.082 create.blade.php
+25/03/2026  10:29            16.988 edit.blade.php
+25/01/2026  11:19             3.465 index.blade.php
+14/10/2025  16:30    <DIR>          partials
+25/03/2026  10:29            34.041 show.blade.php
+               4 File(s)         56.576 bytes
+
+ Directory of C:\laragon\www\BlendPath\resources\views\admin\submoduls\partials
+
+14/10/2025  16:30    <DIR>          .
+14/10/2025  16:30    <DIR>          ..
+25/01/2026  11:18             6.459 qna.blade.php
+               1 File(s)          6.459 bytes
+
+ Directory of C:\laragon\www\BlendPath\resources\views\admin\users
+
+17/11/2025  15:48    <DIR>          .
+17/11/2025  15:48    <DIR>          ..
+14/10/2025  16:30             3.668 create.blade.php
+14/10/2025  16:30             4.532 edit.blade.php
+18/11/2025  00:48            13.501 index.blade.php
+               3 File(s)         21.701 bytes
+
+ Directory of C:\laragon\www\BlendPath\resources\views\components
+
+17/03/2026  12:07    <DIR>          .
+17/03/2026  12:07    <DIR>          ..
+17/03/2026  14:40             3.739 ai-chat.blade.php
+14/10/2025  16:30             1.036 pagination.blade.php
+               2 File(s)          4.775 bytes
+
+ Directory of C:\laragon\www\BlendPath\resources\views\errors
+
+23/10/2025  11:27    <DIR>          .
+23/10/2025  11:27    <DIR>          ..
+25/02/2026  08:48             4.230 404.blade.php
+               1 File(s)          4.230 bytes
+
+ Directory of C:\laragon\www\BlendPath\resources\views\layout
+
+18/09/2025  11:05    <DIR>          .
+18/09/2025  11:05    <DIR>          ..
+03/04/2026  14:53    <DIR>          admin
+14/10/2025  16:30    <DIR>          frontend
+               0 File(s)              0 bytes
+
+ Directory of C:\laragon\www\BlendPath\resources\views\layout\admin
+
+03/04/2026  14:53    <DIR>          .
+03/04/2026  14:53    <DIR>          ..
+04/03/2026  03:32             3.941 app.blade.php
+20/01/2026  09:22               677 footer.blade.php
+11/03/2026  09:45             5.397 navbar.blade.php
+03/04/2026  07:52             3.509 sidebar.blade.php
+               4 File(s)         13.524 bytes
+
+ Directory of C:\laragon\www\BlendPath\resources\views\layout\frontend
+
+14/10/2025  16:30    <DIR>          .
+14/10/2025  16:30    <DIR>          ..
+03/04/2026  13:53             4.702 app.blade.php
+18/09/2025  11:05             3.431 footer.blade.php
+28/03/2026  12:55             2.592 navbar.blade.php
+               3 File(s)         10.725 bytes
+
+ Directory of C:\laragon\www\BlendPath\resources\views\profile
+
+28/03/2026  12:30    <DIR>          .
+28/03/2026  12:30    <DIR>          ..
+28/03/2026  14:27             1.838 edit.blade.php
+28/03/2026  18:55             1.812 show.blade.php
+               2 File(s)          3.650 bytes
+
+ Directory of C:\laragon\www\BlendPath\resources\views\user
+
+28/03/2026  12:29    <DIR>          .
+28/03/2026  12:29    <DIR>          ..
+19/09/2025  11:03               307 about.blade.php
+14/10/2025  16:30    <DIR>          auth
+25/01/2026  11:21             2.520 detail.blade.php
+14/10/2025  16:30                 0 edit.blade.php
+27/02/2026  13:53             8.909 index.blade.php
+28/03/2026  16:33    <DIR>          moduls
+14/10/2025  16:30    <DIR>          quizzes
+01/04/2026  00:05    <DIR>          showcase
+28/03/2026  16:34    <DIR>          submoduls
+               4 File(s)         11.736 bytes
+
+ Directory of C:\laragon\www\BlendPath\resources\views\user\auth
+
+14/10/2025  16:30    <DIR>          .
+14/10/2025  16:30    <DIR>          ..
+03/04/2026  22:34             5.645 login.blade.php
+01/04/2026  12:42             6.972 register.blade.php
+               2 File(s)         12.617 bytes
+
+ Directory of C:\laragon\www\BlendPath\resources\views\user\moduls
+
+28/03/2026  16:33    <DIR>          .
+28/03/2026  16:33    <DIR>          ..
+18/03/2026  15:31             4.396 index.blade.php
+28/03/2026  19:07            13.631 show.blade.php
+               2 File(s)         18.027 bytes
+
+ Directory of C:\laragon\www\BlendPath\resources\views\user\quizzes
+
+14/10/2025  16:30    <DIR>          .
+14/10/2025  16:30    <DIR>          ..
+25/01/2026  11:20             5.496 result.blade.php
+25/01/2026  11:20             8.218 show.blade.php
+25/01/2026  11:20             5.510 take.blade.php
+               3 File(s)         19.224 bytes
+
+ Directory of C:\laragon\www\BlendPath\resources\views\user\showcase
+
+01/04/2026  00:05    <DIR>          .
+01/04/2026  00:05    <DIR>          ..
+04/04/2026  23:49             3.654 create.blade.php
+04/04/2026  23:49             7.100 index.blade.php
+04/04/2026  23:49            12.788 show.blade.php
+               3 File(s)         23.542 bytes
+
+ Directory of C:\laragon\www\BlendPath\resources\views\user\submoduls
+
+28/03/2026  16:34    <DIR>          .
+28/03/2026  16:34    <DIR>          ..
+28/03/2026  19:15    <DIR>          partials
+28/03/2026  19:31             5.196 show.blade.php
+               1 File(s)          5.196 bytes
+
+ Directory of C:\laragon\www\BlendPath\resources\views\user\submoduls\partials
+
+28/03/2026  19:15    <DIR>          .
+28/03/2026  19:15    <DIR>          ..
+28/03/2026  19:12             2.772 mini_projects.blade.php
+28/03/2026  19:15             1.351 navigation.blade.php
+28/03/2026  19:15             1.875 progress.blade.php
+28/03/2026  16:34            11.387 qna.blade.php
+28/03/2026  19:13             2.026 quiz.blade.php
+               5 File(s)         19.411 bytes
+
+     Total Files Listed:
+              58 File(s)        448.516 bytes
+              74 Dir(s)  10.498.121.728 bytes free
+ 

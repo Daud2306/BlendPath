@@ -18,7 +18,7 @@ class QuizAttempt extends Model
         'jumlah_benar',
         'persentase',
         'lulus',
-        'selesai_at',
+        'completed_at',
     ];
 
     protected $casts = [
@@ -27,7 +27,7 @@ class QuizAttempt extends Model
         'jumlah_benar' => 'integer',
         'persentase'   => 'decimal:2',
         'lulus'        => 'boolean',
-        'selesai_at'   => 'datetime',
+        'completed_at'   => 'datetime',
     ];
 
     // -------------------------------------------------------------------------

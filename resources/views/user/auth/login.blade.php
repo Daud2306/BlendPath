@@ -75,6 +75,10 @@
                                         </div>
                                     @enderror
                                 </div>
+                                <label>
+                                    <input type="checkbox" name="remember">
+                                    Remember Me
+                                </label>
 
                                 <button type="submit" class="auth-btn mt-3">
                                     <i class="bi bi-box-arrow-in-right me-2"></i>Masuk
