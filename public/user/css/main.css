@@ -377,7 +377,7 @@ a:hover {
 #scroll-top {
     position: fixed;
     right: 1.5rem;
-    bottom: 1.5rem;
+    bottom: 80px;
     width: 40px;
     height: 40px;
     background: var(--text-primary);
@@ -630,28 +630,27 @@ a:hover {
     margin: 0 auto;
 }
 
-/* ===== QnA SECTION ===== */
-.qna-section {
+.discuss-section {
     background: var(--bg-primary);
     border-radius: var(--radius);
     margin-top: 2.5rem;
 }
 
 /* Card Header */
-.qna-header {
+.discuss-header {
     background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
     border-bottom: 1px solid var(--border-color);
     padding: 1.25rem 1.5rem;
 }
 
-.qna-header h5 {
+.discuss-header h5 {
     font-size: 1.25rem;
     font-weight: 600;
     color: var(--text-primary);
     margin-bottom: 0.25rem;
 }
 
-.qna-subtitle {
+.discuss-subtitle {
     font-size: 0.875rem;
     color: #6c757d;
     opacity: 0.9;
@@ -1011,7 +1010,7 @@ a:hover {
         font-size: 2rem;
     }
 
-    .qna-section {
+    .discuss-section {
         margin-top: 1.5rem;
     }
 

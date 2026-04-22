@@ -13,11 +13,12 @@ class SubmodulController extends Controller
 {
     public function index(Modul $modul)
     {
-        $submoduls = Submodul::where('modul_id', $modul->id)
-            ->orderBy('sort_order')
-            ->paginate(20);
+        // $submoduls = Submodul::where('modul_id', $modul->id)
+        //     ->orderBy('sort_order')
+        //     ->paginate(20);
 
-        return view('admin.submoduls.index', compact('modul', 'submoduls'));
+        // return view('admin.submoduls.index', compact('modul', 'submoduls'));
+        return redirect()->route('admin.course.builder')->with('info', 'Gunakan Course Builder untuk mengatur submodul.');
     }
 
     public function create(Modul $modul)

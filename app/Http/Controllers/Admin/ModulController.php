@@ -35,8 +35,10 @@ class ModulController extends Controller
             'judul'      => 'required|string|max:255',
             'deskripsi'  => 'required|string',
             'gambar'     => 'nullable|image',
-            'sort_order' => 'required|integer',
         ]);
+
+        $maxOrder = Modul::max('sort_order') ?? 0;
+        $data['sort_order'] = $maxOrder + 1;
 
         if ($request->hasFile('gambar')) {
             $data['gambar'] = $request->file('gambar')->store('moduls', 'public');
@@ -63,11 +65,10 @@ class ModulController extends Controller
         $request->validate([
             'judul'      => 'required|string|max:255',
             'deskripsi'  => 'required|string',
-            'sort_order' => 'required|integer',
             'gambar'     => 'nullable|image|max:2048',
         ]);
 
-        $data = $request->only(['judul', 'deskripsi', 'sort_order']);
+        $data = $request->only(['judul', 'deskripsi']);
 
         if ($request->hasFile('gambar')) {
             if ($modul->gambar) {

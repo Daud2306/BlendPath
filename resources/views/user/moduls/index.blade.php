@@ -1,4 +1,4 @@
-@extends('layout.frontend.app')
+@extends('layout.user.app')
 
 @section('title', 'Moduls - BlendPath')
 

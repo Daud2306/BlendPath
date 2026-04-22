@@ -1,18 +1,13 @@
-{{-- qna.blade.php — tanpa TinyMCE, cukup textarea + lampiran gambar --}}
-@push('styles')
-    <link href="{{ asset('frontend/css/qna.css') }}" rel="stylesheet">
-@endpush
-
-<div class="qna-section" id="qna-section">
+<div class="discuss-section" id="discuss-section">
 
     {{-- Header --}}
-    <div class="qna-header mb-4">
+    <div class="discuss-header mb-4">
         <div class="d-flex justify-content-between align-items-center">
             <div>
                 <h5 class="mb-1">
                     <i class="bi bi-chat-right-text me-2"></i>Diskusi & Tanya Jawab
                 </h5>
-                <p class="qna-subtitle mb-0">Berbagi pengetahuan dan solusi tentang materi ini</p>
+                <p class="discuss-subtitle mb-0">Berbagi pengetahuan dan solusi tentang materi ini</p>
             </div>
             <div class="badge bg-light text-dark">
                 <i class="bi bi-question-circle me-1"></i>
@@ -107,14 +102,13 @@
                     {{-- Teks pertanyaan — plain text, bukan HTML --}}
                     <div class="question-text" style="white-space:pre-line;">{{ $tanya->pertanyaan }}</div>
 
-                    {{-- Lampiran gambar pada pertanyaan --}}
+                    {{-- Lampiran gambar pada pertanyaan (dengan lightbox) --}}
                     @if ($tanya->resources->count() > 0)
                         <div class="mt-3 d-flex flex-wrap gap-2">
                             @foreach ($tanya->resources as $resource)
-                                <a href="{{ $resource->url }}" target="_blank">
-                                    <img src="{{ $resource->url }}" alt="Lampiran" class="img-thumbnail rounded"
-                                        style="max-height:80px;">
-                                </a>
+                                <img src="{{ $resource->url }}" alt="Lampiran"
+                                    class="img-thumbnail rounded img-lightbox"
+                                    style="max-height:150px; max-width:100%; cursor:pointer;">
                             @endforeach
                         </div>
                     @endif
@@ -161,8 +155,7 @@
                                         </div>
                                         <div>
                                             <h6 class="mb-0 small fw-semibold">{{ $jawab->user->name ?? 'User' }}</h6>
-                                            <small
-                                                class="text-muted">{{ $jawab->created_at->diffForHumans() }}</small>
+                                            <small class="text-muted">{{ $jawab->created_at->diffForHumans() }}</small>
                                         </div>
                                     </div>
 
@@ -180,17 +173,15 @@
                                     @endauth
                                 </div>
 
-                                {{-- Teks jawaban — plain text --}}
                                 <div class="answer-text" style="white-space:pre-line;">{{ $jawab->jawaban }}</div>
 
-                                {{-- Lampiran gambar pada jawaban --}}
+                                {{-- Lampiran gambar pada jawaban (dengan lightbox) --}}
                                 @if ($jawab->resources->count() > 0)
                                     <div class="mt-2 d-flex flex-wrap gap-1">
                                         @foreach ($jawab->resources as $resource)
-                                            <a href="{{ $resource->url }}" target="_blank">
-                                                <img src="{{ $resource->url }}" alt="Lampiran"
-                                                    class="img-thumbnail rounded" style="max-height:60px;">
-                                            </a>
+                                            <img src="{{ $resource->url }}" alt="Lampiran"
+                                                class="img-thumbnail rounded img-lightbox"
+                                                style="max-height:100px; max-width:100%; cursor:pointer;">
                                         @endforeach
                                     </div>
                                 @endif

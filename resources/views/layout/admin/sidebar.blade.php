@@ -1,13 +1,12 @@
 <aside id="adminSidebar">
 
-    {{-- Brand --}}
     <div class="sidebar-brand">
         <a href="/" class="sidebar-brand-logo-full">
-            <img src="{{ asset('frontend/img/logo.png') }}" alt="BlendPath"
+            <img src="{{ asset('user/img/logo.png') }}" alt="BlendPath"
                 style="height:32px;width:auto;object-fit:contain">
         </a>
         <a href="/" class="sidebar-brand-logo-mini" style="display:none">
-            <img src="{{ asset('admins/images/logo-mini.png') }}" alt="logo"
+            <img src="{{ asset('admin/images/logo-mini.png') }}" alt="logo"
                 style="height:32px;width:auto;object-fit:contain">
         </a>
     </div>

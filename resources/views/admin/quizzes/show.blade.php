@@ -5,7 +5,7 @@
             <i class="fas fa-question-circle me-2"></i>Quizzes Submodul
         </h5>
 
-        <a href="{{ route('admin.moduls.submoduls.quizzes.create', ['modul' => $modul, 'submodul' => $submodul]) }}"
+        <a href="{{ route('admin.moduls.submoduls.quiz.create', ['modul' => $modul, 'submodul' => $submodul]) }}"
             class="btn btn-primary">
             <i class="fas fa-plus me-1"></i>Tambah Quiz
         </a>
@@ -69,13 +69,13 @@
                             </div>
                             <div class="card-footer bg-transparent">
                                 <div class="d-flex justify-content-between">
-                                    <a href="{{ route('admin.moduls.submoduls.quizzes.edit', ['modul' => $modul, 'submodul' => $submodul, 'quiz' => $quiz]) }}"
+                                    <a href="{{ route('admin.moduls.submoduls.quiz.edit', ['modul' => $modul, 'submodul' => $submodul, 'quiz' => $quiz]) }}"
                                         class="btn btn-outline-warning btn-sm">
                                         <i class="fas fa-edit me-1"></i>Edit
                                     </a>
 
                                     <form
-                                        action="{{ route('admin.moduls.submoduls.quizzes.destroy', ['modul' => $modul, 'submodul' => $submodul, 'quiz' => $quiz]) }}"
+                                        action="{{ route('admin.moduls.submoduls.quiz.destroy', ['modul' => $modul, 'submodul' => $submodul, 'quiz' => $quiz]) }}"
                                         method="POST">
                                         @csrf
                                         @method('DELETE')

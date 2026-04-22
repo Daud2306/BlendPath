@@ -1,8 +1,8 @@
-@extends('layout.frontend.app')
+@extends('layout.user.app')
 @section('title', 'Upload Karya')
 
 @push('styles')
-    <link href="{{ asset('frontend/css/showcase.css') }}" rel="stylesheet">
+    <link href="{{ asset('user/css/showcase.css') }}" rel="stylesheet">
 @endpush
 
 @section('content')
@@ -83,5 +83,5 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('frontend/js/showcase.js') }}"></script>
+    <script src="{{ asset('user/js/showcase.js') }}"></script>
 @endpush

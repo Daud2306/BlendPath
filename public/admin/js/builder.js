@@ -1,6 +1,6 @@
 /**
  * Course Builder — builder.js
- * public/admins/js/builder.js
+ * public/admin/js/builder.js
  *
  * Semua routes dan data di-inject dari builder.blade.php via:
  *   window.builderConfig = { modulesData, routes, csrfToken }
@@ -119,7 +119,7 @@ function renderSubmodule(mod, sub, modIdx, subIdx) {
                     <span class="type-badge quiz">${quiz.questions_count ?? 0} soal</span>
                 </div>
                 <div class="d-flex gap-1">
-                    <a href="/admin/moduls/${mod.id}/submoduls/${sub.id}/quizzes/${quiz.id}/edit"
+                    <a href="/admin/moduls/${mod.id}/submoduls/${sub.id}/quiz/${quiz.id}/edit"
                        class="btn-icon" title="Edit Quiz" style="font-size:0.8rem;">
                         <i class="fas fa-edit"></i>
                     </a>
@@ -297,6 +297,11 @@ function attachEventListeners() {
             const modIdx = parseInt(btn.getAttribute('data-module-index'));
             const subIdx = parseInt(btn.getAttribute('data-submodule-index'));
 
+            // Cari index quiz dalam array quizzes
+            const quizzes = modulesData[modIdx].submodules[subIdx].quizzes;
+            const quizIndex = quizzes.findIndex(q => q.id == quizId);
+            if (quizIndex === -1) return;
+
             if (!confirm('Hapus quiz ini? Semua soal dan riwayat attempt akan ikut terhapus.')) return;
 
             btn.disabled = true;
@@ -307,8 +312,9 @@ function attachEventListeners() {
                 );
                 const data = await res.json();
                 if (data.success) {
-                    modulesData[modIdx].submodules[subIdx].quiz = null;
-                    renderModules();
+                    // Hapus dari array quizzes
+                    modulesData[modIdx].submodules[subIdx].quizzes.splice(quizIndex, 1);
+                    renderModules(); // re-render ulang tampilan
                 } else {
                     alert(data.message ?? 'Gagal menghapus quiz.');
                     btn.disabled = false;

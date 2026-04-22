@@ -488,6 +488,79 @@
                 </div>
             </div>
 
+            @if ($submodul->miniProjects->isNotEmpty())
+                <div class="admin-card mt-4">
+                    <div class="admin-card-header">
+                        <span class="admin-card-title">
+                            <i class="fas fa-upload me-2" style="color:var(--accent);"></i>
+                            Submission Mini Project
+                        </span>
+                    </div>
+                    <div class="admin-card-body">
+                        @foreach ($submodul->miniProjects as $project)
+                            <div class="mb-4">
+                                <h6 class="fw-bold">{{ $project->judul }}</h6>
+                                @php $submissions = $project->submissions()->with('user', 'resources')->get(); @endphp
+                                @if ($submissions->isEmpty())
+                                    <p class="text-muted small">Belum ada submission.</p>
+                                @else
+                                    <div class="table-responsive">
+                                        <table class="admin-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>User</th>
+                                                    <th>Catatan</th>
+                                                    <th>File</th>
+                                                    <th>Status</th>
+                                                    <th>Dikirim</th>
+                                                    <th>Aksi</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($submissions as $sub)
+                                                    <tr>
+                                                        <td>{{ $sub->user->name ?? '—' }}</td>
+                                                        <td>{{ Str::limit($sub->catatan, 50) }}</td>
+                                                        <td>
+                                                            @foreach ($sub->resources as $res)
+                                                                <a href="{{ asset('storage/' . $res->path) }}"
+                                                                    target="_blank" class="badge bg-info me-1">
+                                                                    {{ $res->original_name ?? 'file' }}
+                                                                </a>
+                                                            @endforeach
+                                                        </td>
+                                                        <td>
+                                                            @if ($sub->status == 'submitted')
+                                                                <span class="badge bg-warning">Menunggu</span>
+                                                            @elseif($sub->status == 'approved')
+                                                                <span class="badge bg-success">Disetujui</span>
+                                                            @else
+                                                                <span class="badge bg-danger">Ditolak</span>
+                                                            @endif
+                                                        </td>
+                                                        <td>{{ $sub->submitted_at->format('d M Y H:i') }}</td>
+                                                        <td>
+                                                            <button type="button" class="btn-admin sm"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#feedbackModal-{{ $sub->id }}">
+                                                                <i class="fas fa-reply"></i> Feedback
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                    @include('admin.mini_projects._feedback_modal', [
+                                                        'submission' => $sub,
+                                                    ])
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                @endif
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            @endif
+
             {{-- Diskusi --}}
             <div class="admin-card">
                 <div class="admin-card-header">
@@ -500,7 +573,8 @@
                             </span>
                         @endif
                     </span>
-                    <a href="{{ route('admin.tanyas.index') }}" class="btn-admin secondary sm">
+                    <a href="{{ route('admin.diskusi.index', ['submodul_id' => $submodul->id]) }}"
+                        class="btn-admin secondary sm">
                         <i class="fas fa-external-link-alt"></i> Kelola Semua
                     </a>
                 </div>
@@ -731,4 +805,13 @@
         </div>
     </div>
 
+    @push('scripts')
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                document.querySelectorAll('.konten-preview img').forEach(img => {
+                    img.classList.add('img-lightbox');
+                });
+            });
+        </script>
+    @endpush
 @endsection

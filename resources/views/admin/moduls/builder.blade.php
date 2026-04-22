@@ -3,7 +3,7 @@
 @section('title', 'Course Builder')
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('admins/css/builder.css') }}">
+    <link rel="stylesheet" href="{{ asset('admin/css/builder.css') }}">
 @endpush
 
 @section('content')
@@ -64,5 +64,5 @@
     </script>
 
     {{-- Semua logika builder ada di sini --}}
-    <script src="{{ asset('admins/js/builder.js') }}"></script>
+    <script src="{{ asset('admin/js/builder.js') }}"></script>
 @endpush

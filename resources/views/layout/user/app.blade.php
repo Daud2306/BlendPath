@@ -9,8 +9,8 @@
     <meta name="description" content="">
     <meta name="keywords" content="">
 
-    <link href="{{ asset('frontend/img/favicon.png') }}" rel="icon">
-    <link href="{{ asset('frontend/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
+    <link href="{{ asset('user/img/favicon.png') }}" rel="icon">
+    <link href="{{ asset('user/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -20,20 +20,20 @@
     <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Atau jika ingin menggunakan local -->
-    <!-- <link href="{{ asset('frontend/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet"> -->
+    <!-- <link href="{{ asset('user/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet"> -->
 
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <!-- Atau jika ingin menggunakan local -->
-    <!-- <link href="{{ asset('frontend/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet"> -->
+    <!-- <link href="{{ asset('user/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet"> -->
 
     <!-- Custom CSS -->
-    <link href="{{ asset('frontend/css/main.css') }}" rel="stylesheet">
-    <link href="{{ asset('frontend/css/navbar.css') }}" rel="stylesheet">
-    <link href="{{ asset('frontend/css/ai-chat.css') }}" rel="stylesheet">
+    <link href="{{ asset('user/css/main.css') }}" rel="stylesheet">
+    <link href="{{ asset('user/css/navbar.css') }}" rel="stylesheet">
+    <link href="{{ asset('user/css/ai-chat.css') }}" rel="stylesheet">
 
     @if (request()->is('login*') || request()->is('register*'))
-        <link href="{{ asset('frontend/css/auth.css') }}" rel="stylesheet">
+        <link href="{{ asset('user/css/auth.css') }}" rel="stylesheet">
     @endif
 </head>
 
@@ -41,7 +41,7 @@
     @hasSection('hide_navbar')
     @else
         <header id="header" class="header d-flex align-items-center fixed-top">
-            @include('layout.frontend.navbar')
+            @include('layout.user.navbar')
         </header>
     @endif
 
@@ -61,7 +61,7 @@ with-navbar
     <!-- Bootstrap JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Atau jika ingin menggunakan local -->
-    <!-- <script src="{{ asset('frontend/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script> -->
+    <!-- <script src="{{ asset('user/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script> -->
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -115,15 +115,29 @@ with-navbar
             });
         });
     </script>
-    <script src="{{ asset('frontend/js/navbar.js') }}"></script>
+    <script src="{{ asset('user/js/navbar.js') }}"></script>
     @stack('tinymce-scripts')
     @stack('scripts')
     @auth
         <x-ai-chat />
     @endauth
     @auth
-        <script src="{{ asset('frontend/js/ai-chat.js') }}"></script>
+        <script src="{{ asset('user/js/ai-chat.js') }}"></script>
+        <script src="{{ asset('js/lightbox.js') }}"></script>
     @endauth
+    <div class="modal fade" id="globalLightbox" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content bg-transparent border-0">
+                <div class="modal-body text-center p-0">
+                    <img id="globalLightboxImage" src="" alt="Preview" class="img-fluid rounded shadow-lg"
+                        style="max-height: 80vh;">
+                </div>
+                <div class="modal-footer justify-content-center border-0">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>
