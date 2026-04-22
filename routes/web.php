@@ -30,6 +30,8 @@ use App\Http\Controllers\Admin\DashboardController  as AdminDashboardController;
 use App\Http\Controllers\Admin\ShowcaseController   as AdminShowcaseController;
 use App\Http\Controllers\Admin\DiskusiController    as AdminDiskusiController;
 use App\Http\Controllers\MiniProjectController;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 // =============================================================================
 // Auth
@@ -133,6 +135,9 @@ Route::middleware(['auth', 'role:user'])
             Route::post('/{showcase}/komentar',   [ShowcaseController::class, 'storeKomentar'])->name('komentar.store');
             Route::delete('/komentar/{komentar}', [ShowcaseController::class, 'destroyKomentar'])->name('komentar.destroy');
         });
+
+        Route::get('mini-projects/submission/{submission}/file/{resource}', [MiniProjectController::class, 'serveFile'])
+            ->name('mini_projects.serve_file');
     });
 
 // =============================================================================
@@ -215,3 +220,16 @@ Route::get('/storage/{path}', function ($path) {
     abort_unless(File::exists($fullPath), 404);
     return response()->file($fullPath);
 })->where('path', '.*')->name('storage.file');
+
+Route::get('/test-gdrive', function () {
+    try {
+        Storage::disk('google')->put('test.txt', 'Hello from Laravel 12!');
+        return 'Upload berhasil! Cek Google Drive kamu.';
+    } catch (\Exception $e) {
+        return 'Error: ' . $e->getMessage();
+    }
+});
+
+Route::get('/test-admin', function () {
+    return 'Role kamu: ' . Auth::user()->role;
+})->middleware('auth');

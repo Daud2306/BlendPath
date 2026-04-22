@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
 
             $table->morphs('resourceable');
-
             $table->string('path');
             $table->string('type')->nullable();
             $table->string('mime_type')->nullable();

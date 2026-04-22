@@ -7,44 +7,39 @@ use App\Models\MiniProjectSubmission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class MiniProjectController extends Controller
 {
     public function store(Request $request, MiniProject $miniProject)
     {
-        // Validasi: files harus ada minimal 1 file
         $request->validate([
             'catatan' => 'nullable|string',
-            'files' => 'required|array|min:1',           // ← minimal satu file
-            'files.*' => 'file|max:20480',               // ← setiap file maks 20MB
+            'files'   => 'required|array|min:1',
+            'files.*' => 'file|max:20480',
         ]);
 
-        // Validasi ekstensi manual
-        $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'blend'];
+        $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'blend', 'zip'];
         foreach ($request->file('files') as $file) {
             $ext = strtolower($file->getClientOriginalExtension());
             if (!in_array($ext, $allowedExtensions)) {
-                return back()->withErrors(['files.*' => 'Format file tidak diizinkan. Hanya gambar (jpg, png, gif, webp) atau file .blend.']);
+                return back()->withErrors(['files.*' => 'Format file tidak diizinkan.']);
             }
         }
 
-        // Cek apakah sudah pernah submit
         $existing = $miniProject->submissions()->where('user_id', Auth::id())->first();
 
-        // Jika sudah ada submission dengan status 'approved', tolak
         if ($existing && $existing->status === 'approved') {
-            return back()->with('error', 'Tugas Anda sudah disetujui, tidak dapat mengirim ulang.');
+            return back()->with('error', 'Tugas Anda sudah disetujui.');
         }
-
-        // Jika sudah ada submission dengan status 'submitted', tolak
         if ($existing && $existing->status === 'submitted') {
-            return back()->with('error', 'Anda sudah mengirim tugas untuk project ini dan sedang menunggu review.');
+            return back()->with('error', 'Tugas sedang menunggu review.');
         }
 
-        // Hapus submission lama jika status 'rejected'
+        // Hapus submission lama jika rejected
         if ($existing) {
             foreach ($existing->resources as $res) {
-                Storage::disk('public')->delete($res->path);
+                Storage::disk('google')->delete($res->path); // ← ganti ke google
                 $res->delete();
             }
             $existing->delete();
@@ -52,25 +47,26 @@ class MiniProjectController extends Controller
 
         $submission = MiniProjectSubmission::create([
             'mini_project_id' => $miniProject->id,
-            'user_id' => Auth::id(),
-            'catatan' => $request->catatan,
-            'status' => 'submitted',
-            'submitted_at' => now(),
+            'user_id'         => Auth::id(),
+            'catatan'         => $request->catatan,
+            'status'          => 'submitted',
+            'submitted_at'    => now(),
         ]);
 
-        // Simpan file-file yang diupload
-        $files = $request->file('files');
-        if ($files && is_array($files)) {
-            foreach ($files as $file) {
-                $path = $file->store('mini-project-submissions', 'public');
-                $submission->resources()->create([
-                    'path' => $path,
-                    'type' => $file->getClientOriginalExtension() === 'blend' ? 'blend' : 'image',
-                    'mime_type' => $file->getMimeType(),
-                    'size' => $file->getSize(),
-                    'original_name' => $file->getClientOriginalName(),
-                ]);
-            }
+        foreach ($request->file('files') as $file) {
+            $ext      = strtolower($file->getClientOriginalExtension());
+            $filename = 'mini-project-submissions/' . Str::uuid() . '.' . $ext;
+
+            // ← Upload ke Google Drive
+            Storage::disk('google')->put($filename, file_get_contents($file));
+
+            $submission->resources()->create([
+                'path'          => $filename,
+                'type'          => in_array($ext, ['blend', 'zip']) ? 'blend' : 'image',
+                'mime_type'     => $file->getMimeType(),
+                'size'          => $file->getSize(),
+                'original_name' => $file->getClientOriginalName(),
+            ]);
         }
 
         return back()->with('success', 'Tugas berhasil dikirim!');
@@ -81,12 +77,30 @@ class MiniProjectController extends Controller
         $submission = $miniProject->userSubmission();
         if ($submission && $submission->status === 'rejected') {
             foreach ($submission->resources as $res) {
-                Storage::disk('public')->delete($res->path);
+                Storage::disk('google')->delete($res->path); // ← ganti ke google
                 $res->delete();
             }
             $submission->delete();
-            return back()->with('success', 'Submission lama dihapus. Silakan upload ulang tugas Anda.');
+            return back()->with('success', 'Submission lama dihapus. Silakan upload ulang.');
         }
         return back()->with('error', 'Tidak dapat mengulang submission ini.');
+    }
+
+    // ← Tambahan: untuk menampilkan/download file dari Google Drive
+    public function serveFile(MiniProjectSubmission $submission, int $resourceId)
+    {
+        // Pastikan hanya pemilik atau admin yang bisa akses
+        abort_unless(
+            Auth::id() === $submission->user_id || Auth::user()->role === 'admin',
+            403
+        );
+
+        $resource = $submission->resources()->findOrFail($resourceId);
+
+        $file = Storage::disk('google')->get($resource->path);
+
+        return response($file, 200)
+            ->header('Content-Type', $resource->mime_type)
+            ->header('Content-Disposition', 'inline; filename="' . $resource->original_name . '"');
     }
 }

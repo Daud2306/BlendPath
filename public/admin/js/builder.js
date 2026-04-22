@@ -411,47 +411,50 @@ function syncOrderFromDOM() {
 /* ============================================================
    SIMPAN URUTAN
    ============================================================ */
-document.getElementById('saveOrderBtn').addEventListener('click', async function () {
-    this.disabled = true;
-    this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menyimpan...';
+const saveOrderBtn = document.getElementById('saveOrderBtn');
+if (saveOrderBtn) {
+    saveOrderBtn.addEventListener('click', async function () {
+        this.disabled = true;
+        this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menyimpan...';
 
-    const payload = modulesData.map((mod, modIdx) => ({
-        id: mod.id,
-        order: modIdx + 1,
-        submodules: mod.submodules.map((sub, subIdx) => ({
-            id: sub.id,
-            order: subIdx + 1,
-        })),
-    }));
+        const payload = modulesData.map((mod, modIdx) => ({
+            id: mod.id,
+            order: modIdx + 1,
+            submodules: mod.submodules.map((sub, subIdx) => ({
+                id: sub.id,
+                order: subIdx + 1,
+            })),
+        }));
 
-    try {
-        const res = await fetch(routes.reorder, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': csrfToken,
-            },
-            body: JSON.stringify({ modules: payload }),
-        });
-        const data = await res.json();
-        if (data.success) {
-            clearChanged();
-            this.innerHTML = '<i class="fas fa-check"></i> Tersimpan!';
-            setTimeout(() => {
-                this.innerHTML = '<i class="fas fa-save"></i> Simpan Urutan';
+        try {
+            const res = await fetch(routes.reorder, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                },
+                body: JSON.stringify({ modules: payload }),
+            });
+            const data = await res.json();
+            if (data.success) {
+                clearChanged();
+                this.innerHTML = '<i class="fas fa-check"></i> Tersimpan!';
+                setTimeout(() => {
+                    this.innerHTML = '<i class="fas fa-save"></i> Simpan Urutan';
+                    this.disabled = false;
+                }, 2000);
+            } else {
+                alert(data.message ?? 'Gagal menyimpan urutan.');
                 this.disabled = false;
-            }, 2000);
-        } else {
-            alert(data.message ?? 'Gagal menyimpan urutan.');
+                this.innerHTML = '<i class="fas fa-save"></i> Simpan Urutan';
+            }
+        } catch {
+            alert('Terjadi kesalahan saat menyimpan.');
             this.disabled = false;
             this.innerHTML = '<i class="fas fa-save"></i> Simpan Urutan';
         }
-    } catch {
-        alert('Terjadi kesalahan saat menyimpan.');
-        this.disabled = false;
-        this.innerHTML = '<i class="fas fa-save"></i> Simpan Urutan';
-    }
-});
+    });
+}
 
 /* ============================================================
    MODAL MINI PROJECT

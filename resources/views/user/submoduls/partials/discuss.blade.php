@@ -67,7 +67,7 @@
 
     {{-- Daftar pertanyaan --}}
     <div class="questions-list">
-        @forelse ($submodul->tanya as $tanya)
+        @foreach ($submodul->tanya as $tanya)
             <div class="question-item @if ($loop->first && session('success')) new-highlight @endif">
 
                 {{-- Header pertanyaan --}}
@@ -191,7 +191,7 @@
                 @endif
 
             </div>
-        @empty
+        {{-- @empty
             <div class="empty-state">
                 <i class="bi bi-chat-square empty-state-icon"></i>
                 <h5 class="mb-2">Belum Ada Diskusi</h5>
@@ -205,8 +205,8 @@
                         <i class="bi bi-box-arrow-in-right me-2"></i>Login untuk Bertanya
                     </a>
                 @endauth
-            </div>
-        @endforelse
+            </div> --}}
+        @endforeach
     </div>
 
 </div>

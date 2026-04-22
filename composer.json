@@ -14,11 +14,13 @@
         "doctrine/dbal": "^4.3",
         "ezyang/htmlpurifier": "^4.19",
         "google-gemini-php/laravel": "^2.0",
+        "google/apiclient": "^2.19",
         "laravel/framework": "^12.0",
         "laravel/socialite": "^5.26",
         "laravel/tinker": "^2.10.1",
         "lucianotonet/groq-laravel": "^1.0",
-        "maatwebsite/excel": "^3.1"
+        "maatwebsite/excel": "^3.1",
+        "yaza/laravel-google-drive-storage": "^4.1"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
