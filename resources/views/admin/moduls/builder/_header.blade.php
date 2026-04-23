@@ -8,9 +8,9 @@
             <i class="fas fa-circle" style="font-size:0.5rem;"></i>
             Perubahan belum disimpan
         </span>
-        <button type="button" id="saveOrderBtn" class="btn-admin primary">
+        {{-- <button type="button" id="saveOrderBtn" class="btn-admin primary">
             <i class="fas fa-save"></i> Simpan Urutan
-        </button>
+        </button> --}}
         <a href="{{ route('admin.moduls.create') }}" class="btn-admin secondary">
             <i class="fas fa-plus"></i> Modul Baru
         </a>
