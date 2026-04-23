@@ -21,6 +21,7 @@ class Resource extends Model
         'mime_type',
         'size',
         'original_name',
+        'google_drive_file_id',
     ];
 
     public function resourceable()
@@ -63,7 +64,6 @@ class Resource extends Model
                 !str_starts_with($resource->path, 'http')
                 && Storage::disk('public')->exists($resource->path)
             ) {
-
                 Storage::disk('public')->delete($resource->path);
             }
         });
