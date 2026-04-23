@@ -9,6 +9,30 @@
     position: relative;
 }
 
+/* Center content inside auth buttons */
+.auth-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    /* jarak antara ikon dan teks */
+    text-align: center;
+}
+
+/* Jika ingin tombol Google memiliki gaya khusus (opsional) */
+.auth-btn.google-btn {
+    background-color: #fff;
+    color: #333;
+    border: 1px solid var(--border-color);
+    margin-top: 0.5rem;
+}
+
+.auth-btn.google-btn:hover {
+    background-color: #f8f9fa;
+    color: #000;
+    border-color: #dadce0;
+}
+
 /* Untuk desktop: background image */
 @media (min-width: 992px) {
     .auth-section {

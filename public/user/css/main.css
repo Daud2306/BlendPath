@@ -273,6 +273,21 @@ a:hover {
     transform: translateY(-1px);
 }
 
+.modul-card .card-body {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.modul-card .card-text {
+    flex-grow: 1;
+    margin-bottom: 1rem;
+}
+
+.modul-card .modul-btn {
+    margin-top: auto;
+}
+
 .badge {
     padding: 0.25rem 0.75rem;
     font-size: 0.75rem;

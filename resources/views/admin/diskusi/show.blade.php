@@ -72,13 +72,6 @@
             </p>
         </div>
         <div class="d-flex gap-2 align-items-center">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb mb-0">
-                    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-                    <li class="breadcrumb-item"><a href="{{ route('admin.diskusi.index') }}">Diskusi</a></li>
-                    <li class="breadcrumb-item active">Thread</li>
-                </ol>
-            </nav>
             <form action="{{ route('admin.diskusi.tanya.destroy', $tanya) }}" method="POST"
                 onsubmit="return confirm('Hapus seluruh thread ini beserta semua jawabannya?')">
                 @csrf @method('DELETE')

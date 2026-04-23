@@ -3,18 +3,17 @@
 @section('title', 'BlendPath - Kuasai Product Rendering dengan Blender 3D')
 
 @section('content')
-    {{-- HERO SECTION --}}
     <section id="hero" class="hero d-flex align-items-center light-background">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-6">
                     <h1>
-                        Dari Nol <span>Hingga Render</span> Profesional
+                        Tingkatkan <span>Kualitas Render</span> Produk Anda
                     </h1>
                     <p>
-                        BlendPath adalah platform belajar Blender 3D yang terstruktur. Kamu akan dibimbing step-by-step
-                        membuat <strong>product rendering berkualitas studio</strong> — siap tampilkan di portofolio dan
-                        memenangkan klien freelance.
+                        BlendPath menyediakan materi terstruktur untuk belajar Blender 3D. Kamu akan berlatih membuat
+                        <strong>product rendering</strong> dengan pendekatan studio — cocok untuk membangun portofolio
+                        dan meningkatkan peluang kerja lepas.
                     </p>
                     <div class="d-flex flex-wrap gap-3">
                         @auth
@@ -30,8 +29,6 @@
                             </a>
                         @endauth
                     </div>
-                    <p class="mt-3 text-muted small">✨ Tidak perlu pengalaman 3D sebelumnya. Semua materi disusun berurutan.
-                    </p>
                 </div>
                 <div class="col-lg-6 d-none d-lg-block">
                     <div class="animated">
@@ -43,7 +40,6 @@
         </div>
     </section>
 
-    {{-- FEATURES SECTION --}}
     <section id="features" class="features light-background">
         <div class="container">
             <div class="section-title">
@@ -82,7 +78,6 @@
         </div>
     </section>
 
-    {{-- HOW IT WORKS --}}
     <section id="how-it-works" class="light-background" style="padding: 5rem 0; border-top: 1px solid var(--border-color);">
         <div class="container">
             <div class="section-title">
@@ -130,7 +125,6 @@
         </div>
     </section>
 
-    {{-- STATS --}}
     <section id="stats" class="stats light-background" style="border-top: 1px solid var(--border-color);">
         <div class="container">
             <div class="row">
@@ -169,12 +163,11 @@
         </div>
     </section>
 
-    {{-- CTA --}}
     <section id="cta" class="cta light-background">
         <div class="container">
             <div class="text-center">
                 <h3>Siap Membangun Portofolio Product Rendering?</h3>
-                <p>Jangan hanya menonton tutorial random. Ikuti jalur terstruktur yang sudah terbukti efektif.</p>
+                <p>Daripada loncat-loncat antar tutorial, coba ikuti alur yang sudah disusun rapi.</p>
 
                 @auth
                     <a href="{{ route('learn.moduls.index') }}" class="btn-get-started">
@@ -190,7 +183,6 @@
                         </a>
                     </div>
                 @endauth
-                <p class="text-muted small mt-3">🎓 Akses selamanya, tidak ada biaya tersembunyi.</p>
             </div>
         </div>
     </section>

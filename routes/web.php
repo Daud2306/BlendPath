@@ -220,16 +220,3 @@ Route::get('/storage/{path}', function ($path) {
     abort_unless(File::exists($fullPath), 404);
     return response()->file($fullPath);
 })->where('path', '.*')->name('storage.file');
-
-Route::get('/test-gdrive', function () {
-    try {
-        Storage::disk('google')->put('test.txt', 'Hello from Laravel 12!');
-        return 'Upload berhasil! Cek Google Drive kamu.';
-    } catch (\Exception $e) {
-        return 'Error: ' . $e->getMessage();
-    }
-});
-
-Route::get('/test-admin', function () {
-    return 'Role kamu: ' . Auth::user()->role;
-})->middleware('auth');

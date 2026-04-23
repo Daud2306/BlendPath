@@ -37,10 +37,10 @@
 
         <div class="sidebar-section-label">Komunitas</div>
 
-        <a href="{{ route('admin.showcase.index') }}"
+        {{-- <a href="{{ route('admin.showcase.index') }}"
             class="sidebar-nav-item {{ request()->routeIs('admin.showcase.*') ? 'active' : '' }}">
             <i class="fas fa-images"></i> Showcase
-        </a>
+        </a> --}}
 
         <a href="{{ route('admin.diskusi.index') }}"
             class="sidebar-nav-item {{ request()->routeIs('admin.diskusi.*') ? 'active' : '' }}">
