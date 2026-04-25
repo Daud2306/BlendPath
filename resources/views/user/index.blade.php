@@ -115,9 +115,8 @@
                             style="width: 64px; height: 64px; background: var(--text-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.25rem;">
                             <span style="color: white; font-size: 1.5rem; font-weight: 700;">3</span>
                         </div>
-                        <h4 style="margin-bottom: 0.75rem;">Dapatkan Sertifikasi & Portofolio</h4>
-                        <p style="margin-bottom: 0;">Selesaikan semua modul, kumpulkan portofolio, dan raih sertifikat
-                            kelulusan.</p>
+                        <h4 style="margin-bottom: 0.75rem;">Bangun Portofolio Nyata</h4>
+                        <p style="margin-bottom: 0;">Selesaikan seluruh modul dan kumpulkan hasil karyamu.</p>
                     </div>
                 </div>
             </div>
