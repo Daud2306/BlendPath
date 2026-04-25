@@ -20,6 +20,15 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
+        User::firstOrCreate(
+            ['email' => 'user@blenderlms.com'],
+            [
+                'name'     => 'Regular User',
+                'password' => Hash::make('password123'),
+                'role'     => 'user',
+            ]
+        );
+
         // 2. Buat 20 user biasa (pastikan UserFactory sudah ada)
         User::factory(20)->create(['role' => 'user']);
 
