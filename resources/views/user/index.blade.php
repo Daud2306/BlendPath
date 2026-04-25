@@ -105,8 +105,8 @@
                             <span style="color: white; font-size: 1.5rem; font-weight: 700;">2</span>
                         </div>
                         <h4 style="margin-bottom: 0.75rem;">Praktik & Submit Mini Project</h4>
-                        <p style="margin-bottom: 0;">Setiap submodul ada tugas mini project. Hasil karyamu bisa langsung
-                            dipamerkan di galeri.</p>
+                        <p style="margin-bottom: 0;">Setiap submodul ada tugas mini project untuk mengasah keterampilanmu.
+                        </p>
                     </div>
                 </div>
 
