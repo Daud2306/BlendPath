@@ -12,7 +12,7 @@
                     </h1>
                     <p>
                         BlendPath menyediakan materi terstruktur untuk belajar Blender 3D. Kamu akan berlatih membuat
-                        <strong>product rendering</strong> dengan pendekatan studio — cocok untuk membangun portofolio
+                        <strong>product rendering</strong> dengan pendekatan studio, cocok untuk membangun portofolio
                         dan meningkatkan peluang kerja lepas.
                     </p>
                     <div class="d-flex flex-wrap gap-3">
@@ -44,7 +44,7 @@
         <div class="container">
             <div class="section-title">
                 <h2>Kenapa BlendPath Pilihan Tepat?</h2>
-                <div>Kami tidak hanya mengajarkan tombol — tapi membangun portofolio yang menjual.</div>
+                <div>Kami tidak hanya mengajarkan tombol, tapi membangun portofolio yang menjual.</div>
             </div>
 
             <div class="row">
@@ -52,7 +52,7 @@
                     <div class="icon-box">
                         <i class="bi bi-diagram-3"></i>
                         <h3>Alur Belajar Terstruktur</h3>
-                        <p>Modul disusun dari dasar hingga mahir. Setiap submodul harus tuntas sebelum lanjut — memastikan
+                        <p>Modul disusun dari dasar hingga mahir. Setiap submodul harus tuntas sebelum lanjut, memastikan
                             fondasi Anda kuat.</p>
                     </div>
                 </div>
@@ -62,7 +62,7 @@
                         <i class="bi bi-briefcase"></i>
                         <h3>Fokus Freelance & Portofolio</h3>
                         <p>Setiap materi dirancang untuk kebutuhan dunia nyata: render produk, material realistis,
-                            pencahayaan studio — langsung siap tampil di portofolio.</p>
+                            pencahayaan studio, langsung siap tampil di portofolio.</p>
                     </div>
                 </div>
 
