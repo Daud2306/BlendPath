@@ -70,8 +70,7 @@
                     <div class="icon-box">
                         <i class="bi bi-chat-dots"></i>
                         <h3>Komunitas & Mentoring</h3>
-                        <p>Tanya jawab langsung di setiap submodul. Dapatkan umpan balik dari instruktur dan sesama
-                            learner.</p>
+                        <p>Tanya jawab langsung di setiap submodul. Dapatkan umpan balik dari sesama learner.</p>
                     </div>
                 </div>
             </div>
